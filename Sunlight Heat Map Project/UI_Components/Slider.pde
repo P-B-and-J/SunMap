@@ -9,8 +9,6 @@ class Slider {
   float primarySat;
   float primaryVal;
   color secondaryColor = color(#797979);
-  //color knobColor1 = color(#5095B4);
-  //color knobColor2 = color(#235267);
   color textColor = color(#FFFFFF);
   float textSize = 30;
   float textHeight = 20;

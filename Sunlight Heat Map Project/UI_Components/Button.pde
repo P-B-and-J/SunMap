@@ -33,7 +33,7 @@ class Button {
       justPressed = true;
     }
     
-    if(justPressed &! pressed){
+    if(justPressed && !pressed){
       click = true;
       justPressed = false;
     }

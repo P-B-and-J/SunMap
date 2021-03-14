@@ -10,6 +10,7 @@ Toggle testToggle;
 
 void setup() {
   frameRate(60);
+  colorMode(HSB);
   surface.setSize(3*displayWidth/4, 3*displayHeight/4);
   surface.setLocation(displayWidth/8, displayHeight/8);
   surface.setResizable(true);
@@ -22,8 +23,7 @@ void setup() {
   testButton.text = "Process Images";
   
   testToggle = new Toggle(100, 375, 100);
-  //testToggle.fillColorOn = #D33783;;
- // testToggle.borderColorOn = #D33783;
+  testToggle.setColorOn(#D33783);
 }
 
 void draw() {
@@ -32,8 +32,7 @@ void draw() {
   testButton.X = width - 400;
   testToggle.X = width - 400;
   noStroke();
-  colorMode(HSB);
-  fill(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 25);
+  fill(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   rect(width - 450, 0, 450, height);
   testSlider.display();
   testButton.display();

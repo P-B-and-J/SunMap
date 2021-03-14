@@ -18,6 +18,9 @@ class Toggle{
   boolean justPressed = false;
   boolean toggled = false;
   float position = 0;
+  float clickX;
+  float clickY;
+  boolean mouseWasPressed = false;
   
   Toggle(float _X, float _Y, float _slotLength){
     X = _X;
@@ -28,8 +31,14 @@ class Toggle{
   }
   
   void detectClick(){
+    if(mousePressed && !mouseWasPressed){
+        clickX = mouseX;
+        clickY = mouseY;
+        mouseWasPressed = true;
+    }
+    
     clicked = false;
-    if(mousePressed && mouseX >= X - toggleRadius - 25 && mouseX <= X + slotLength + toggleRadius + 25 && mouseY >= Y - toggleRadius - 25 && mouseY <= Y + slotWidth + toggleRadius + 25){
+    if(mousePressed && clickX >= X - toggleRadius - 25 && clickX <= X + slotLength + toggleRadius + 25 && clickY >= Y - toggleRadius - 25 && clickY <= Y + slotWidth + toggleRadius + 25){
       pressed = true;
     }
     else{
@@ -40,12 +49,35 @@ class Toggle{
       justPressed = true;
     }
     
-    if(justPressed &! pressed){
-      clicked = true;
+    if(justPressed && !pressed){
+      if(!mousePressed){
+        clicked = true;
+      }
       justPressed = false;
     }
+    
+    mouseWasPressed = mousePressed;
   }
   
+  void setColorOn(color c, color k){
+    fillColorOn = c;
+    borderColorOn = c;
+    knobColorOn = k;
+  }
+  
+  void setColorOn(color c){
+    fillColorOn = c;
+    borderColorOn = c;
+  }
+  
+  void setColorOff(color c){
+    fillColorOff = c;
+    borderColorOff = c;
+    knobColorOff = c;
+  }
+  
+ // void drawSlot(){
+    
   
   void display(){
     detectClick();
