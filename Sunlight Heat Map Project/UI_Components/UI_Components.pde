@@ -46,4 +46,8 @@ void draw() {
   testButton.display();
   testToggle.display();
   testToggle2.display();
+  
+  if(testButton.click){
+    println(str(millis()) + " Button was pressed");
+  }
 }

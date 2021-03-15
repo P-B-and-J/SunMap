@@ -12,6 +12,9 @@ class Button {
   boolean pressed = false;
   boolean justPressed = false;
   boolean click = false;
+  float clickX;
+  float clickY;
+  boolean mouseWasPressed = false;
   
   Button(float _X, float _Y, float _buttonWidth, float _buttonHeight){
     X = _X;
@@ -21,8 +24,14 @@ class Button {
   }
   
   void detectClick(){
+    if(mousePressed && !mouseWasPressed){
+        clickX = mouseX;
+        clickY = mouseY;
+        mouseWasPressed = true;
+    }
+    
     click = false;
-    if(mousePressed && mouseX >= X && mouseX <= X + buttonWidth && mouseY >= Y && mouseY <= Y + buttonHeight){
+    if(mousePressed && clickX >= X && clickX <= X + buttonWidth && clickY >= Y && clickY <= Y + buttonHeight){
       pressed = true;
     }
     else{
@@ -34,9 +43,13 @@ class Button {
     }
     
     if(justPressed && !pressed){
-      click = true;
+      if(!mousePressed && mouseX >= X && mouseX <= X + buttonWidth && mouseY >= Y && mouseY <= Y + buttonHeight){
+        click = true;
+      }
       justPressed = false;
     }
+    
+    mouseWasPressed = mousePressed;
   }
   
   void drawText(){
