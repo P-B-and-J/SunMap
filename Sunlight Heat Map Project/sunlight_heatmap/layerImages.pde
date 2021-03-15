@@ -6,7 +6,8 @@ void layerImages() {
     for (int i = 0; i < pixVal.length; i++) {
       pixVal[i] = pixVal[i] + 1.0 * brightness(tempImage.pixels[i]) / numImages;
     }
-  } else {
+  } 
+  else {
     imagesLayered = true;
     counter=0;
   }

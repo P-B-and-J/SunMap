@@ -1,7 +1,8 @@
 void folderSelected(File selection) {
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
-  } else {
+  } 
+  else {
     //println("User selected " + selection.getAbsolutePath());
     folderPath = selection.getAbsolutePath();
   }
