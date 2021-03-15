@@ -13,8 +13,8 @@ Toggle testToggle2;
 void setup() {
   frameRate(120);
   colorMode(HSB);
-  surface.setSize(3*displayWidth/4, 3*displayHeight/4);
-  surface.setLocation(displayWidth/8, displayHeight/8);
+  surface.setSize(3 * displayWidth / 4, 3 * displayHeight / 4);
+  surface.setLocation(displayWidth / 8, displayHeight / 8);
   surface.setResizable(true);
   
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
