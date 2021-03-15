@@ -1,4 +1,6 @@
 void recolor(){
+  pushStyle();
+  colorMode(RGB);
   recoloredImage = createImage(imageWidth, imageHeight, RGB);
   layeredImage.loadPixels();
   recoloredImage.loadPixels();
@@ -14,4 +16,5 @@ void recolor(){
     }
   }
   recoloredImage.updatePixels();
+  popStyle();
 }
