@@ -38,7 +38,7 @@ class Toggle{
     }
     
     clicked = false;
-    if(mousePressed && clickX >= X - toggleRadius - 25 && clickX <= X + slotLength + toggleRadius + 25 && clickY >= Y - toggleRadius - 25 && clickY <= Y + slotWidth + toggleRadius + 25){
+    if(mousePressed && clickX >= X - toggleRadius && clickX <= X + slotLength + toggleRadius && clickY >= Y - slotRadius - borderWeight && clickY <= Y + slotRadius + borderWeight){
       pressed = true;
     }
     else{
@@ -86,7 +86,7 @@ class Toggle{
     strokeWeight(borderWeight);
     
     
-    if(clicked){
+    if(clicked && mouseX >= X - toggleRadius && mouseX <= X + slotLength + toggleRadius && mouseY >= Y - slotRadius - borderWeight && mouseY <= Y + slotRadius + borderWeight){
       if(!toggled){
         toggled = true;
       }
@@ -128,7 +128,7 @@ class Toggle{
     arc(X + slotLength - slotRadius, Y, slotWidth, slotWidth, 3 * PI / 2, 5 * PI / 2);
     
     
-    float frames = 20;
+    float frames = 15;
     float step = (slotLength - 2 * slotRadius) / frames;
     
     if(toggled && position < step * frames){

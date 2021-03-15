@@ -11,7 +11,7 @@ Toggle testToggle;
 Toggle testToggle2;
 
 void setup() {
-  frameRate(60);
+  frameRate(120);
   colorMode(HSB);
   surface.setSize(3*displayWidth/4, 3*displayHeight/4);
   surface.setLocation(displayWidth/8, displayHeight/8);
