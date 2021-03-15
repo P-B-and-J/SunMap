@@ -7,7 +7,7 @@ class Button {
   color primaryColor = #5D5D5D;
   color textColor = #FFFFFF;
   float textSize = 30;
-  String text;
+  String text = " ";
   boolean enabled = true;
   boolean pressed = false;
   boolean justPressed = false;
