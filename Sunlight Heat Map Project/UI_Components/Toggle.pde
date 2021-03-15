@@ -7,7 +7,7 @@ class Toggle{
   float toggleRadius;
   float borderWeight = 4;
   color fillColorOn = #3A7793;
-  color fillColorOff;
+  color fillColorOff = color(#FFFFFF, 0);
   color borderColorOn = #3A7793;
   color borderColorOff = #5D5D5D;
   color knobColorOn = #FFFFFF;
@@ -86,9 +86,6 @@ class Toggle{
     strokeWeight(borderWeight);
     
     
-    float frames = 20;
-    float step = (slotLength - 2 * slotRadius) / frames;
-    
     if(clicked){
       if(!toggled){
         toggled = true;
@@ -98,7 +95,43 @@ class Toggle{
       }
     }
     
-    if(toggled && position < frames){
+    color fillColor;
+    color borderColor;
+    color knobColor;
+    
+    
+    if(pressed){
+      fillColor = borderColorOff;
+      borderColor = borderColorOff;
+      knobColor = knobColorOn;
+    }
+    else if (toggled){
+      fillColor = fillColorOn;
+      borderColor = borderColorOn;
+      knobColor = knobColorOn;
+    }
+    else{
+      fillColor = fillColorOff;
+      borderColor = borderColorOff;
+      knobColor = knobColorOff;
+    }
+    
+    
+    fill(fillColor);  //fill the center of the rectangle
+    noStroke();
+    rect(X + slotRadius, Y - slotRadius, slotLength - 2 * slotRadius, 2 * slotRadius);
+    
+    stroke(borderColor);
+    line(X + slotRadius, Y - slotRadius, X + slotLength - slotRadius, Y - slotRadius);
+    line(X + slotRadius, Y + slotRadius, X + slotLength - slotRadius, Y + slotRadius);
+    arc(X + slotRadius, Y, slotWidth, slotWidth, PI / 2, 3 * PI / 2);
+    arc(X + slotLength - slotRadius, Y, slotWidth, slotWidth, 3 * PI / 2, 5 * PI / 2);
+    
+    
+    float frames = 20;
+    float step = (slotLength - 2 * slotRadius) / frames;
+    
+    if(toggled && position < step * frames){
       position += step;
     }
     
@@ -106,22 +139,9 @@ class Toggle{
       position -= step;
     }
     
-    fillColorOff = color(fillColorOn, 0);
-    
-    fill(lerpColor(fillColorOff, fillColorOn, position/frames * step));
-    
-    noStroke();
-    rect(X + slotRadius, Y - slotRadius, slotLength - 2 * slotRadius, 2 * slotRadius);
-    
-    stroke(lerpColor(borderColorOff, borderColorOn, position/frames * step));
-    line(X + slotRadius, Y - slotRadius, X + slotLength - slotRadius, Y - slotRadius);
-    line(X + slotRadius, Y + slotRadius, X + slotLength - slotRadius, Y + slotRadius);
-    arc(X + slotRadius, Y, slotWidth, slotWidth, PI / 2, 3 * PI / 2);
-    arc(X + slotLength - slotRadius, Y, slotWidth, slotWidth, 3 * PI / 2, 5 * PI / 2);
-    
-    fill(lerpColor(knobColorOff, knobColorOn, position/frames * step));
-    stroke(lerpColor(knobColorOff, knobColorOn, position/frames * step));
-    ellipse(X + slotRadius + position * step, Y, slotRadius, slotRadius);
+    fill(knobColor);
+    stroke(knobColor);
+    ellipse(X + slotRadius + position, Y, slotRadius, slotRadius);
     
     popStyle();
   }

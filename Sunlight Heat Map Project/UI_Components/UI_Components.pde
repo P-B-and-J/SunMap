@@ -3,10 +3,12 @@
 */
 
 color backgroundColor = #292929;
+color sideBarColor;
 
 Slider testSlider;
 Button testButton;
 Toggle testToggle;
+Toggle testToggle2;
 
 void setup() {
   frameRate(60);
@@ -14,6 +16,8 @@ void setup() {
   surface.setSize(3*displayWidth/4, 3*displayHeight/4);
   surface.setLocation(displayWidth/8, displayHeight/8);
   surface.setResizable(true);
+  
+  sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   
   testSlider = new Slider(100, 300, 300);
  // testSlider.primaryColor = #D33783;
@@ -23,7 +27,10 @@ void setup() {
   testButton.text = "Process Images";
   
   testToggle = new Toggle(100, 375, 100);
-  testToggle.setColorOn(#D33783);
+  testToggle.setColorOn(#3A7793);
+  
+  testToggle2 = new Toggle(100, 475, 300);
+  testToggle.setColorOn(#3A7793);
 }
 
 void draw() {
@@ -31,10 +38,12 @@ void draw() {
   testSlider.X = width - 400;
   testButton.X = width - 400;
   testToggle.X = width - 400;
+  testToggle2.X = width - 400;
   noStroke();
-  fill(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
+  fill(sideBarColor);
   rect(width - 450, 0, 450, height);
   testSlider.display();
   testButton.display();
   testToggle.display();
+  testToggle2.display();
 }
