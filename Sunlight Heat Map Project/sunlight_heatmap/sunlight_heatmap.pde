@@ -14,8 +14,15 @@ float contrast = 0;
 float brightness = 0;
 color backgroundColor = #292929;
 color sideBarColor;
-float rightBuffer = 400;
+float sideBarWidth = 400;
+float topBarWidth = 50;
+float buffer = 30;
 
+<<<<<<< Updated upstream
+=======
+
+Button processImagesButton;
+>>>>>>> Stashed changes
 Button selectFolderButton;
 
 void setup() {
@@ -26,6 +33,7 @@ void setup() {
   surface.setResizable(true);
   
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
+<<<<<<< Updated upstream
   
   noSmooth();
   
@@ -61,6 +69,62 @@ void draw() {
     centeredImage(recoloredImage, 30, 30, width - 60, height - 60);
     tint(255, 160);
     centeredImage(firstImage, 30, 30, width - 60, height - 60);
+=======
+
+  selectFolderButton = new Button(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer, 75);
+  selectFolderButton.textSize = 24;
+  selectFolderButton.text = "Select folder...";
+  selectFolderButton.visible = true;
+  
+  processImagesButton = new Button(width - sideBarWidth + buffer, selectFolderButton.Y + selectFolderButton.buttonHeight + buffer, sideBarWidth - 2 * buffer, 75);
+  processImagesButton.visible = false;
+}
+
+void draw() {
+  background(backgroundColor);  //setting the background and sidebar
+  noStroke();
+  fill(sideBarColor);
+  rect(width - sideBarWidth, 0, sideBarWidth, height);
+  
+  selectFolderButton.X = width - sideBarWidth + buffer;  //setting select folder button position and visibility
+  if(selectFolderButton.visible){
+    selectFolderButton.display();
+  }
+  
+  processImagesButton.X = width - sideBarWidth + buffer;  //setting process images button position and visibility
+  if(processImagesButton.visible){
+    processImagesButton.display();
+  }
+
+
+
+  if (selectFolderButton.click) {  //the main code
+    folderPath = null;
+    imagesLoaded = false;
+    imagesLayered = false;
+    layeredImageCreated = false;
+
+    selectFolder("Select a folder to process:", "folderSelected");
+  }
+  if (folderPath != null && !imagesLoaded) {
+    loadImages();
+  }
+  if (imagesLoaded && !imagesLayered) {
+    layerImages();
+  }
+  contrast = mouseX * 10.0 / width;
+  brightness = -mouseY * 255 / height + 127;
+
+  if (imagesLayered) {
+    createImageFromArray();
+  }
+
+  if (layeredImageCreated) {
+    recolor();
+    centeredImage(recoloredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+    tint(255, 160);
+    centeredImage(firstImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+>>>>>>> Stashed changes
     noTint();
   }
 }

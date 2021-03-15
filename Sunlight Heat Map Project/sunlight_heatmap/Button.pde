@@ -15,6 +15,7 @@ class Button {
   float clickX;
   float clickY;
   boolean mouseWasPressed = false;
+  boolean visible;
   
   Button(float _X, float _Y, float _buttonWidth, float _buttonHeight){
     X = _X;
