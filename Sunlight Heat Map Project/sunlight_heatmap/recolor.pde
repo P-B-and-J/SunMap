@@ -1,8 +1,9 @@
 void recolor() {
+  pushStyle();
+  colorMode(RGB);
   recoloredImage = createImage(imageWidth, imageHeight, RGB);
   layeredImage.loadPixels();
   recoloredImage.loadPixels();
-  colorMode(RGB);
   for (int i = 0; i < layeredImage.pixels.length; i++) {
     if (brightness(layeredImage.pixels[i]) > 220) {
       recoloredImage.pixels[i] = color(0, brightness(layeredImage.pixels[i]), 0);
@@ -13,5 +14,5 @@ void recolor() {
     }
   }
   recoloredImage.updatePixels();
-  colorMode(HSB);
+  popStyle();
 }
