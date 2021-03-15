@@ -18,6 +18,9 @@ class Slider {
   float max = 10;
   boolean pressed = false;
   boolean showVal = true;
+  float clickX;
+  float clickY;
+  boolean lastMousePressed = false;
   
   Slider(float _X, float _Y, float _sliderLength){
     X = _X;
@@ -26,10 +29,12 @@ class Slider {
     position = map(value, min, max, radius, sliderLength - radius);
   }
   
-  void detectDrag(){ //< if mouse is within knob in X dimension -------------------------->   < if mouse is within knob in Y direction ----->
-    if(mousePressed && mouseX > X /*- radius*/ - 25 && mouseX < X + sliderLength /*+ radius*/ + 25 && mouseY > Y /*- radius*/ - 25 && mouseY < Y /*+ radius*/ + 25){
+  void detectDrag(){                     //< if mouse is within knob in X dimension -------------------------->   < if mouse is within knob in Y direction ----->
+    if(mousePressed && !lastMousePressed && mouseX > X /*- radius*/ - 25 && mouseX < X + sliderLength /*+ radius*/ + 25 && mouseY > Y /*- radius*/ - 25 && mouseY < Y /*+ radius*/ + 25){
       pressed = true;
     }
+    lastMousePressed = mousePressed;
+    
     if(!mousePressed){
       pressed = false;
     }
