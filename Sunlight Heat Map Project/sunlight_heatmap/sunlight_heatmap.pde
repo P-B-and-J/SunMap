@@ -18,9 +18,7 @@ float sideBarWidth = 400;
 float topBarWidth = 50;
 float buffer = 30;
 
-Button processImagesButton;
-//Button selectFolderButton;
-Folder_Selector selectFolder;
+Button selectFolderButton;
 
 void setup() {
   frameRate(120);
