@@ -21,7 +21,7 @@ class Folder_Selector{
   float X, Y;
   float selectorWidth, selectorHeight;
   color primaryColor = #FFFFFF;
-  float textSize = 1;
+  float textSize;
   String folderReadout;
   String buttonText = "Browse...";
   float buttonX, buttonY;
@@ -54,25 +54,6 @@ class Folder_Selector{
     folderReadout = "No folder selected";
   }
   
-  void folderSelected(File selection) {
-    if (selection == null) {
-      println("Window was closed or the user hit cancel.");
-    } 
-    else {
-      //println("User selected " + selection.getAbsolutePath());
-      folderPath = selection.getAbsolutePath();
-    }
-  }
-  
-  String[] listFileNames(String dir) {
-    File file = new File(dir);
-    if (file.isDirectory()) {
-      String names[] = file.list();
-      return names;
-    }
-    return null;
-  }
-  
   Button browseButton;
   
   void selectorSetup(){
@@ -87,13 +68,6 @@ class Folder_Selector{
   }
   
   void display(){
-    if(browseButton.click){
-      selectFolder("Select a folder to process:", "folderSelected");
-    }
-    if(folderPath != null){
-      folderReadout = folderPath;
-      println(folderPath);
-    }
     pushStyle();
     stroke(primaryColor);
     fill(primaryColor);
