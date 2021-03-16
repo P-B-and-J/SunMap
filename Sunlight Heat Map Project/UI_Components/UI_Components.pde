@@ -9,6 +9,7 @@ Slider testSlider;
 Button testButton;
 Toggle testToggle;
 Toggle testToggle2;
+Folder_Selector selectFolder;
 
 void setup() {
   frameRate(120);
@@ -31,6 +32,8 @@ void setup() {
   
   testToggle2 = new Toggle(100, 475, 300);
   testToggle.setColorOn(#3A7793);
+  
+  selectFolder = new Folder_Selector(100, 425, 300);
 }
 
 void draw() {
@@ -39,13 +42,15 @@ void draw() {
   testButton.X = width - 400;
   testToggle.X = width - 400;
   testToggle2.X = width - 400;
+  selectFolder.X = width - 400;
   noStroke();
   fill(sideBarColor);
   rect(width - 450, 0, 450, height);
   testSlider.display();
   testButton.display();
   testToggle.display();
-  testToggle2.display();
+  selectFolder.display();
+  //testToggle2.display();
   
   if(testButton.click){
     println(str(millis()) + " Button was pressed");

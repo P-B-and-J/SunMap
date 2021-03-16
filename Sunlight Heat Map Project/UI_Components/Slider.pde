@@ -21,6 +21,7 @@ class Slider {
   float clickX;
   float clickY;
   boolean lastMousePressed = false;
+  boolean visible;
   
   Slider(float _X, float _Y, float _sliderLength){
     X = _X;

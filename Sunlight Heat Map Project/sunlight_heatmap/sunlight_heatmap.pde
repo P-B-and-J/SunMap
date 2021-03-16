@@ -15,7 +15,9 @@ float contrast = 0;
 float brightness = 0;
 color backgroundColor = #292929;
 color sideBarColor;
-float rightBuffer = 400;
+float sideBarWidth = 400;
+float topBarWidth = 50;
+float buffer = 30;
 
 
 Button selectFolderButton;
@@ -29,20 +31,35 @@ void setup() {
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
 
-  noSmooth();
-
-  selectFolderButton = new Button(width - rightBuffer+50, 150, 300, 75);
+  selectFolder = new Folder_Selector(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer);
+  //selectFolderButton = new Button(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer, 75);
+  //selectFolderButton.textSize = 24;
+  //selectFolderButton.text = "Select folder...";
+  //selectFolderButton.visible = true;
+  
+  processImagesButton = new Button(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.folderHeight + buffer, sideBarWidth - 2 * buffer, 75);
+  processImagesButton.visible = true;
 }
 
 void draw() {
-  background(backgroundColor);
-  selectFolderButton.X = width - rightBuffer+50;
+  background(backgroundColor);  //setting the background and sidebar
   noStroke();
   fill(sideBarColor);
-  rect(width - rightBuffer, 0, rightBuffer, height);
-  selectFolderButton.display();
+  rect(width - sideBarWidth, 0, sideBarWidth, height);
+  
+  selectFolder.display();
+  
+  selectFolder.X = width - sideBarWidth + buffer;  //setting select folder button position and visibility
+  if(selectFolder.visible){
+    selectFolder.display();
+  }
+  
+  processImagesButton.X = width - sideBarWidth + buffer;  //setting process images button position and visibility
+  if(processImagesButton.visible){
+    processImagesButton.display();
+  }
 
-  if (selectFolderButton.click) {
+  if (processImagesButton.click) {  //the main code
     folderPath = null;
     imagesLoaded = false;
     imagesLayered = false;
@@ -64,11 +81,10 @@ void draw() {
   }
 
   if (layeredImageCreated) {
-    //centeredImage(layeredImage, 30, 30, width - 60 - rightBuffer, height - 60);
     recolor();
-    centeredImage(recoloredImage, 30, 30, width - 60 - rightBuffer, height - 60);
+    centeredImage(recoloredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
     tint(255, 160);
-    centeredImage(firstImage, 30, 30, width - 60 - rightBuffer, height - 60);
+    centeredImage(firstImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
     noTint();
   }
 }
