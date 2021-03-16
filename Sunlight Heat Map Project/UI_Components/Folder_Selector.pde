@@ -32,6 +32,7 @@ class Folder_Selector{
   float buffer = 10;
   float lineWeight;
   float lineLength;
+  PFont italic;
   
   Folder_Selector(float _X, float _Y, float _selectorWidth){
     X = _X;
@@ -48,6 +49,7 @@ class Folder_Selector{
     buttonWidth = buttonHeight * 4;
     buttonX = X + 2 * lineLength + 2 * buffer;
     buttonY = Y + folderHeight + buffer + lineLength + lineWeight / 2 - buttonHeight / 2;
+    italic = createFont("SansSerif.italic", textSize);
   }
   
   Button browseButton;
@@ -81,7 +83,7 @@ class Folder_Selector{
     browseButton.Y = buttonY;
     browseButton.buttonWidth = buttonWidth;
     browseButton.buttonHeight = buttonHeight;
-    textAlign(CENTER, CENTER);
+    textFont(italic);
     browseButton.display();
     popStyle();
   }
