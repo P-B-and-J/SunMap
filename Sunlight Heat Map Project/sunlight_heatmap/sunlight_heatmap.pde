@@ -31,15 +31,13 @@ void setup() {
   surface.setResizable(true);
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
-
-  selectFolder = new Folder_Selector(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer);
-  //selectFolderButton = new Button(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer, 75);
-  //selectFolderButton.textSize = 24;
-  //selectFolderButton.text = "Select folder...";
-  //selectFolderButton.visible = true;
   
-  processImagesButton = new Button(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.folderHeight + buffer, sideBarWidth - 2 * buffer, 75);
+  processImagesButton = new Button(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer, 75);
   processImagesButton.visible = true;
+
+  selectFolder = new Folder_Selector(width - sideBarWidth + buffer, processImagesButton.Y + processImagesButton.buttonHeight + buffer, sideBarWidth - 2 * buffer);
+  selectFolder.visible = true;
+  
 }
 
 void draw() {

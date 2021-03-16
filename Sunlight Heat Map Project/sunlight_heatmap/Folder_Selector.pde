@@ -39,7 +39,6 @@ class Folder_Selector{
     X = _X;
     Y = _Y;
     selectorWidth = _selectorWidth;
-    selectorHeight = 100; //update later once whole thing is put together
     selectorSetup();
     folderWidth = selectorWidth / 9;
     folderHeight = folderWidth * 0.8;
@@ -52,6 +51,8 @@ class Folder_Selector{
     buttonY = Y + folderHeight + buffer + lineLength + lineWeight / 2 - buttonHeight / 2;
     italic = createFont("SansSerif.italic", textSize);
     folderReadout = "No folder selected";
+    selectorHeight = folderHeight + lineLength + 3 * buffer + buttonHeight / 2;
+    //selectorHeight = 0.8 * (_selectorWidth / 9) + (_selectorWidth / 9) / 2 + 3 * buffer;
   }
   
   Button browseButton;
