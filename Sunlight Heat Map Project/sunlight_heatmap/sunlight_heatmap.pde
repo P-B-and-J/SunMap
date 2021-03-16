@@ -58,7 +58,7 @@ void draw() {
     processImagesButton.display();
   }
 
-  if (processImagesButton.click) {  //the main code
+  if (selectFolder.buttonClick) {  //the main code
     folderPath = null;
     imagesLoaded = false;
     imagesLayered = false;
