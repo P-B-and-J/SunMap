@@ -90,8 +90,4 @@ class Folder_Selector{
     popStyle();
     
   }
-  
-  
-  
-  
 }
