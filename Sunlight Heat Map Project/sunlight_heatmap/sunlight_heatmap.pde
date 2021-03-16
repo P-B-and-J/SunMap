@@ -19,7 +19,8 @@ float topBarWidth = 50;
 float buffer = 30;
 
 Button processImagesButton;
-Button selectFolderButton;
+//Button selectFolderButton;
+Folder_Selector selectFolder;
 
 void setup() {
   frameRate(120);
@@ -30,13 +31,14 @@ void setup() {
   
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
 
-  selectFolderButton = new Button(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer, 75);
-  selectFolderButton.textSize = 24;
-  selectFolderButton.text = "Select folder...";
-  selectFolderButton.visible = true;
+  selectFolder = new Folder_Selector(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer, 100);
+  //selectFolderButton = new Button(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer, 75);
+  //selectFolderButton.textSize = 24;
+  //selectFolderButton.text = "Select folder...";
+  //selectFolderButton.visible = true;
   
-  processImagesButton = new Button(width - sideBarWidth + buffer, selectFolderButton.Y + selectFolderButton.buttonHeight + buffer, sideBarWidth - 2 * buffer, 75);
-  processImagesButton.visible = false;
+  processImagesButton = new Button(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.folderHeight + buffer, sideBarWidth - 2 * buffer, 75);
+  processImagesButton.visible = true;
 }
 
 void draw() {
@@ -45,9 +47,11 @@ void draw() {
   fill(sideBarColor);
   rect(width - sideBarWidth, 0, sideBarWidth, height);
   
-  selectFolderButton.X = width - sideBarWidth + buffer;  //setting select folder button position and visibility
-  if(selectFolderButton.visible){
-    selectFolderButton.display();
+  selectFolder.display();
+  
+  selectFolder.X = width - sideBarWidth + buffer;  //setting select folder button position and visibility
+  if(selectFolder.visible){
+    selectFolder.display();
   }
   
   processImagesButton.X = width - sideBarWidth + buffer;  //setting process images button position and visibility
@@ -57,7 +61,7 @@ void draw() {
 
 
 
-  if (selectFolderButton.click) {  //the main code
+  if (processImagesButton.click) {  //the main code
     folderPath = null;
     imagesLoaded = false;
     imagesLayered = false;

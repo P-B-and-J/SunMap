@@ -7,9 +7,10 @@ class Folder_Selector{
   String buttonText = "Browse...";
   float buttonX, buttonY;
   float buttonWidth, buttonHeight;
-  float folderX, folderY;
   float folderWidth, folderHeight;
+  float folderX, folderY;
   boolean visible;
+  float buffer = 20;
   
   Folder_Selector(float _X, float _Y, float _selectorWidth, float _selectorHeight){
     X = _X;
@@ -17,6 +18,10 @@ class Folder_Selector{
     selectorWidth = _selectorWidth;
     selectorHeight = _selectorHeight;
     selectorSetup();
+    X = 450;
+    Y = 300;
+    folderWidth = 100;
+    folderHeight = 85;
   }
   
   Button browseButton;
@@ -27,8 +32,8 @@ class Folder_Selector{
   }
   
   void drawFolderIcon(){
-    rect(folderX, folderY + folderHeight / 5, folderWidth, folderHeight - (folderY + folderHeight / 5), folderHeight / 8);
-    rect(folderX, folderY, folderWidth / 2, folderHeight, folderHeight / 8);
+    rect(X, Y + folderHeight / 7, folderWidth, folderHeight - folderHeight / 7, folderHeight / 6);
+    rect(X, Y, folderWidth / 2, folderHeight, folderHeight / 6);
   }
   
   void display(){
@@ -36,6 +41,8 @@ class Folder_Selector{
     stroke(primaryColor);
     fill(primaryColor);
     drawFolderIcon();
+    text(folderPath, X + folderWidth + buffer, Y + folderHeight / 7 + (folderHeight - folderHeight / 7) / 2);
+    
     popStyle();
   }
 }
