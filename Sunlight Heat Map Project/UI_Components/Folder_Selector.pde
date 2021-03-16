@@ -21,8 +21,8 @@ class Folder_Selector{
   float X, Y;
   float selectorWidth, selectorHeight;
   color primaryColor = #FFFFFF;
-  float textSize;
-  String folderPath = "No folder selected";
+  float textSize = 1;
+  String folderReadout;
   String buttonText = "Browse...";
   float buttonX, buttonY;
   float buttonWidth, buttonHeight;
@@ -33,6 +33,7 @@ class Folder_Selector{
   float lineWeight;
   float lineLength;
   PFont italic;
+  String folderPath = null;
   
   Folder_Selector(float _X, float _Y, float _selectorWidth){
     X = _X;
@@ -50,6 +51,26 @@ class Folder_Selector{
     buttonX = X + 2 * lineLength + 2 * buffer;
     buttonY = Y + folderHeight + buffer + lineLength + lineWeight / 2 - buttonHeight / 2;
     italic = createFont("SansSerif.italic", textSize);
+    folderReadout = "No folder selected";
+  }
+  
+  void folderSelected(File selection) {
+    if (selection == null) {
+      println("Window was closed or the user hit cancel.");
+    } 
+    else {
+      //println("User selected " + selection.getAbsolutePath());
+      folderPath = selection.getAbsolutePath();
+    }
+  }
+  
+  String[] listFileNames(String dir) {
+    File file = new File(dir);
+    if (file.isDirectory()) {
+      String names[] = file.list();
+      return names;
+    }
+    return null;
   }
   
   Button browseButton;
@@ -66,13 +87,20 @@ class Folder_Selector{
   }
   
   void display(){
+    if(browseButton.click){
+      selectFolder("Select a folder to process:", "folderSelected");
+    }
+    if(folderPath != null){
+      folderReadout = folderPath;
+      println(folderPath);
+    }
     pushStyle();
     stroke(primaryColor);
     fill(primaryColor);
     drawFolderIcon();
     textAlign(LEFT, CENTER);
     textSize(textSize);
-    text(folderPath, X + folderWidth + 2 * buffer, Y + folderHeight / 7 + (folderHeight - folderHeight / 7) / 2.5);
+    text(folderReadout, X + folderWidth + 2 * buffer, Y + folderHeight / 7 + (folderHeight - folderHeight / 7) / 2.5);
     strokeWeight(lineWeight);
     strokeCap(SQUARE);
     line(X + lineLength, Y + folderHeight + buffer, X + lineLength, Y + folderHeight + buffer + lineLength + lineWeight / 2);
@@ -86,5 +114,10 @@ class Folder_Selector{
     textFont(italic);
     browseButton.display();
     popStyle();
+    
   }
+  
+  
+  
+  
 }
