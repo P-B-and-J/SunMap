@@ -34,7 +34,6 @@ class Folder_Selector{
   float lineLength;
   PFont italic;
   String folderPath = null;
-  boolean buttonClick = false;
   
   Folder_Selector(float _X, float _Y, float _selectorWidth){
     X = _X;
@@ -90,11 +89,5 @@ class Folder_Selector{
     textFont(italic);
     browseButton.display();
     popStyle();
-    if(browseButton.click){
-      buttonClick = true;
-    }
-    else{
-      buttonClick = false;
-    }
   }
 }

@@ -45,8 +45,8 @@ void draw() {
   noStroke();
   fill(sideBarColor);
   rect(width - sideBarWidth, 0, sideBarWidth, height);
+  println(selectFolder.browseButton.click);
   
-  selectFolder.display();
   
   selectFolder.X = width - sideBarWidth + buffer;  //setting select folder button position and visibility
   if(selectFolder.visible){
@@ -58,7 +58,7 @@ void draw() {
     processImagesButton.display();
   }
 
-  if (selectFolder.buttonClick) {  //the main code
+  if (selectFolder.browseButton.click) {  //the main code
     folderPath = null;
     imagesLoaded = false;
     imagesLayered = false;
