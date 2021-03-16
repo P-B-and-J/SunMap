@@ -35,7 +35,7 @@ void setup() {
 }
 
 void draw() {
-  //background(backgroundColor);
+  background(backgroundColor);
   selectFolderButton.X = width - rightBuffer+50;
   noStroke();
   fill(sideBarColor);
