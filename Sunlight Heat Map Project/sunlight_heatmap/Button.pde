@@ -7,7 +7,7 @@ class Button {
   color primaryColor = #5D5D5D;
   color textColor = #FFFFFF;
   float textSize = 30;
-  String text = " ";
+  String text = "";
   boolean enabled = true;
   boolean pressed = false;
   boolean justPressed = false;
@@ -35,8 +35,7 @@ class Button {
     if(mousePressed && clickX >= X && clickX <= X + buttonWidth && clickY >= Y && clickY <= Y + buttonHeight){
       pressed = true;
     }
-    else
-    {
+    else{
       pressed = false;
     }
     
