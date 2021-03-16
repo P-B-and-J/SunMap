@@ -1,7 +1,8 @@
 void folderSelected(File selection) {
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
-  } else {
+  } 
+  else {
     //println("User selected " + selection.getAbsolutePath());
     folderPath = selection.getAbsolutePath();
   }
@@ -16,23 +17,24 @@ String[] listFileNames(String dir) {
   return null;
 }
 
-void loadImages(){
-  if (folderPath != null && !imagesLoaded){
-    println(folderPath);
-    
-    String[] filenames = listFileNames(folderPath);
-    for(String fileName : filenames){
+void loadImages() {
+  String[] filenames = listFileNames(folderPath);
+  if (filenames!=null) {
+    for (String fileName : filenames) {
       PImage tempImage = loadImage(folderPath + "/" + fileName);
-      tempImage.resize(width, 0);
-      images.add(tempImage);
-      if(firstImage == null){
-        firstImage = tempImage;
+      if (tempImage!=null) {
+        tempImage.resize(width, 0);
+        images.add(tempImage);
+        if (firstImage == null) {
+          firstImage = tempImage;
+        }
+        numImages++;
       }
-      numImages++;
     }
     imageWidth = images.get(0).width;
     imageHeight = images.get(0).height;
     pixVal = new float[imageWidth * imageHeight];
     imagesLoaded = true;
+    counter = 0;
   }
 }

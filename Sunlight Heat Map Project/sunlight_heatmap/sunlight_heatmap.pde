@@ -10,6 +10,7 @@ int imageHeight;
 int imageWidth;
 boolean layeredImageCreated = false;
 int numImages = 0;
+int counter=0;
 float contrast = 0;
 float brightness = 0;
 color backgroundColor = #292929;
@@ -17,6 +18,7 @@ color sideBarColor;
 float sideBarWidth = 400;
 float topBarWidth = 50;
 float buffer = 30;
+
 
 Button selectFolderButton;
 
@@ -26,7 +28,7 @@ void setup() {
   surface.setSize(3 * displayWidth / 4, 3 * displayHeight / 4);
   surface.setLocation(displayWidth / 8, displayHeight / 8);
   surface.setResizable(true);
-  
+
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
 
   selectFolder = new Folder_Selector(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer);
@@ -56,8 +58,6 @@ void draw() {
   if(processImagesButton.visible){
     processImagesButton.display();
   }
-
-
 
   if (processImagesButton.click) {  //the main code
     folderPath = null;
