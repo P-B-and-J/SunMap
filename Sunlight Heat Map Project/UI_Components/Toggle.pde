@@ -21,6 +21,7 @@ class Toggle{
   float clickX;
   float clickY;
   boolean mouseWasPressed = false;
+  boolean visible;
   
   Toggle(float _X, float _Y, float _slotLength){
     X = _X;
