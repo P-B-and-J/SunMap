@@ -15,9 +15,9 @@ float contrast = 0;
 float brightness = 0;
 color backgroundColor = #292929;
 color sideBarColor;
-float sideBarWidth = 400;
+float sideBarWidth = 450;
 float topBarWidth = 50;
-float buffer = 30;
+float buffer = 50;
 
 
 Folder_Selector selectFolder;
