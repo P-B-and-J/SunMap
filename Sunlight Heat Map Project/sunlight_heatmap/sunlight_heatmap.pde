@@ -22,6 +22,7 @@ float buffer = 50;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
+Toggle overlayToggle;
 
 void setup() {
   frameRate(120);
@@ -40,6 +41,9 @@ void setup() {
   selectFolder = new Folder_Selector(width - sideBarWidth + buffer, processImagesButton.Y + processImagesButton.buttonHeight + buffer, sideBarWidth - 2 * buffer);
   selectFolder.visible = true;
   
+  overlayToggle = new Toggle(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.selectorHeight + buffer, 2 * buffer);
+  overlayToggle.visible = true;
+  
 }
 
 void draw() {
@@ -57,6 +61,11 @@ void draw() {
   processImagesButton.X = width - sideBarWidth + buffer;  //setting process images button position and visibility
   if(processImagesButton.visible){
     processImagesButton.display();
+  }
+  
+  overlayToggle.X = width - sideBarWidth + buffer;  //setting toggle position and visibility
+  if(overlayToggle.visible){
+    overlayToggle.display();
   }
 
   if (selectFolder.browseButton.click) {  //the main code
@@ -89,8 +98,10 @@ void draw() {
   if (layeredImageCreated) {
     recolor();
     centeredImage(recoloredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
-    tint(255, 160);
-    centeredImage(firstImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+    if(overlayToggle.toggled){
+      tint(255, 160);
+      centeredImage(firstImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+    }
     noTint();
   }
 }
