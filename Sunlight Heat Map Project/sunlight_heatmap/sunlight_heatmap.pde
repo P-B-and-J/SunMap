@@ -65,9 +65,10 @@ void draw() {
     imagesLayered = false;
     layeredImageCreated = false;
     selectFolder("Select a folder to process:", "folderSelected");
-    if(folderPath != null){
-      selectFolder.folderReadout = folderPath;
-    }
+  }
+  
+  if(folderPath != null){
+    selectFolder.folderReadout = folderPath;
   }
   
   if (processImagesButton.click && folderPath != null && !imagesLoaded) {
