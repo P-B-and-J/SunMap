@@ -8,6 +8,7 @@ class Button {
   color textColor = #FFFFFF;
   float textSize = 30;
   String text = "";
+  PFont font;
   boolean enabled = true;
   boolean pressed = false;
   boolean justPressed = false;
@@ -22,6 +23,7 @@ class Button {
     Y = _Y;
     buttonWidth = _buttonWidth;
     buttonHeight = _buttonHeight;
+    font = createFont("Lucida Sans Regular", textSize);
   }
   
   void detectClick(){
@@ -56,6 +58,7 @@ class Button {
   void drawText(){
     pushStyle();
     textAlign(CENTER, CENTER);
+    textFont(font);
     textSize(textSize);
     fill(color(textColor));
     text(text, X + buttonWidth / 2, Y + buttonHeight / 2);
@@ -81,7 +84,7 @@ class Button {
     strokeCap(SQUARE);
     strokeWeight(borderWeight);
     rect(X, Y, buttonWidth, buttonHeight);
-    popStyle();
     drawText();
+    popStyle();
   }
 }

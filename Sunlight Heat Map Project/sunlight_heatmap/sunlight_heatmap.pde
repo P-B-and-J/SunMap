@@ -33,6 +33,8 @@ void setup() {
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   
   processImagesButton = new Button(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer, 75);
+  processImagesButton.textSize = 25;
+  processImagesButton.text = "Process Images";
   processImagesButton.visible = true;
 
   selectFolder = new Folder_Selector(width - sideBarWidth + buffer, processImagesButton.Y + processImagesButton.buttonHeight + buffer, sideBarWidth - 2 * buffer);
@@ -45,7 +47,6 @@ void draw() {
   noStroke();
   fill(sideBarColor);
   rect(width - sideBarWidth, 0, sideBarWidth, height);
-  println(selectFolder.browseButton.click);
   
   
   selectFolder.X = width - sideBarWidth + buffer;  //setting select folder button position and visibility
@@ -63,15 +64,20 @@ void draw() {
     imagesLoaded = false;
     imagesLayered = false;
     layeredImageCreated = false;
-
     selectFolder("Select a folder to process:", "folderSelected");
+    if(folderPath != null){
+      selectFolder.folderReadout = folderPath;
+    }
   }
-  if (folderPath != null && !imagesLoaded) {
+  
+  if (processImagesButton.click && folderPath != null && !imagesLoaded) {
     loadImages();
   }
+  
   if (imagesLoaded && !imagesLayered) {
     layerImages();
   }
+  
   contrast = mouseX * 10.0 / width;
   brightness = -mouseY * 255 / height + 127;
 

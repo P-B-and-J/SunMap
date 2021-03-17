@@ -32,6 +32,7 @@ class Folder_Selector{
   float buffer = 10;
   float lineWeight;
   float lineLength;
+  PFont normal;
   PFont italic;
   String folderPath = null;
   
@@ -48,6 +49,7 @@ class Folder_Selector{
     buttonWidth = buttonHeight * 4;
     buttonX = X + 2 * lineLength + 2 * buffer;
     buttonY = Y + folderHeight + buffer + lineLength + lineWeight / 2 - buttonHeight / 2;
+    normal = createFont("Lucida Sans Regular", textSize);
     italic = createFont("SansSerif.italic", textSize);
     folderReadout = "No folder selected";
     selectorHeight = folderHeight + lineLength + 3 * buffer + buttonHeight / 2;
@@ -59,6 +61,7 @@ class Folder_Selector{
   
   void selectorSetup(){
     browseButton = new Button(buttonX, buttonY, buttonWidth, buttonHeight);
+    browseButton.font = italic;
     browseButton.text = buttonText;
     browseButton.textSize = textSize;
   }
@@ -75,6 +78,7 @@ class Folder_Selector{
     drawFolderIcon();
     textAlign(LEFT, CENTER);
     textSize(textSize);
+    textFont(normal);
     text(folderReadout, X + folderWidth + 2 * buffer, Y + folderHeight / 7 + (folderHeight - folderHeight / 7) / 2.5);
     strokeWeight(lineWeight);
     strokeCap(SQUARE);
@@ -86,7 +90,6 @@ class Folder_Selector{
     browseButton.Y = buttonY;
     browseButton.buttonWidth = buttonWidth;
     browseButton.buttonHeight = buttonHeight;
-    textFont(italic);
     browseButton.display();
     popStyle();
   }
