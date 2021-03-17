@@ -23,7 +23,7 @@ void loadImages() {
     for (String fileName : filenames) {
       PImage tempImage = loadImage(folderPath + "/" + fileName);
       if (tempImage!=null) {
-        tempImage.resize(width, 0);
+        tempImage.resize(500, 0);
         images.add(tempImage);
         if (firstImage == null) {
           firstImage = tempImage;

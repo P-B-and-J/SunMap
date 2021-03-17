@@ -88,14 +88,14 @@ void draw() {
     layerImages();
   }
   
-  contrast = mouseX * 10.0 / width;
-  brightness = -mouseY * 255 / height + 127;
+  contrast = 50;//mouseX * 10.0 / width;
+  brightness = 50;//-mouseY * 255 / height + 127;
 
   if (imagesLayered) {
     createImageFromArray();
   }
 
-  if (layeredImageCreated) {
+  if (layeredImageCreated && !overlayToggle.toggling) {
     recolor();
     centeredImage(recoloredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
     if(overlayToggle.toggled){

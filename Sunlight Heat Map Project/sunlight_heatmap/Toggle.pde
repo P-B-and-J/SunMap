@@ -17,6 +17,7 @@ class Toggle{
   boolean pressed = false;
   boolean justPressed = false;
   boolean toggled = false;
+  boolean toggling = false;
   float position = 0;
   float clickX;
   float clickY;
@@ -134,10 +135,14 @@ class Toggle{
     
     if(toggled && position < step * frames){
       position += step;
+      toggling = true;
     }
-    
-    if(!toggled && position > 0){
+    else if(!toggled && position > 0){
       position -= step;
+      toggling = true;
+    }
+    else{
+      toggling = false;
     }
     
     fill(knobColor);
