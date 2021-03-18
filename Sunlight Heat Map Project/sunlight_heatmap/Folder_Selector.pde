@@ -58,12 +58,18 @@ class Folder_Selector{
   }
   
   Button browseButton;
+  Button useFolderButton;
   
   void selectorSetup(){
     browseButton = new Button(buttonX, buttonY, buttonWidth, buttonHeight);
     browseButton.font = italic;
     browseButton.text = buttonText;
     browseButton.textSize = textSize;
+    
+    useFolderButton = new Button(buttonX + buttonWidth + buffer, buttonY, buttonWidth, buttonHeight);
+    useFolderButton.font = normal;
+    useFolderButton.text = "Load files";
+    useFolderButton.textSize = textSize;
   }
   
   void drawFolderIcon(){
@@ -87,10 +93,11 @@ class Folder_Selector{
     buttonX = X + 2 * lineLength + 2.5 * buffer;
     buttonY = Y + folderHeight + buffer + lineLength + lineWeight / 2 - buttonHeight / 2;
     browseButton.X = buttonX;
-    browseButton.Y = buttonY;
-    browseButton.buttonWidth = buttonWidth;
-    browseButton.buttonHeight = buttonHeight;
     browseButton.display();
+    useFolderButton.X = buttonX + buttonWidth + 2 * buffer;
+    if(useFolderButton.visible){
+      useFolderButton.display();
+    }
     popStyle();
   }
 }

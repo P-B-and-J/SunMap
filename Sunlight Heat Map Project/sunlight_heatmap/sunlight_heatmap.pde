@@ -18,6 +18,8 @@ color sideBarColor;
 float sideBarWidth = 450;
 float topBarWidth = 50;
 float buffer = 50;
+float miniViewWidth = sideBarWidth - 2 * buffer;
+float miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
 
 
 Folder_Selector selectFolder;
@@ -38,11 +40,14 @@ void setup() {
   processImagesButton.text = "Process Images";
   processImagesButton.visible = true;
 
-  selectFolder = new Folder_Selector(width - sideBarWidth + buffer, /*processImagesButton.Y + processImagesButton.buttonHeight*/topBarWidth + buffer, sideBarWidth - 2 * buffer);
+  selectFolder = new Folder_Selector(width - sideBarWidth + buffer, miniViewHeight + 2 * buffer, sideBarWidth - 2 * buffer);
+  selectFolder.useFolderButton.primaryColor = #3A7793;
+  //selectFolder.useFolderButton.text = "Load images";
+  selectFolder.useFolderButton.visible = false;
   selectFolder.visible = true;
   
   overlayToggle = new Toggle(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.selectorHeight + buffer, 2 * buffer);
-  overlayToggle.visible = true;
+  overlayToggle.visible = false;
   
 }
 
@@ -51,6 +56,8 @@ void draw() {
   noStroke();
   fill(sideBarColor);
   rect(width - sideBarWidth, 0, sideBarWidth, height);
+  fill(backgroundColor);
+  rect(width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
   
   
   selectFolder.X = width - sideBarWidth + buffer;  //setting select folder button position and visibility
@@ -79,22 +86,48 @@ void draw() {
   
   if(folderPath != null){
     selectFolder.folderReadout = folderPath;
+    selectFolder.useFolderButton.visible = true;
+    //if(imagesLoaded){
+    //  centeredImage(firstImage, width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
+    //}
+    //else{
+    //  loadImages();
+    //}
+  }
+  else{
+    selectFolder.useFolderButton.visible = false;
+  }
+  
+  if(selectFolder.useFolderButton.click && !imagesLoaded){
+    selectFolder.folderReadout = "Loading images...";
+    loadImages();
+  }
+  
+  
+  if(imagesLoaded){
+    int previewImage = 0;
     processImagesButton.enabled = true;
     processImagesButton.primaryColor = #3A7793;
     processImagesButton.textColor = #FFFFFF;
+    centeredImage(images.get(previewImage), width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
+    centeredImage(images.get(previewImage), buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+    
+    if(mouseX >= width - sideBarWidth + buffer && mouseX <= width - sideBarWidth + 2 * buffer && mouseY >= buffer && mouseY <= buffer + miniViewHeight){
+      pushStyle();
+      stroke(#FFFFFF);
+      line(width - sideBarWidth + 1.25 * buffer, buffer + miniViewHeight / 2, width - sideBarWidth + 1.75 * buffer, 1.5 * buffer + miniViewHeight / 2);
+      line(width - sideBarWidth + 1.25 * buffer, buffer + miniViewHeight / 2, width - sideBarWidth + 1.75 * buffer, .5 * buffer + miniViewHeight / 2);
+      popStyle();
+      //add arrow click code here
+    }
   }
   else{
     processImagesButton.enabled = false;
     processImagesButton.primaryColor = #5D5D5D;
     processImagesButton.textColor = color(#FFFFFF, 150);
-    overlayToggle.visible = false;
   }
   
-  if (processImagesButton.click && folderPath != null && !imagesLoaded) {
-    loadImages();
-  }
-  
-  if (imagesLoaded && !imagesLayered) {
+  if (processImagesButton.click && !imagesLayered) {
     layerImages();
   }
   
