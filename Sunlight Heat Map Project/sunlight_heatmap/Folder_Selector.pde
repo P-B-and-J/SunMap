@@ -77,6 +77,15 @@ class Folder_Selector{
     rect(X, Y, folderWidth / 2, folderHeight, folderHeight / 6);
   }
   
+  void setText(String text){
+    pushStyle();
+    textAlign(LEFT, CENTER);
+    textSize(textSize);
+    textFont(normal);
+    folderReadout = shortenText(text, selectorWidth - (folderWidth + 2 * buffer), 6);
+    popStyle();
+  }
+  
   void display(){
     pushStyle();
     stroke(primaryColor);
@@ -100,4 +109,17 @@ class Folder_Selector{
     }
     popStyle();
   }
+}
+
+
+String shortenText(String s, float w, int start){
+  if(textWidth(s) <= w){
+    return s;
+  }
+  int stringLength = s.length() - start;
+  while(textWidth(s + "...") > w){
+    s = s.substring(0, start) + "..." + s.substring(s.length() - stringLength);
+    stringLength--;
+  }
+  return s;
 }

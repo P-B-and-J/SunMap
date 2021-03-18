@@ -20,6 +20,7 @@ float topBarWidth = 50;
 float buffer = 50;
 float miniViewWidth = sideBarWidth - 2 * buffer;
 float miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
+boolean layering = false;
 
 
 Folder_Selector selectFolder;
@@ -85,7 +86,7 @@ void draw() {
   }
   
   if(folderPath != null){
-    selectFolder.folderReadout = folderPath;
+    selectFolder.setText(folderPath);
     selectFolder.useFolderButton.visible = true;
     //if(imagesLoaded){
     //  centeredImage(firstImage, width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
@@ -98,7 +99,10 @@ void draw() {
     selectFolder.useFolderButton.visible = false;
   }
   
-  if(selectFolder.useFolderButton.click && !imagesLoaded){
+  if(selectFolder.useFolderButton.click){
+    imagesLoaded = false;
+    imagesLayered = false;
+    layeredImageCreated = false;
     selectFolder.folderReadout = "Loading images...";
     loadImages();
   }
@@ -128,7 +132,14 @@ void draw() {
   }
   
   if (processImagesButton.click && !imagesLayered) {
+    layering = true;
+  }
+  
+  if(layering && !imagesLayered){
     layerImages();
+  }
+  else{
+    layering = false;
   }
   
   contrast = 50;//mouseX * 10.0 / width;
