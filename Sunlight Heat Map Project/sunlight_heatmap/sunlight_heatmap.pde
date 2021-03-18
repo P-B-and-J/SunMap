@@ -33,12 +33,12 @@ void setup() {
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   
-  processImagesButton = new Button(width - sideBarWidth + buffer, topBarWidth + buffer, sideBarWidth - 2 * buffer, 75);
+  processImagesButton = new Button(width - sideBarWidth + buffer, /*topBarWidth + buffer*/ height - buffer - 75, sideBarWidth - 2 * buffer, 75);
   processImagesButton.textSize = 25;
   processImagesButton.text = "Process Images";
   processImagesButton.visible = true;
 
-  selectFolder = new Folder_Selector(width - sideBarWidth + buffer, processImagesButton.Y + processImagesButton.buttonHeight + buffer, sideBarWidth - 2 * buffer);
+  selectFolder = new Folder_Selector(width - sideBarWidth + buffer, /*processImagesButton.Y + processImagesButton.buttonHeight*/topBarWidth + buffer, sideBarWidth - 2 * buffer);
   selectFolder.visible = true;
   
   overlayToggle = new Toggle(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.selectorHeight + buffer, 2 * buffer);
@@ -59,6 +59,7 @@ void draw() {
   }
   
   processImagesButton.X = width - sideBarWidth + buffer;  //setting process images button position and visibility
+  processImagesButton.Y = height - buffer - 75;
   if(processImagesButton.visible){
     processImagesButton.display();
   }
@@ -78,6 +79,15 @@ void draw() {
   
   if(folderPath != null){
     selectFolder.folderReadout = folderPath;
+    processImagesButton.enabled = true;
+    processImagesButton.primaryColor = #3A7793;
+    processImagesButton.textColor = #FFFFFF;
+  }
+  else{
+    processImagesButton.enabled = false;
+    processImagesButton.primaryColor = #5D5D5D;
+    processImagesButton.textColor = color(#FFFFFF, 150);
+    overlayToggle.visible = false;
   }
   
   if (processImagesButton.click && folderPath != null && !imagesLoaded) {
@@ -93,6 +103,7 @@ void draw() {
 
   if (imagesLayered) {
     createImageFromArray();
+    overlayToggle.visible = true;
   }
 
   if (layeredImageCreated && !overlayToggle.toggling) {

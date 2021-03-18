@@ -66,14 +66,16 @@ class Button {
   }
   
   void display(){
-    detectClick();
+    if(enabled){
+      detectClick();
+    }
     pushStyle();
     colorMode(HSB);
     if(pressed){
       fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30);
       stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30); 
     }
-    else if(mouseX >= X && mouseX <= X + buttonWidth && mouseY >= Y && mouseY <= Y + buttonHeight){
+    else if(enabled && mouseX >= X && mouseX <= X + buttonWidth && mouseY >= Y && mouseY <= Y + buttonHeight){
       fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25);
       stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25);
     }
