@@ -17,10 +17,11 @@ color backgroundColor = #292929;
 color sideBarColor;
 float sideBarWidth = 450;
 float topBarWidth = 50;
-float buffer = 50;
+float buffer = 40;
 float miniViewWidth = sideBarWidth - 2 * buffer;
 float miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
 boolean layering = false;
+color accentBlue = #3A7793;
 
 
 Folder_Selector selectFolder;
@@ -41,13 +42,14 @@ void setup() {
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   
-  processImagesButton = new Button(width - sideBarWidth + buffer, /*topBarWidth + buffer*/ height - buffer - 75, sideBarWidth - 2 * buffer, 75);
+  processImagesButton = new Button(width - sideBarWidth + buffer, /*topBarWidth + buffer*/ height - buffer - 75, sideBarWidth - 2 * buffer, 80);
   processImagesButton.textSize = 25;
+  processImagesButton.borderOn = false;
   processImagesButton.text = "Process Images";
   processImagesButton.visible = true;
 
   selectFolder = new Folder_Selector(width - sideBarWidth + buffer, miniViewHeight + 2 * buffer, sideBarWidth - 2 * buffer);
-  selectFolder.useFolderButton.primaryColor = #3A7793;
+  selectFolder.useFolderButton.primaryColor = accentBlue;
   //selectFolder.useFolderButton.text = "Load images";
   selectFolder.useFolderButton.visible = false;
   selectFolder.visible = true;
@@ -66,9 +68,14 @@ void setup() {
   smallRightButton.borderWeight = 15;
   smallRightButton.visible = true;
   
-  layeringProgress = new Progress_Bar(width - sideBarWidth - buffer, processImagesButton.Y - buffer - 25, int(sideBarWidth - 2 * buffer), 25);
+  layeringProgress = new Progress_Bar(processImagesButton.X, processImagesButton.Y, int(processImagesButton.buttonWidth), int(processImagesButton.buttonHeight));
   layeringProgress.text = "Processing Images...";
-  layeringProgress.backgroundColor = sideBarColor;
+  layeringProgress.textAlignH = CENTER;
+  layeringProgress.textX = layeringProgress.barWidth / 2;
+  layeringProgress.textColor2 = 255;
+  layeringProgress.backgroundColor = accentBlue;
+  layeringProgress.primaryColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 20);
+  layeringProgress.rectOn = false;
   layeringProgress.begin();
   
   overlayToggle = new Toggle(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.selectorHeight + buffer, 2 * buffer);
@@ -96,8 +103,8 @@ void draw() {
     processImagesButton.display();
   }
   
-  layeringProgress.X = width - sideBarWidth + buffer;
-  layeringProgress.Y = processImagesButton.Y - buffer - 25;
+  layeringProgress.X = processImagesButton.X;
+  layeringProgress.Y = processImagesButton.Y;
   if(layeringProgress.visible){
     layeringProgress.display(1.0 * counter / numImages);
   }
@@ -133,7 +140,7 @@ void draw() {
     imagesLoaded = false;
     imagesLayered = false;
     layeredImageCreated = false;
-    selectFolder.folderReadout = "Loading images...";
+   // selectFolder.folderReadout = "Loading images...";
     loadImages();
   }
   
@@ -141,12 +148,14 @@ void draw() {
   if(imagesLoaded){
     int previewImage = 0;
     processImagesButton.enabled = true;
-    processImagesButton.primaryColor = #3A7793;
+    processImagesButton.primaryColor = accentBlue;
     processImagesButton.textColor = #FFFFFF;
-    centeredImage(images.get(previewImage), width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
-    centeredImage(images.get(previewImage), buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
-    
-    
+    if(!layeredImageCreated){
+      centeredImage(images.get(previewImage), buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+    }
+    if(!overlayToggle.toggling){ 
+      centeredImage(images.get(previewImage), width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
+    }
   }
   else{
     processImagesButton.enabled = false;

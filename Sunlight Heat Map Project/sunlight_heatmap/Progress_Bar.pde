@@ -14,6 +14,9 @@ class Progress_Bar{
   float textX = 0; 
   float textY = 0;
   float borderWidth = 3;
+  boolean rectOn = true;
+  int textAlignV = CENTER;
+  int textAlignH = LEFT;
   
   Progress_Bar(float _X, float _Y, int _barWidth, int _barHeight){
     X = _X;
@@ -31,7 +34,7 @@ class Progress_Bar{
     canvas.noStroke();
     canvas.background(primaryColor);
     canvas.fill(textColor2);
-    canvas.textAlign(LEFT, CENTER);
+    canvas.textAlign(textAlignH, textAlignV);
     canvas.textSize(textSize);
     canvas.textFont(textFont);
     canvas.text(text, textX, textY);
@@ -42,7 +45,7 @@ class Progress_Bar{
     canvas.noStroke();
     canvas.background(backgroundColor);
     canvas.fill(textColor1);
-    canvas.textAlign(LEFT, CENTER);
+    canvas.textAlign(textAlignH, textAlignV);
     canvas.textSize(textSize);
     canvas.textFont(textFont);
     canvas.text(text, textX, textY);
@@ -63,10 +66,13 @@ class Progress_Bar{
     PImage tempImage = progressBar;
     tempImage.mask(mask.get());
     image(tempImage, X, Y);
-    pushStyle();
-    stroke(primaryColor);
-    strokeWeight(borderWidth);
-    noFill();
-    rect(X - 2 * borderWidth, Y - 2 * borderWidth, barWidth + 4 * borderWidth, barHeight + 4 * borderWidth);
+    if(rectOn){
+      pushStyle();
+      stroke(primaryColor);
+      strokeWeight(borderWidth);
+      noFill();
+      rect(X - 2 * borderWidth, Y - 2 * borderWidth, barWidth + 4 * borderWidth, barHeight + 4 * borderWidth);
+      popStyle();
+    }
   }
 }

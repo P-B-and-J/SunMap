@@ -19,6 +19,7 @@ class Button {
   boolean visible;
   boolean arrowOn = false;
   int arrowDir = 0;
+  boolean borderOn = true;
   
   Button(float _X, float _Y, float _buttonWidth, float _buttonHeight){
     X = _X;
@@ -94,6 +95,7 @@ class Button {
       detectClick();
     }
     pushStyle();
+    noStroke();
     colorMode(HSB);
     if(pressed){
       fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
@@ -112,6 +114,9 @@ class Button {
     }
     strokeCap(SQUARE);
     strokeWeight(borderWeight);
+    if(!borderOn){
+      noStroke();
+    }
     rect(X, Y, buttonWidth, buttonHeight);
     drawText();
     popStyle();
