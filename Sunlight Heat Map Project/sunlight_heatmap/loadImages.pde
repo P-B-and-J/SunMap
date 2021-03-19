@@ -20,8 +20,9 @@ String[] listFileNames(String dir) {
 void loadImages() {
   String[] filenames = listFileNames(folderPath);
   if (filenames!=null) {
-    for (String fileName : filenames) {
-      PImage tempImage = loadImage(folderPath + "/" + fileName);
+    int counter = 0;
+    if(counter < filenames.length){
+      PImage tempImage = loadImage(folderPath + "/" + filenames[counter]);
       if (tempImage!=null) {
         tempImage.resize(500, 0);
         images.add(tempImage);
@@ -30,6 +31,7 @@ void loadImages() {
         }
         numImages++;
       }
+      counter++;
     }
     imageWidth = images.get(0).width;
     imageHeight = images.get(0).height;
