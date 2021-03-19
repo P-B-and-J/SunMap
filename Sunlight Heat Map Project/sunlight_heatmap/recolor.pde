@@ -1,7 +1,6 @@
 void recolor() {
   pushStyle();
   colorMode(RGB);
-  noSmooth();
   recoloredImage = createImage(imageWidth, imageHeight, RGB);
   layeredImage.loadPixels();
   recoloredImage.loadPixels();
