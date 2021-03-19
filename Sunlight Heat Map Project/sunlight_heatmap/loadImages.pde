@@ -17,12 +17,14 @@ String[] listFileNames(String dir) {
   return null;
 }
 
+
 void loadImages() {
   String[] filenames = listFileNames(folderPath);
+  
   if (filenames!=null) {
     int counter = 0;
-    if(counter < filenames.length){
-      PImage tempImage = loadImage(folderPath + "/" + filenames[counter]);
+    for(String fileName : filenames){
+      PImage tempImage = loadImage(folderPath + "/" + fileName);
       if (tempImage!=null) {
         tempImage.resize(500, 0);
         images.add(tempImage);

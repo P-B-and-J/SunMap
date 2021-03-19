@@ -156,6 +156,21 @@ void draw() {
     if(!overlayToggle.toggling){ 
       centeredImage(images.get(previewImage), width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
     }
+    
+    
+    if(smallRightButton.click && previewImage < numImages){
+      previewImage++;
+    }
+    else if(smallRightButton.click && previewImage == numImages){
+      previewImage = 0;
+    }
+    
+    if(smallLeftButton.click && previewImage > 0){
+      previewImage--;
+    }
+    else if(smallLeftButton.click && previewImage == 0){
+      previewImage = numImages;
+    }
   }
   else{
     processImagesButton.enabled = false;
@@ -187,6 +202,7 @@ void draw() {
   if (layeredImageCreated && !overlayToggle.toggling) {
     recolor();
     centeredImage(recoloredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+      centeredImage(firstImage, width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
     if(overlayToggle.toggled){
       tint(255, 160);
       centeredImage(firstImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
