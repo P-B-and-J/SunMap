@@ -26,6 +26,10 @@ boolean layering = false;
 Folder_Selector selectFolder;
 Button processImagesButton;
 Toggle overlayToggle;
+Button smallLeftButton;
+Button smallRightButton;
+Button bigLeftButton;
+Button bigRightButton;
 
 void setup() {
   frameRate(120);
@@ -46,6 +50,20 @@ void setup() {
   //selectFolder.useFolderButton.text = "Load images";
   selectFolder.useFolderButton.visible = false;
   selectFolder.visible = true;
+  
+  smallLeftButton = new Button(width - sideBarWidth + buffer, buffer, miniViewWidth / 8, miniViewHeight);
+  smallLeftButton.arrowOn = true;
+  smallLeftButton.arrowDir = 0;
+  smallLeftButton.primaryColor = color(#FFFFFF, 0);
+  smallLeftButton.borderWeight = 15;
+  smallLeftButton.visible = true;
+  
+  smallRightButton = new Button(width - buffer - miniViewWidth / 8, buffer, miniViewWidth / 8, miniViewHeight);
+  smallRightButton.arrowOn = true;
+  smallRightButton.arrowDir = 2;
+  smallRightButton.primaryColor = color(#FFFFFF, 0);
+  smallRightButton.borderWeight = 15;
+  smallRightButton.visible = true;
   
   overlayToggle = new Toggle(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.selectorHeight + buffer, 2 * buffer);
   overlayToggle.visible = false;
@@ -116,14 +134,7 @@ void draw() {
     centeredImage(images.get(previewImage), width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
     centeredImage(images.get(previewImage), buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
     
-    if(mouseX >= width - sideBarWidth + buffer && mouseX <= width - sideBarWidth + 2 * buffer && mouseY >= buffer && mouseY <= buffer + miniViewHeight){
-      pushStyle();
-      stroke(#FFFFFF);
-      line(width - sideBarWidth + 1.25 * buffer, buffer + miniViewHeight / 2, width - sideBarWidth + 1.75 * buffer, 1.5 * buffer + miniViewHeight / 2);
-      line(width - sideBarWidth + 1.25 * buffer, buffer + miniViewHeight / 2, width - sideBarWidth + 1.75 * buffer, .5 * buffer + miniViewHeight / 2);
-      popStyle();
-      //add arrow click code here
-    }
+    
   }
   else{
     processImagesButton.enabled = false;
@@ -159,4 +170,10 @@ void draw() {
     }
     noTint();
   }
+  
+  smallLeftButton.X = width - sideBarWidth + buffer;
+  smallLeftButton.display();
+  
+  smallRightButton.X = width - buffer - miniViewWidth / 8;
+  smallRightButton.display();
 }

@@ -17,6 +17,8 @@ class Button {
   float clickY;
   boolean mouseWasPressed = false;
   boolean visible;
+  boolean arrowOn = false;
+  int arrowDir = 0;
   
   Button(float _X, float _Y, float _buttonWidth, float _buttonHeight){
     X = _X;
@@ -60,8 +62,30 @@ class Button {
     textAlign(CENTER, CENTER);
     textFont(font);
     textSize(textSize);
-    fill(color(textColor));
+    fill(textColor);
     text(text, X + buttonWidth / 2, Y + buttonHeight / 2);
+    popStyle();
+  }
+  
+  void drawArrow(){
+    pushStyle();
+    stroke(textColor);
+    if(arrowDir == 0){
+      line(X + .25 * buttonWidth, Y + .5 * buttonHeight, X + .75 * buttonWidth, Y + .5 * buttonHeight + .5 * buttonWidth);
+      line(X + .25 * buttonWidth, Y + .5 * buttonHeight, X + .75 * buttonWidth, Y + .5 * buttonHeight - .5 * buttonWidth);
+    }
+    if(arrowDir == 1){
+      line(X + .5 * buttonWidth, Y + .25 * buttonHeight, X + .5 * buttonWidth + .5 * buttonHeight, Y + .75 * buttonHeight);
+      line(X + .5 * buttonWidth, Y + .25 * buttonHeight, X + .5 * buttonWidth - .5 * buttonHeight, Y + .75 * buttonHeight);
+    }
+    if(arrowDir == 2){
+      line(X + .75 * buttonWidth, Y + .5 * buttonHeight, X + .25 * buttonWidth, Y + .5 * buttonHeight + .5 * buttonWidth);
+      line(X + .75 * buttonWidth, Y + .5 * buttonHeight, X + .25 * buttonWidth, Y + .5 * buttonHeight - .5 * buttonWidth);
+    }
+    if(arrowDir == 3){
+      line(X + .5 * buttonWidth, Y + .75 * buttonHeight, X + .5 * buttonWidth + .5 * buttonHeight, Y + .25 * buttonHeight);
+      line(X + .5 * buttonWidth, Y + .75 * buttonHeight, X + .5 * buttonWidth - .5 * buttonHeight, Y + .25 * buttonHeight);
+    }
     popStyle();
   }
   
@@ -72,12 +96,15 @@ class Button {
     pushStyle();
     colorMode(HSB);
     if(pressed){
-      fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30);
-      stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30); 
+      fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
+      stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor)); 
     }
     else if(enabled && mouseX >= X && mouseX <= X + buttonWidth && mouseY >= Y && mouseY <= Y + buttonHeight){
-      fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25);
-      stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25);
+      fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
+      stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
+      if(arrowOn){
+        drawArrow();
+      }
     }
     else{
       fill(primaryColor);
