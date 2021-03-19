@@ -17,7 +17,7 @@ color backgroundColor = #292929;
 color sideBarColor;
 float sideBarWidth = 450;
 float topBarWidth = 50;
-float buffer = 40;
+float buffer = 50;
 float miniViewWidth = sideBarWidth - 2 * buffer;
 float miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
 boolean layering = false;

@@ -31,7 +31,8 @@ void loadImages() {
         if (firstImage == null) {
           firstImage = tempImage;
         }
-      }else{
+      }
+      else{
         numInvalidImages++;
       }
       counter++;
