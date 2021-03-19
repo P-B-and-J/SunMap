@@ -20,10 +20,10 @@ String[] listFileNames(String dir) {
 
 void loadImages() {
   String[] filenames = listFileNames(folderPath);
-  
   if (filenames!=null) {
-    int counter = 0;
-    for(String fileName : filenames){
+    numImages=filenames.length;
+    if(counter<numImages){
+      String fileName=filenames[counter];
       PImage tempImage = loadImage(folderPath + "/" + fileName);
       if (tempImage!=null) {
         tempImage.resize(500, 0);
@@ -31,14 +31,18 @@ void loadImages() {
         if (firstImage == null) {
           firstImage = tempImage;
         }
-        numImages++;
+      }else{
+        numInvalidImages++;
       }
       counter++;
     }
-    imageWidth = images.get(0).width;
-    imageHeight = images.get(0).height;
-    pixVal = new float[imageWidth * imageHeight];
-    imagesLoaded = true;
-    counter = 0;
+    else{
+      numImages-=numInvalidImages; 
+      counter-=numInvalidImages;
+      imageWidth = images.get(0).width;
+      imageHeight = images.get(0).height;
+      pixVal = new float[imageWidth * imageHeight];
+      imagesLoaded = true;
+    }
   }
 }

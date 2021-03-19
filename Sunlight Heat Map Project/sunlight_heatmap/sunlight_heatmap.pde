@@ -21,7 +21,9 @@ float buffer = 40;
 float miniViewWidth = sideBarWidth - 2 * buffer;
 float miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
 boolean layering = false;
+boolean loading = false;
 color accentBlue = #3A7793;
+int numInvalidImages = 0;
 
 
 Folder_Selector selectFolder;
@@ -140,10 +142,20 @@ void draw() {
     imagesLoaded = false;
     imagesLayered = false;
     layeredImageCreated = false;
-   // selectFolder.folderReadout = "Loading images...";
-    loadImages();
+    if(!imagesLoaded){
+      loading = true;
+      counter = 0;
+      numInvalidImages = 0;
+    }
   }
   
+    if(loading&&!imagesLoaded){
+   // selectFolder.folderReadout = "Loading images...";
+      loadImages();
+      println(counter+"/"+numImages);
+    }else{
+      loading=false;
+    }
   
   if(imagesLoaded){
     int previewImage = 0;
@@ -180,6 +192,7 @@ void draw() {
   
   if (processImagesButton.click && !imagesLayered) {
     layering = true;
+    counter = 0;
   }
   
   if(layering && !imagesLayered){
