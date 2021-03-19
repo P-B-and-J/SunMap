@@ -30,6 +30,7 @@ Button smallLeftButton;
 Button smallRightButton;
 Button bigLeftButton;
 Button bigRightButton;
+Progress_Bar layeringProgress;
 
 void setup() {
   frameRate(120);
@@ -65,6 +66,11 @@ void setup() {
   smallRightButton.borderWeight = 15;
   smallRightButton.visible = true;
   
+  layeringProgress = new Progress_Bar(width - sideBarWidth - buffer, processImagesButton.Y - buffer - 25, int(sideBarWidth - 2 * buffer), 25);
+  layeringProgress.text = "Processing Images...";
+  layeringProgress.backgroundColor = sideBarColor;
+  layeringProgress.begin();
+  
   overlayToggle = new Toggle(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.selectorHeight + buffer, 2 * buffer);
   overlayToggle.visible = false;
   
@@ -88,6 +94,12 @@ void draw() {
   processImagesButton.Y = height - buffer - 75;
   if(processImagesButton.visible){
     processImagesButton.display();
+  }
+  
+  layeringProgress.X = width - sideBarWidth + buffer;
+  layeringProgress.Y = processImagesButton.Y - buffer - 25;
+  if(layeringProgress.visible){
+    layeringProgress.display(1.0 * counter / numImages);
   }
   
   overlayToggle.X = width - sideBarWidth + buffer;  //setting toggle position and visibility
@@ -147,9 +159,11 @@ void draw() {
   }
   
   if(layering && !imagesLayered){
+    layeringProgress.visible = true;
     layerImages();
   }
   else{
+    layeringProgress.visible = false;
     layering = false;
   }
   
