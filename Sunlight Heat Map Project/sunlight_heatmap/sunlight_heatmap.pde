@@ -72,11 +72,17 @@ void setup() {
   smallRightButton.visible = true;
   
   //loadingProgress = new Progress_Bar(selectFolder.X + selectFolder.folderWidth + selectFolder.buffer, selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5, int(selectFolder.selectorWidth - (selectFolder.folderWidth + 2 * selectFolder.buffer)), 25);
-  loadingProgress = new Progress_Bar(50, 50, 300, 25);
-  loadingProgress.backgroundColor = sideBarColor;
+  //loadingProgress = new Progress_Bar(50, 50, 300, 25);
+  //loadingProgress.backgroundColor = sideBarColor;
+  //loadingProgress.textSize = selectFolder.textSize;
+  //loadingProgress.textX = loadingProgress.X;
+  //loadingProgress.visible = true;
+  
+  loadingProgress = new Progress_Bar(selectFolder.X + selectFolder.folderWidth + selectFolder.buffer, 50, 300, 25);
+  loadingProgress.text = "\\sample_folder";
   loadingProgress.textSize = selectFolder.textSize;
-  loadingProgress.textX = loadingProgress.X;
-  loadingProgress.visible = true;
+  loadingProgress.backgroundColor = sideBarColor;
+  loadingProgress.begin();
   
   layeringProgress = new Progress_Bar(processImagesButton.X, processImagesButton.Y, int(processImagesButton.buttonWidth), int(processImagesButton.buttonHeight));
   layeringProgress.text = "Processing Images...";
@@ -101,6 +107,9 @@ void draw() {
   fill(backgroundColor);
   rect(width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
   
+  //if(testProgressBar.visible){
+  //  testProgressBar.display(1.0 * counter / numImages);
+  //}
   
   selectFolder.X = width - sideBarWidth + buffer;  //setting select folder button position and visibility
   if(selectFolder.visible){
@@ -113,13 +122,13 @@ void draw() {
     processImagesButton.display();
   }
   
-  layeringProgress.X = selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer;
+  layeringProgress.X = processImagesButton.X;
   if(layeringProgress.visible){
     layeringProgress.display(1.0 * counter / numImages);
   }
   
-  loadingProgress.X = 50;
-  loadingProgress.Y = 50;
+  loadingProgress.X = selectFolder.X + selectFolder.folderWidth + selectFolder.buffer;
+  loadingProgress.Y = selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingProgress.barHeight / 2;
   if(loadingProgress.visible){
     loadingProgress.display(1.0 * counter / numImages);
   }
@@ -153,13 +162,16 @@ void draw() {
       loading = true;
       counter = 0;
       numInvalidImages = 0;
-      loadingProgress.text = selectFolder.folderReadout;
-      loadingProgress.begin();
     }
   }
   
     if(loading&&!imagesLoaded){
       loadImages();
+      if(loadingProgress.text != selectFolder.folderReadout){
+        loadingProgress.text = selectFolder.folderReadout;
+        loadingProgress.textSize = 5; //why is this not changing the text size?
+        loadingProgress.begin();
+      }
       loadingProgress.visible = true;
     }
     else{
