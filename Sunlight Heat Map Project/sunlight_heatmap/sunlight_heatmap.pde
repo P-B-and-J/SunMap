@@ -95,18 +95,23 @@ void setup() {
   layeringProgress.rectOn = false;
   layeringProgress.begin();
   
-  overlayToggle = new Toggle(width - sideBarWidth + buffer, miniViewHeight + 2 * buffer, 2 * buffer);
+  overlayToggle = new Toggle(width - sideBarWidth + buffer, 0, 2 * buffer);
+  overlayToggle.Y = miniViewHeight + overlayToggle.labelBuffer + 2 * buffer;
   overlayToggle.visible = false;
   
   brightnessSlider = new Slider(width - sideBarWidth + buffer, 0, sideBarWidth - 2 * buffer);
   brightnessSlider.Y = overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + buffer;
+  brightnessSlider.labelBuffer = .7 * buffer;
   brightnessSlider.floatingVal = false;
   brightnessSlider.visible = false;
   
   contrastSlider = new Slider(width - sideBarWidth + buffer, 0, sideBarWidth - 2 * buffer);
   contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
+  contrastSlider.labelBuffer = .7 * buffer;
   contrastSlider.floatingVal = false;
   contrastSlider.visible = false;
+  
+  overlayToggle.textSize = brightnessSlider.textSize; //toggle text size is too big and I can't figure out why...
 }
 
 void draw() {
@@ -145,7 +150,7 @@ void draw() {
   
   overlayToggle.X = width - sideBarWidth + buffer;  //setting toggle position and visibility
   if(overlayToggle.visible){
-    overlayToggle.display();
+    overlayToggle.display("Overlay: ", "On", "Off");
   }
   
   brightnessSlider.X = width - sideBarWidth + buffer;

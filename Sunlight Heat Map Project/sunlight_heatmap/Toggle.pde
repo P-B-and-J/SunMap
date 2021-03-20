@@ -23,6 +23,9 @@ class Toggle{
   float clickY;
   boolean mouseWasPressed = false;
   boolean visible;
+  float labelBuffer = 30;
+  color textColor = knobColorOn;
+  float textSize = 30;
   
   Toggle(float _X, float _Y, float _slotLength){
     X = _X;
@@ -81,7 +84,13 @@ class Toggle{
  // void drawSlot(){
     
   
-  void display(){
+  void display(String label, String on, String off){
+    pushStyle();
+    textSize(textSize);
+    fill(textColor);
+    text(label, X, Y - labelBuffer);
+    popStyle();
+    
     detectClick();
     pushStyle();
     colorMode(HSB);
@@ -148,7 +157,6 @@ class Toggle{
     fill(knobColor);
     stroke(knobColor);
     ellipse(X + slotRadius + position, Y, slotRadius, slotRadius);
-    
     popStyle();
   }
 }
