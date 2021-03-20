@@ -24,7 +24,8 @@ boolean layering = false;
 boolean loading = false;
 color accentBlue = #3A7793;
 int numInvalidImages = 0;
-
+float loadingX, loadingY;
+int loadingWidth, loadingHeight;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
@@ -78,10 +79,15 @@ void setup() {
   //loadingProgress.textX = loadingProgress.X;
   //loadingProgress.visible = true;
   
-  loadingProgress = new Progress_Bar(selectFolder.X + selectFolder.folderWidth + selectFolder.buffer, 50, 300, 25);
+  loadingX = selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer + 1;
+  loadingWidth = int(selectFolder.selectorWidth - (selectFolder.folderWidth + selectFolder.buffer));
+  loadingHeight = int(selectFolder.textSize) + 10;
+  loadingY = selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingHeight / 2;
+  loadingProgress = new Progress_Bar(loadingX, loadingY, loadingWidth, loadingHeight);
   loadingProgress.text = "\\sample_folder";
   loadingProgress.textSize = selectFolder.textSize;
   loadingProgress.backgroundColor = sideBarColor;
+  //loadingProgress.rectOn = false;
   loadingProgress.begin();
   
   layeringProgress = new Progress_Bar(processImagesButton.X, processImagesButton.Y, int(processImagesButton.buttonWidth), int(processImagesButton.buttonHeight));
@@ -127,8 +133,8 @@ void draw() {
     layeringProgress.display(1.0 * counter / numImages);
   }
   
-  loadingProgress.X = selectFolder.X + selectFolder.folderWidth + selectFolder.buffer;
-  loadingProgress.Y = selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingProgress.barHeight / 2;
+  loadingProgress.X = loadingX; //selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer;
+  loadingProgress.Y = loadingY; //selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingProgress.barHeight / 2;
   if(loadingProgress.visible){
     loadingProgress.display(1.0 * counter / numImages);
   }
@@ -173,10 +179,12 @@ void draw() {
         loadingProgress.begin();
       }
       loadingProgress.visible = true;
+      //selectFolder.useFolderButton.enabled = false;
     }
     else{
       loading=false;
       loadingProgress.visible = false;
+      selectFolder.useFolderButton.enabled = true;
     }
   
   if(imagesLoaded){
