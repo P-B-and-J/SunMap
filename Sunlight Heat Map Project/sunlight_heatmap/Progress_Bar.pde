@@ -23,12 +23,12 @@ class Progress_Bar{
     Y = _Y;
     barHeight = _barHeight;
     barWidth = _barWidth;
-    textFont = createFont("Lucida Sans Regular", textSize);
     textY = barHeight / 2;
   }
   
   void begin(){
     PGraphics canvas;
+    textFont = createFont("Lucida Sans Regular", textSize);
     canvas = createGraphics(barWidth, barHeight);
     canvas.beginDraw();
     canvas.noStroke();

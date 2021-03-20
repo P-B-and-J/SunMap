@@ -169,7 +169,7 @@ void draw() {
       loadImages();
       if(loadingProgress.text != selectFolder.folderReadout){
         loadingProgress.text = selectFolder.folderReadout;
-        loadingProgress.textSize = 5; //why is this not changing the text size?
+        loadingProgress.textSize = selectFolder.textSize;
         loadingProgress.begin();
       }
       loadingProgress.visible = true;
