@@ -86,9 +86,15 @@ class Toggle{
   
   void display(String label, String on, String off){
     pushStyle();
-    textSize(23); //This shouldn't need to be set manually...
+    textSize(textSize); //This shouldn't need to be set manually...
     fill(textColor);
-    text(label, X, Y - labelBuffer);
+    text(label, X, Y - 1.25 * labelBuffer);
+    if(toggled){
+      text(on, X + slotLength + .5 * labelBuffer, Y + .5 * slotRadius);
+    }
+    else{
+      text(off, X + slotLength + .5 * labelBuffer, Y + .5 * slotRadius);
+    }
     popStyle();
     
     detectClick();
@@ -154,10 +160,6 @@ class Toggle{
       toggling = false;
     }
     
-    
-    popStyle();
-    
-    pushStyle();
     fill(knobColor);
     stroke(knobColor);
     ellipse(X + slotRadius + position, Y, slotRadius, slotRadius);

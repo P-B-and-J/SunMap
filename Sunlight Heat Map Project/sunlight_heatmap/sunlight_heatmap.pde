@@ -26,10 +26,11 @@ color accentBlue = #3A7793;
 int numInvalidImages = 0;
 float loadingX, loadingY;
 int loadingWidth, loadingHeight;
-float labelSize = 25;
+float labelSize = 20;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
+Toggle colorModeToggle;
 Toggle overlayToggle;
 Slider brightnessSlider;
 Slider contrastSlider;
@@ -96,8 +97,13 @@ void setup() {
   layeringProgress.rectOn = false;
   layeringProgress.begin();
   
+  colorModeToggle = new Toggle(width - sideBarWidth + buffer, 0, 2 * buffer);
+  colorModeToggle.Y = miniViewHeight + colorModeToggle.labelBuffer + 2 * buffer;
+  colorModeToggle.textSize = labelSize;
+  colorModeToggle.visible = false;
+  
   overlayToggle = new Toggle(width - sideBarWidth + buffer, 0, 2 * buffer);
-  overlayToggle.Y = miniViewHeight + overlayToggle.labelBuffer + 2 * buffer;
+  overlayToggle.Y = colorModeToggle.Y + colorModeToggle.slotRadius + overlayToggle.labelBuffer + buffer;
   overlayToggle.textSize = labelSize;
   overlayToggle.visible = false;
   
@@ -155,6 +161,11 @@ void draw() {
   overlayToggle.X = width - sideBarWidth + buffer;  //setting toggle position and visibility
   if(overlayToggle.visible){
     overlayToggle.display("Overlay: ", "On", "Off");
+  }
+  
+  colorModeToggle.X = width - sideBarWidth + buffer;
+  if(colorModeToggle.visible){
+    colorModeToggle.display("Color Mode:", "Heat map", "Grayscale");
   }
   
   brightnessSlider.X = width - sideBarWidth + buffer;
@@ -218,7 +229,7 @@ void draw() {
     if(!layeredImageCreated){
       centeredImage(images.get(previewImage), buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
     }
-    if(!overlayToggle.toggling){ 
+    if(!overlayToggle.toggling && !colorModeToggle.toggling){ 
       centeredImage(images.get(previewImage), width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
     }
     
@@ -263,15 +274,28 @@ void draw() {
   if (imagesLayered) {
     createImageFromArray();
     overlayToggle.visible = true;
+    colorModeToggle.visible = true;
     brightnessSlider.visible = true;
     contrastSlider.visible = true;
     selectFolder.visible = false;
   }
+  else{
+    overlayToggle.visible = false;
+    colorModeToggle.visible = false;
+    brightnessSlider.visible = false;
+    contrastSlider.visible = false;
+    selectFolder.visible = true;
+  }
 
-  if (layeredImageCreated && !overlayToggle.toggling) {
-    recolor();
-    centeredImage(recoloredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
-      centeredImage(firstImage, width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
+  if (layeredImageCreated && !overlayToggle.toggling && !colorModeToggle.toggling) {
+    if(colorModeToggle.toggled){
+      recolor();
+      centeredImage(recoloredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+    }
+    else{
+      centeredImage(layeredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+    }
+    centeredImage(firstImage, width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
     if(overlayToggle.toggled){
       tint(255, 160);
       centeredImage(firstImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
