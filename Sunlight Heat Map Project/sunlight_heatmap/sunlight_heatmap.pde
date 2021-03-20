@@ -33,7 +33,9 @@ Button smallLeftButton;
 Button smallRightButton;
 Button bigLeftButton;
 Button bigRightButton;
+Progress_Bar loadingProgress;
 Progress_Bar layeringProgress;
+Progress_Bar testProgressBar;
 
 void setup() {
   frameRate(120);
@@ -52,7 +54,6 @@ void setup() {
 
   selectFolder = new Folder_Selector(width - sideBarWidth + buffer, miniViewHeight + 2 * buffer, sideBarWidth - 2 * buffer);
   selectFolder.useFolderButton.primaryColor = accentBlue;
-  //selectFolder.useFolderButton.text = "Load images";
   selectFolder.useFolderButton.visible = false;
   selectFolder.visible = true;
   
@@ -69,6 +70,13 @@ void setup() {
   smallRightButton.primaryColor = color(#FFFFFF, 0);
   smallRightButton.borderWeight = 15;
   smallRightButton.visible = true;
+  
+  //loadingProgress = new Progress_Bar(selectFolder.X + selectFolder.folderWidth + selectFolder.buffer, selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5, int(selectFolder.selectorWidth - (selectFolder.folderWidth + 2 * selectFolder.buffer)), 25);
+  loadingProgress = new Progress_Bar(50, 50, 300, 25);
+  loadingProgress.backgroundColor = sideBarColor;
+  loadingProgress.textSize = selectFolder.textSize;
+  loadingProgress.textX = loadingProgress.X;
+  loadingProgress.visible = true;
   
   layeringProgress = new Progress_Bar(processImagesButton.X, processImagesButton.Y, int(processImagesButton.buttonWidth), int(processImagesButton.buttonHeight));
   layeringProgress.text = "Processing Images...";
@@ -105,10 +113,15 @@ void draw() {
     processImagesButton.display();
   }
   
-  layeringProgress.X = processImagesButton.X;
-  layeringProgress.Y = processImagesButton.Y;
+  layeringProgress.X = selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer;
   if(layeringProgress.visible){
     layeringProgress.display(1.0 * counter / numImages);
+  }
+  
+  loadingProgress.X = 50;
+  loadingProgress.Y = 50;
+  if(loadingProgress.visible){
+    loadingProgress.display(1.0 * counter / numImages);
   }
   
   overlayToggle.X = width - sideBarWidth + buffer;  //setting toggle position and visibility
@@ -127,12 +140,6 @@ void draw() {
   if(folderPath != null){
     selectFolder.setText(folderPath);
     selectFolder.useFolderButton.visible = true;
-    //if(imagesLoaded){
-    //  centeredImage(firstImage, width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
-    //}
-    //else{
-    //  loadImages();
-    //}
   }
   else{
     selectFolder.useFolderButton.visible = false;
@@ -146,15 +153,18 @@ void draw() {
       loading = true;
       counter = 0;
       numInvalidImages = 0;
+      loadingProgress.text = selectFolder.folderReadout;
+      loadingProgress.begin();
     }
   }
   
     if(loading&&!imagesLoaded){
-   // selectFolder.folderReadout = "Loading images...";
       loadImages();
-      println(counter+"/"+numImages);
-    }else{
+      loadingProgress.visible = true;
+    }
+    else{
       loading=false;
+      loadingProgress.visible = false;
     }
   
   if(imagesLoaded){

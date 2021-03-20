@@ -7,7 +7,7 @@ class Progress_Bar{
   color textColor2 = backgroundColor;
   float textSize = 25;
   PFont textFont;
-  String text;
+  String text = "";
   PImage progressBar;
   PImage background;
   boolean visible = false;
