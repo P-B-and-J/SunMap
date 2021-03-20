@@ -26,6 +26,7 @@ color accentBlue = #3A7793;
 int numInvalidImages = 0;
 float loadingX, loadingY;
 int loadingWidth, loadingHeight;
+float labelSize = 25;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
@@ -97,21 +98,24 @@ void setup() {
   
   overlayToggle = new Toggle(width - sideBarWidth + buffer, 0, 2 * buffer);
   overlayToggle.Y = miniViewHeight + overlayToggle.labelBuffer + 2 * buffer;
+  overlayToggle.textSize = labelSize;
   overlayToggle.visible = false;
   
   brightnessSlider = new Slider(width - sideBarWidth + buffer, 0, sideBarWidth - 2 * buffer);
   brightnessSlider.Y = overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + buffer;
   brightnessSlider.labelBuffer = .7 * buffer;
+  brightnessSlider.textSize = labelSize;
   brightnessSlider.floatingVal = false;
   brightnessSlider.visible = false;
   
   contrastSlider = new Slider(width - sideBarWidth + buffer, 0, sideBarWidth - 2 * buffer);
   contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
   contrastSlider.labelBuffer = .7 * buffer;
+  contrastSlider.textSize = labelSize;
   contrastSlider.floatingVal = false;
   contrastSlider.visible = false;
   
-  overlayToggle.textSize = brightnessSlider.textSize; //toggle text size is too big and I can't figure out why...
+  //overlayToggle.textSize = brightnessSlider.textSize; //toggle text size is too big and I can't figure out why...
 }
 
 void draw() {

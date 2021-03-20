@@ -95,8 +95,11 @@ class Slider {
       showValue();
     }
     if(label != null){
+      pushStyle();
+      textSize(textSize);
       fill(textColor);
       text(label, X, Y - labelBuffer);
+      popStyle();
     }
   }
 }

@@ -25,7 +25,7 @@ class Toggle{
   boolean visible;
   float labelBuffer = 30;
   color textColor = knobColorOn;
-  float textSize = 30;
+  float textSize = 25;
   
   Toggle(float _X, float _Y, float _slotLength){
     X = _X;
@@ -86,7 +86,7 @@ class Toggle{
   
   void display(String label, String on, String off){
     pushStyle();
-    textSize(textSize);
+    textSize(23); //This shouldn't need to be set manually...
     fill(textColor);
     text(label, X, Y - labelBuffer);
     popStyle();
@@ -154,6 +154,10 @@ class Toggle{
       toggling = false;
     }
     
+    
+    popStyle();
+    
+    pushStyle();
     fill(knobColor);
     stroke(knobColor);
     ellipse(X + slotRadius + position, Y, slotRadius, slotRadius);
