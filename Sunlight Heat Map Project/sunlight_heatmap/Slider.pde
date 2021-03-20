@@ -17,11 +17,12 @@ class Slider {
   float min = 0;
   float max = 10;
   boolean pressed = false;
-  boolean showVal = true;
+  boolean floatingVal = true;
   float clickX;
   float clickY;
   boolean lastMousePressed = false;
   boolean visible;
+  float labelBuffer = 2 * radius;
   
   Slider(float _X, float _Y, float _sliderLength){
     X = _X;
@@ -59,14 +60,14 @@ class Slider {
     pushStyle();
     textAlign(CENTER);
     textSize(textSize);
-    fill(color(textColor));
+    fill(textColor);
     if (pressed){
       text(int(value), X + position, Y - radius - textHeight);
     }
     popStyle();
   }
   
-  void display(){
+  void display(String label){
     detectDrag();
     pushStyle();
     colorMode(HSB);
@@ -90,8 +91,12 @@ class Slider {
     }
     ellipse(X + position, Y, radius * 2, radius * 2);
     popStyle();
-    if(showVal){
+    if(floatingVal){
       showValue();
+    }
+    if(label != null){
+      fill(textColor);
+      text(label, X, Y - labelBuffer);
     }
   }
 }

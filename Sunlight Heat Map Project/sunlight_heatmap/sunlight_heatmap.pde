@@ -30,13 +30,15 @@ int loadingWidth, loadingHeight;
 Folder_Selector selectFolder;
 Button processImagesButton;
 Toggle overlayToggle;
+Slider brightnessSlider;
+Slider contrastSlider;
 Button smallLeftButton;
 Button smallRightButton;
 Button bigLeftButton;
 Button bigRightButton;
 Progress_Bar loadingProgress;
 Progress_Bar layeringProgress;
-Progress_Bar testProgressBar;
+//Progress_Bar testProgressBar;
 
 void setup() {
   frameRate(120);
@@ -72,13 +74,6 @@ void setup() {
   smallRightButton.borderWeight = 15;
   smallRightButton.visible = true;
   
-  //loadingProgress = new Progress_Bar(selectFolder.X + selectFolder.folderWidth + selectFolder.buffer, selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5, int(selectFolder.selectorWidth - (selectFolder.folderWidth + 2 * selectFolder.buffer)), 25);
-  //loadingProgress = new Progress_Bar(50, 50, 300, 25);
-  //loadingProgress.backgroundColor = sideBarColor;
-  //loadingProgress.textSize = selectFolder.textSize;
-  //loadingProgress.textX = loadingProgress.X;
-  //loadingProgress.visible = true;
-  
   loadingX = selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer + 1;
   loadingWidth = int(selectFolder.selectorWidth - (selectFolder.folderWidth + selectFolder.buffer));
   loadingHeight = int(selectFolder.textSize) + 10;
@@ -103,6 +98,10 @@ void setup() {
   overlayToggle = new Toggle(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.selectorHeight + buffer, 2 * buffer);
   overlayToggle.visible = false;
   
+  brightnessSlider = new Slider(width - sideBarWidth + buffer, 0, sideBarWidth - 2 * buffer);
+  brightnessSlider.Y = overlayToggle.Y + overlayToggle.toggleRadius + brightnessSlider.labelBuffer + buffer;
+  brightnessSlider.floatingVal = false;
+  brightnessSlider.visible = false;
 }
 
 void draw() {
@@ -142,6 +141,11 @@ void draw() {
   overlayToggle.X = width - sideBarWidth + buffer;  //setting toggle position and visibility
   if(overlayToggle.visible){
     overlayToggle.display();
+  }
+  
+  brightnessSlider.X = width - sideBarWidth + buffer;
+  if(brightnessSlider.visible){
+    brightnessSlider.display("Brightness: " + int(brightnessSlider.value));
   }
 
   if (selectFolder.browseButton.click) {  //the main code
@@ -235,11 +239,12 @@ void draw() {
   }
   
   contrast = 50;//mouseX * 10.0 / width;
-  brightness = 50;//-mouseY * 255 / height + 127;
+  brightness = brightnessSlider.value * 50;
 
   if (imagesLayered) {
     createImageFromArray();
     overlayToggle.visible = true;
+    brightnessSlider.visible = true;
   }
 
   if (layeredImageCreated && !overlayToggle.toggling) {
