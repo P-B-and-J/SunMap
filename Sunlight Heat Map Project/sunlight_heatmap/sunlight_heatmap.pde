@@ -95,13 +95,18 @@ void setup() {
   layeringProgress.rectOn = false;
   layeringProgress.begin();
   
-  overlayToggle = new Toggle(width - sideBarWidth + buffer, selectFolder.Y + selectFolder.selectorHeight + buffer, 2 * buffer);
+  overlayToggle = new Toggle(width - sideBarWidth + buffer, miniViewHeight + 2 * buffer, 2 * buffer);
   overlayToggle.visible = false;
   
   brightnessSlider = new Slider(width - sideBarWidth + buffer, 0, sideBarWidth - 2 * buffer);
-  brightnessSlider.Y = overlayToggle.Y + overlayToggle.toggleRadius + brightnessSlider.labelBuffer + buffer;
+  brightnessSlider.Y = overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + buffer;
   brightnessSlider.floatingVal = false;
   brightnessSlider.visible = false;
+  
+  contrastSlider = new Slider(width - sideBarWidth + buffer, 0, sideBarWidth - 2 * buffer);
+  contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
+  contrastSlider.floatingVal = false;
+  contrastSlider.visible = false;
 }
 
 void draw() {
@@ -146,6 +151,11 @@ void draw() {
   brightnessSlider.X = width - sideBarWidth + buffer;
   if(brightnessSlider.visible){
     brightnessSlider.display("Brightness: " + int(brightnessSlider.value));
+  }
+  
+  contrastSlider.X = width - sideBarWidth + buffer;
+  if(contrastSlider.visible){
+    contrastSlider.display("Contrast: " + int(contrastSlider.value));
   }
 
   if (selectFolder.browseButton.click) {  //the main code
@@ -238,13 +248,15 @@ void draw() {
     layering = false;
   }
   
-  contrast = 50;//mouseX * 10.0 / width;
+  contrast = contrastSlider.value;
   brightness = brightnessSlider.value * 50;
 
   if (imagesLayered) {
     createImageFromArray();
     overlayToggle.visible = true;
     brightnessSlider.visible = true;
+    contrastSlider.visible = true;
+    selectFolder.visible = false;
   }
 
   if (layeredImageCreated && !overlayToggle.toggling) {
