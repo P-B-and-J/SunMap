@@ -23,7 +23,7 @@ float miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
 boolean layering = false;
 boolean loading = false;
 color accentBlue = #3A7793;
-color accentRed = #F53135;
+color accentRed = #F00F16;
 int numInvalidImages = 0;
 float loadingX, loadingY;
 int loadingWidth, loadingHeight;
@@ -164,12 +164,13 @@ void draw() {
   }
   
   layeringProgress.X = processImagesButton.X;
+  layeringProgress.Y = processImagesButton.Y;
   if(layeringProgress.visible){
     layeringProgress.display(1.0 * counter / numImages);
   }
   
-  loadingProgress.X = loadingX; //selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer;
-  loadingProgress.Y = loadingY; //selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingProgress.barHeight / 2;
+  loadingProgress.X = /*loadingX; */selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer;
+  loadingProgress.Y = /*loadingY; */selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingProgress.barHeight / 2;
   if(loadingProgress.visible){
     loadingProgress.display(1.0 * counter / numImages);
   }
@@ -195,10 +196,7 @@ void draw() {
   }
 
   if (selectFolder.browseButton.click) {  //the main code
-    folderPath = null;
-    imagesLoaded = false;
-    imagesLayered = false;
-    layeredImageCreated = false;
+    reset();
     selectFolder("Select a folder to process:", "folderSelected");
   }
   
@@ -221,7 +219,7 @@ void draw() {
     }
   }
   
-    if(loading&&!imagesLoaded){
+    if(loading && !imagesLoaded){
       loadImages();
       if(loadingProgress.text != selectFolder.folderReadout){
         loadingProgress.text = selectFolder.folderReadout;
@@ -307,6 +305,10 @@ void draw() {
     processImagesButton.visible = false;
     newAnalysis.visible = true;
   }
+  else{
+    processImagesButton.visible = true;
+    newAnalysis.visible = false;
+  }
 
   if (layeredImageCreated && !overlayToggle.toggling && !colorModeToggle.toggling) {
     if(colorModeToggle.toggled){
@@ -324,9 +326,21 @@ void draw() {
     noTint();
   }
   
+  if(newAnalysis.confirmed){
+    reset();
+  }
+  
   smallLeftButton.X = width - sideBarWidth + buffer;
   smallLeftButton.display();
   
   smallRightButton.X = width - buffer - miniViewWidth / 8;
   smallRightButton.display();
+}
+
+void reset(){
+  folderPath = null;
+  imagesLoaded = false;
+  imagesLayered = false;
+  layeredImageCreated = false;
+  selectFolder.folderReadout = "No folder selected";
 }

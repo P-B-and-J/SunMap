@@ -6,7 +6,7 @@ class Two_Step_Button{
   color textColor = #FFFFFF;
   String mainText = "Text";
   String yesText = "Confirm";
-  String noText = "Cancel";
+  String cancelText = "Cancel";
   String label = "Confirm?";
   float textSize = 25;
   boolean uncovered = false;
@@ -44,21 +44,29 @@ class Two_Step_Button{
   }
   
   void display(){
+    mainButton.Y = Y;
     mainButton.display();
+    confirmButton.X = X;
+    confirmButton.Y = Y;
     if(confirmButton.visible){
       confirmButton.display();
     }
     
     if(mainButton.click && !uncovered){
-      confirmButton.visible = true;
       uncovered = true;
-      mainButton.text = noText;
+    }
+    else if((mainButton.click || confirmButton.click) && uncovered){
+      uncovered = false;
+    }
+    
+    if(uncovered){
+      confirmButton.visible = true;
+      mainButton.text = cancelText;
       mainButton.X = X + buttonWidth / 2 + buffer;
       mainButton.buttonWidth = buttonWidth / 2 - buffer;
     }
-    else if(mainButton.click && uncovered){
+    else{
       confirmButton.visible = false;
-      uncovered = false;
       mainButton.text = mainText;
       mainButton.X = X;
       mainButton.buttonWidth = buttonWidth;
