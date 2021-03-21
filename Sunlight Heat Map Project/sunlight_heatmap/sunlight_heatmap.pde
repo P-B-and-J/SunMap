@@ -23,6 +23,7 @@ float miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
 boolean layering = false;
 boolean loading = false;
 color accentBlue = #3A7793;
+color accentRed = #F53135;
 int numInvalidImages = 0;
 float loadingX, loadingY;
 int loadingWidth, loadingHeight;
@@ -30,6 +31,7 @@ float labelSize = 20;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
+Two_Step_Button newAnalysis;
 Toggle colorModeToggle;
 Toggle overlayToggle;
 Slider brightnessSlider;
@@ -56,6 +58,14 @@ void setup() {
   processImagesButton.borderOn = false;
   processImagesButton.text = "Process Images";
   processImagesButton.visible = true;
+  
+  newAnalysis = new Two_Step_Button(width - sideBarWidth + buffer, height - buffer - 75, sideBarWidth - 2 * buffer, 80);
+  newAnalysis.textSize = 25;
+  newAnalysis.mainText = "New Analysis";
+  newAnalysis.primaryColor = accentBlue;
+  newAnalysis.secondaryColor = accentRed;
+  newAnalysis.visible = false;
+  newAnalysis.begin();
 
   selectFolder = new Folder_Selector(width - sideBarWidth + buffer, miniViewHeight + 2 * buffer, sideBarWidth - 2 * buffer);
   selectFolder.useFolderButton.primaryColor = accentBlue;
@@ -145,6 +155,12 @@ void draw() {
   processImagesButton.Y = height - buffer - 75;
   if(processImagesButton.visible){
     processImagesButton.display();
+  }
+  
+  newAnalysis.X = width - sideBarWidth + buffer;
+  newAnalysis.Y = height - buffer - 75;
+  if(newAnalysis.visible){
+    newAnalysis.display();
   }
   
   layeringProgress.X = processImagesButton.X;
@@ -285,6 +301,11 @@ void draw() {
     brightnessSlider.visible = false;
     contrastSlider.visible = false;
     selectFolder.visible = true;
+  }
+  
+  if(layeredImageCreated){
+    processImagesButton.visible = false;
+    newAnalysis.visible = true;
   }
 
   if (layeredImageCreated && !overlayToggle.toggling && !colorModeToggle.toggling) {
