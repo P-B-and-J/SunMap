@@ -23,6 +23,8 @@ class Slider {
   boolean lastMousePressed = false;
   boolean visible;
   float labelBuffer = 2 * radius;
+  int style = 1;
+  float knobWidth;
   
   Slider(float _X, float _Y, float _sliderLength){
     X = _X;
@@ -31,8 +33,8 @@ class Slider {
     position = map(value, min, max, radius, sliderLength - radius);
   }
   
-  void detectDrag(){                     //< if mouse is within knob in X dimension -------------------------->   < if mouse is within knob in Y direction ----->
-    if(mousePressed && !lastMousePressed && mouseX > X /*- radius*/ - 25 && mouseX < X + sliderLength /*+ radius*/ + 25 && mouseY > Y /*- radius*/ - 25 && mouseY < Y /*+ radius*/ + 25){
+  void detectDrag(){                     //< if mouse is within knob in X dimension ->   < if mouse is within knob in Y direction-->
+    if(mousePressed && !lastMousePressed && mouseX > X - 25 && mouseX < X + sliderLength + 25 && mouseY > Y - 25 && mouseY < Y + 25){
       pressed = true;
     }
     lastMousePressed = mousePressed;
@@ -41,15 +43,21 @@ class Slider {
       pressed = false;
     }
     
+    if(style == 1){
+      knobWidth = radius;
+    }
+    else if(style == 2){
+      knobWidth = radius / 4;
+    }
     
-    if(pressed && mouseX - X >= radius && mouseX - X <= sliderLength - radius){
+    if(pressed && mouseX - X >= knobWidth && mouseX - X <= sliderLength - knobWidth){
       position = mouseX - X;
     }
-    else if(pressed && mouseX < X + radius){
-      position = radius;
+    else if(pressed && mouseX < X + knobWidth){
+      position = knobWidth;
     }
-    else if(pressed && mouseX > sliderLength - radius){
-      position = sliderLength - radius;
+    else if(pressed && mouseX > sliderLength - knobWidth){
+      position = sliderLength - knobWidth;
     }
     
     
@@ -89,7 +97,14 @@ class Slider {
       fill(primaryColor);
       stroke(primaryColor);
     }
-    ellipse(X + position, Y, radius * 2, radius * 2);
+    if(style == 1){
+      ellipse(X + position, Y, radius * 2, radius * 2);
+    }
+    else if(style == 2){
+      strokeWeight(radius / 2);
+      strokeCap(ROUND);
+      line(X + position, Y - radius, X + position, Y + radius);
+    }
     popStyle();
     if(floatingVal){
       showValue();

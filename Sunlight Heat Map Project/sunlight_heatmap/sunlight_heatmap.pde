@@ -169,7 +169,8 @@ void draw() {
     overlayToggle.visible = false;
     colorModeToggle.visible = false;
     brightnessSlider.visible = false;
-    contrastSlider.visible = false;
+   // contrastSlider.visible = false;
+    contrastSlider.visible = true; 
     selectFolder.visible = true;
   }
   
