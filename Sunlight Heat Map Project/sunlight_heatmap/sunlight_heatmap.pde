@@ -57,6 +57,12 @@ void setup() {
   background(backgroundColor);
   
   initializeInputs();
+  
+  String[] loadPath = loadStrings("path.txt");
+  
+  if(loadPath != null){
+    folderPath = loadPath[0];
+  }
 }
 
 void draw() {
