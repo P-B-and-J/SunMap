@@ -28,6 +28,7 @@ int numInvalidImages = 0;
 float loadingX, loadingY;
 int loadingWidth, loadingHeight;
 float labelSize = 20;
+int previewImage = 0;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
@@ -53,11 +54,12 @@ void setup() {
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   
+  background(backgroundColor);
+  
   initializeInputs();
 }
 
 void draw() {
-  background(backgroundColor);  //setting the background and sidebar
   noStroke();
   fill(sideBarColor);
   rect(width - sideBarWidth, 0, sideBarWidth, height);
@@ -69,10 +71,17 @@ void draw() {
 
   if (selectFolder.browseButton.click) {                                  //folder selection >>>
     reset();
-    selectFolder("Select a folder to process:", "folderSelected");
+    if(folderPath == null){
+      selectFolder("Select a folder to process:", "folderSelected");
+    }
+    else{
+      selectFolder("Select a folder to process:", "folderSelected", dataFile(folderPath));
+    }
   }
   
   if(folderPath != null){
+    String[] savePath = {folderPath};
+    saveStrings("path.txt", savePath);
     selectFolder.setText(folderPath);
     selectFolder.useFolderButton.visible = true;
   }
@@ -108,7 +117,6 @@ void draw() {
   }                                                                       //<<< Image loading
   
   if(imagesLoaded){                                                       //>>> Showing a preview image, enabling image processing
-    int previewImage = 0;
     processImagesButton.enabled = true;
     processImagesButton.primaryColor = accentBlue;
     processImagesButton.textColor = #FFFFFF;
@@ -120,19 +128,20 @@ void draw() {
     }
     
     
-    if(smallRightButton.click && previewImage < numImages){  //Image cycling still isn't working
+    if(smallRightButton.click){  //Image cycling still isn't working
       previewImage++;
     }
-    else if(smallRightButton.click && previewImage == numImages){
+    if(previewImage > numImages - 1){
       previewImage = 0;
     }
     
-    if(smallLeftButton.click && previewImage > 0){
+    if(smallLeftButton.click){
       previewImage--;
     }
-    else if(smallLeftButton.click && previewImage == 0){
-      previewImage = numImages;
+    if(previewImage < 0){
+      previewImage = numImages - 1;
     }
+    println(previewImage);
   }
   else{
     processImagesButton.enabled = false;
@@ -183,20 +192,24 @@ void draw() {
     newAnalysis.visible = false;
   }                                                                       //<<< Creating an image from layered image array, advancing UI to next phase
 
-  if (layeredImageCreated && !overlayToggle.toggling && !colorModeToggle.toggling) {   //>>> Displaying images in their proper locations
+  if (layeredImageCreated && (brightnessSlider.pressed || contrastSlider.pressed)) {   //>>> Displaying images in their proper locations
+    noStroke();
+    fill(backgroundColor);
+    rect(0, 0, width - sideBarWidth, height);
     if(colorModeToggle.toggled){
       recolor();
-      centeredImage(recoloredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+      centeredImage(recoloredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);  //showing recolored image in main image viewer
     }
     else{
-      centeredImage(layeredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
+      centeredImage(layeredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);  //showing grayscale image in main area
     }
-    centeredImage(firstImage, width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
+    
+    
     if(overlayToggle.toggled){
       tint(255, 160);
-      centeredImage(firstImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
-    }
-    noTint();
+      centeredImage(images.get(previewImage), buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);  //showing first image as an overlay
+      noTint();
+    } 
   }                                                                                    //<<< Displaying images in their proper locations
   
   if(newAnalysis.confirmed){                                                           // Reset vvv
