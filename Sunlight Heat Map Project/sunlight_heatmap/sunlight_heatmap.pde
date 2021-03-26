@@ -154,8 +154,8 @@ void draw() {
     layering = false;
   }                                                                       //<<< Layering images
   
-  contrast = contrastSlider.value;                                        //>>> Setting contrast and brightness
-  brightness = brightnessSlider.value * 50;                               //<<<
+  contrast = map(contrastSlider.value, 0, 10, 1.5, 8);                                        //>>> Setting contrast and brightness
+  brightness = map(brightnessSlider.value, 0, 10, -50, 100);                               //<<<
 
   if (imagesLayered) {                                                    //>>> Creating an image from layered image array, advancing UI to next phase
     createImageFromArray();
@@ -169,8 +169,8 @@ void draw() {
     overlayToggle.visible = false;
     colorModeToggle.visible = false;
     brightnessSlider.visible = false;
-   // contrastSlider.visible = false;
-    contrastSlider.visible = true; 
+    contrastSlider.visible = false;
+    //contrastSlider.visible = true; 
     selectFolder.visible = true;
   }
   

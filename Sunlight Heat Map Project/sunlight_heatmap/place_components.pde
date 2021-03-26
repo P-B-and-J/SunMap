@@ -67,7 +67,6 @@ void initializeInputs(){
   brightnessSlider.Y = overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + buffer;
   brightnessSlider.labelBuffer = .7 * buffer;
   brightnessSlider.textSize = labelSize;
-  brightnessSlider.style = 1;
   brightnessSlider.floatingVal = false;
   brightnessSlider.visible = false;
   
@@ -75,7 +74,6 @@ void initializeInputs(){
   contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
   contrastSlider.labelBuffer = .7 * buffer;
   contrastSlider.textSize = labelSize;
-  contrastSlider.style = 2;
   contrastSlider.floatingVal = false;
   contrastSlider.visible = false;
 }
