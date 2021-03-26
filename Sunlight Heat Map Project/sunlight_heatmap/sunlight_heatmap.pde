@@ -205,9 +205,9 @@ void draw() {
 }
 
 void reset(){
-  folderPath = null;
   imagesLoaded = false;
   imagesLayered = false;
   layeredImageCreated = false;
   selectFolder.folderReadout = "No folder selected";
+  newAnalysis.confirmButton.click = false;
 }
