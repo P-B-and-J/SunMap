@@ -46,8 +46,9 @@ Progress_Bar layeringProgress;
 //Progress_Bar testProgressBar;
 
 void setup() {
-  frameRate(120);
+  frameRate(60);
   colorMode(HSB);
+  size(500, 500, P2D);
   surface.setSize(3 * displayWidth / 4, 3 * displayHeight / 4);
   surface.setLocation(displayWidth / 8, displayHeight / 8);
   surface.setResizable(true);
@@ -129,9 +130,7 @@ void draw() {
     if(!layeredImageCreated){
       centeredImage(images.get(previewImage), buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);
     }
-    if(!overlayToggle.toggling && !colorModeToggle.toggling){ 
-      centeredImage(images.get(previewImage), width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
-    }
+    centeredImage(images.get(previewImage), width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
     
     
     if(smallRightButton.click){  //Image cycling still isn't working
@@ -147,7 +146,7 @@ void draw() {
     if(previewImage < 0){
       previewImage = numImages - 1;
     }
-    println(previewImage);
+    //println(previewImage);
   }
   else{
     processImagesButton.enabled = false;
@@ -198,7 +197,8 @@ void draw() {
     newAnalysis.visible = false;
   }                                                                       //<<< Creating an image from layered image array, advancing UI to next phase
 
-  if (layeredImageCreated && (brightnessSlider.pressed || contrastSlider.pressed)) {   //>>> Displaying images in their proper locations
+  
+  if (layeredImageCreated /*&& (brightnessSlider.pressed || contrastSlider.pressed)*/) {   //>>> Displaying images in their proper locations
     noStroke();
     fill(backgroundColor);
     rect(0, 0, width - sideBarWidth, height);
