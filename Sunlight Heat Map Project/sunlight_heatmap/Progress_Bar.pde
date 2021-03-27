@@ -30,6 +30,7 @@ class Progress_Bar{
     PGraphics canvas;
     textFont = createFont("Lucida Sans Regular", textSize);
     canvas = createGraphics(barWidth, barHeight);
+    canvas.smooth();
     canvas.beginDraw();
     canvas.noStroke();
     canvas.background(primaryColor);
@@ -57,6 +58,7 @@ class Progress_Bar{
     image(background, X, Y);
     PGraphics mask;
     mask = createGraphics(barWidth, barHeight);
+    mask.smooth();
     mask.beginDraw();
     mask.noStroke();
     mask.background(0);

@@ -29,6 +29,7 @@ float loadingX, loadingY;
 int loadingWidth, loadingHeight;
 float labelSize = 20;
 int previewImage = 0;
+PGraphics sideBar;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
@@ -46,9 +47,10 @@ Progress_Bar layeringProgress;
 //Progress_Bar testProgressBar;
 
 void setup() {
+  noSmooth();
   frameRate(120);
   colorMode(HSB);
-  size(500, 500, JAVA2D);
+  size(1920, 1080, JAVA2D);
   surface.setSize(2 * displayWidth / 4, 2 * displayHeight / 4);
   surface.setLocation(displayWidth / 12, displayHeight / 12);
   surface.setResizable(true);
@@ -90,6 +92,8 @@ void draw() {
         selectFolder("Select a folder to process:", "folderSelected", dataFile(folderPath));
       }
     }
+    
+    sideBar.beginDraw();
     
     if(folderPath != null){
       String[] savePath = {folderPath};
