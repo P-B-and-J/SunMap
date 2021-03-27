@@ -46,16 +46,12 @@ Progress_Bar layeringProgress;
 //Progress_Bar testProgressBar;
 
 void setup() {
-  frameRate(60);
+  frameRate(120);
   colorMode(HSB);
-  //size(500, 500, FX2D);
-  surface.setSize(3 * displayWidth / 4, 3 * displayHeight / 4);
-  surface.setLocation(displayWidth / 8, displayHeight / 8);
+  size(500, 500, JAVA2D);
+  surface.setSize(2 * displayWidth / 4, 2 * displayHeight / 4);
+  surface.setLocation(displayWidth / 12, displayHeight / 12);
   surface.setResizable(true);
-  //sideBarWidth = 0.16 * displayWidth;
-  //buffer = .02 * displayWidth;
-  //miniViewWidth = sideBarWidth - 2 * buffer;
-  //miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   

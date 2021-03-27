@@ -45,9 +45,9 @@ class Folder_Selector{
     textSize = selectorWidth / 16;
     lineWeight = selectorWidth / 130;
     lineLength = folderWidth / 2;
-    buttonHeight = 1.5 * lineLength;
-    buttonWidth = buttonHeight * 4;
-    buttonX = X + 2 * lineLength + 2 * buffer;
+    buttonHeight = 2 * lineLength;
+    buttonWidth = buttonHeight * 3;
+    buttonX = X + 2 * lineLength + buffer;
     buttonY = Y + folderHeight + buffer + lineLength + lineWeight / 2 - buttonHeight / 2;
     normal = createFont("Lucida Sans Regular", textSize);
     italic = createFont("SansSerif.italic", textSize);
@@ -65,11 +65,13 @@ class Folder_Selector{
     browseButton.font = italic;
     browseButton.text = buttonText;
     browseButton.textSize = textSize;
+    browseButton.borderOn = false;
     
     useFolderButton = new Button(buttonX + buttonWidth + buffer, buttonY, buttonWidth, buttonHeight);
     useFolderButton.font = normal;
     useFolderButton.text = "Load files";
     useFolderButton.textSize = textSize;
+    useFolderButton.borderOn = false;
   }
   
   void drawFolderIcon(){
@@ -99,11 +101,11 @@ class Folder_Selector{
     strokeCap(SQUARE);
     line(X + lineLength, Y + folderHeight + buffer, X + lineLength, Y + folderHeight + buffer + lineLength + lineWeight / 2);
     line(X + lineLength - lineWeight / 2, Y + folderHeight + buffer + lineLength + lineWeight / 2, X + 2 * lineLength, Y + folderHeight + buffer + lineLength + lineWeight / 2);
-    buttonX = X + 2 * lineLength + 2.5 * buffer;
+    buttonX = X + 2 * lineLength + 2 * buffer;
     buttonY = Y + folderHeight + buffer + lineLength + lineWeight / 2 - buttonHeight / 2;
     browseButton.X = buttonX;
     browseButton.display();
-    useFolderButton.X = buttonX + buttonWidth + 2 * buffer;
+    useFolderButton.X = buttonX + buttonWidth + buffer;
     if(useFolderButton.visible){
       useFolderButton.display();
     }
