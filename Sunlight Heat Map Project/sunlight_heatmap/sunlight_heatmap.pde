@@ -46,12 +46,16 @@ Progress_Bar layeringProgress;
 //Progress_Bar testProgressBar;
 
 void setup() {
-  frameRate(60);
+  frameRate(120);
   colorMode(HSB);
-  size(500, 500, P2D);
+  //size(500, 500, FX2D);
   surface.setSize(3 * displayWidth / 4, 3 * displayHeight / 4);
   surface.setLocation(displayWidth / 8, displayHeight / 8);
   surface.setResizable(true);
+  //sideBarWidth = 0.15 * displayWidth;
+  //buffer = .02 * displayWidth;
+  //miniViewWidth = sideBarWidth - 2 * buffer;
+  //miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   
@@ -68,10 +72,14 @@ void setup() {
 
 void draw() {
   noStroke();
+  fill(backgroundColor);
+  rect(0, 0, width - sideBarWidth, height);
   fill(sideBarColor);
   rect(width - sideBarWidth, 0, sideBarWidth, height);
   fill(backgroundColor);
   rect(width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
+  
+  println(frameRate);
   
   setVisibility();
   setCoords();
@@ -198,10 +206,10 @@ void draw() {
   }                                                                       //<<< Creating an image from layered image array, advancing UI to next phase
 
   
-  if (layeredImageCreated /*&& (brightnessSlider.pressed || contrastSlider.pressed)*/) {   //>>> Displaying images in their proper locations
-    noStroke();
-    fill(backgroundColor);
-    rect(0, 0, width - sideBarWidth, height);
+  if (layeredImageCreated) {   //>>> Displaying images in their proper locations
+    //noStroke();
+    //fill(backgroundColor);
+    //rect(0, 0, width - sideBarWidth, height);
     if(colorModeToggle.toggled){
       recolor();
       centeredImage(recoloredImage, buffer, topBarWidth + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarWidth);  //showing recolored image in main image viewer
