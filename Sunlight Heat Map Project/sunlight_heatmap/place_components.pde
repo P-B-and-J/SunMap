@@ -90,6 +90,13 @@ void initializeInputs() {
   contrastSlider.textSize = labelSize;
   contrastSlider.floatingVal = false;
   contrastSlider.visible = false;
+  
+  saveButton = new Button(0, 0, 1.75 * topBarHeight, topBarHeight);
+  saveButton.primaryColor = color(#FFFFFF, 0);
+  saveButton.hoveredColor = accentBlue;
+  saveButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue));
+  saveButton.borderOn = false;
+  saveButton.visible = true;
 }
 
 
@@ -134,6 +141,9 @@ void setVisibility() {
     contrastSlider.display("Contrast: " + int(contrastSlider.value));
   }
 
+  if (saveButton.visible){
+    saveButton.display();
+  }
   smallLeftButton.display();
   smallRightButton.display();
   bigLeftButton.display();
@@ -164,8 +174,10 @@ void setCoords() {
 
   smallLeftButton.X = width - sideBarWidth + buffer;
   smallRightButton.X = width - buffer - miniViewWidth / 8;
-  bigRightButton.X = width - sideBarWidth - displayWidth / 20 * scaleFactor;
+  bigRightButton.X = width - sideBarWidth - bigRightButton.buttonWidth;
 
+  bigLeftButton.buttonWidth = displayWidth / 20 * scaleFactor;
   bigLeftButton.buttonHeight = height - topBarHeight;
+  bigRightButton.buttonWidth = displayWidth / 20 * scaleFactor;
   bigRightButton.buttonHeight = height - topBarHeight;
 }

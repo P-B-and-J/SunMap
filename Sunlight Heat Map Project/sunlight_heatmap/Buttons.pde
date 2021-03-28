@@ -20,6 +20,8 @@ class Button {
   boolean arrowOn = false;
   int arrowDir = 0;
   boolean borderOn = true;
+  color pressedColor = 256;
+  color hoveredColor = 256;
   
   Button(float _X, float _Y, float _buttonWidth, float _buttonHeight){
     X = _X;
@@ -98,12 +100,24 @@ class Button {
     noStroke();
     colorMode(HSB);
     if(pressed){
-      fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
-      stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor)); 
+      if(pressedColor == 256){
+        fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
+        stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
+      }
+      else{
+        fill(pressedColor);
+        stroke(pressedColor);
+      }
     }
     else if(enabled && mouseX >= X && mouseX <= X + buttonWidth && mouseY >= Y && mouseY <= Y + buttonHeight){
-      fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
-      stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
+      if(hoveredColor == 256){
+        fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
+        stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
+      }
+      else{
+        fill(hoveredColor);
+        stroke(hoveredColor);
+      }
       if(arrowOn){
         drawArrow();
       }
