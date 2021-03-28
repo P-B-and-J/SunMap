@@ -29,7 +29,7 @@ float loadingX, loadingY;
 int loadingWidth, loadingHeight;
 float labelSize = 20;
 int previewImage = 0;
-PGraphics sideBar;
+PGraphics displayImages;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
@@ -47,7 +47,6 @@ Progress_Bar layeringProgress;
 //Progress_Bar testProgressBar;
 
 void setup() {
-  noSmooth();
   frameRate(120);
   colorMode(HSB);
   size(1920, 1080, JAVA2D);
@@ -88,7 +87,6 @@ void draw() {
     setCoords();
   
     if (selectFolder.browseButton.click) {                                  //folder selection >>>
-      reset();
       if(folderPath == null){
         selectFolder("Select a folder to process:", "folderSelected");
       }
@@ -96,8 +94,6 @@ void draw() {
         selectFolder("Select a folder to process:", "folderSelected", dataFile(folderPath));
       }
     }
-    
-
     
     if(folderPath != null){
       String[] savePath = {folderPath};
@@ -107,9 +103,11 @@ void draw() {
     }
     else{
       selectFolder.useFolderButton.visible = false;
+      selectFolder.folderReadout = "No folder selected";
     }
     
     if(selectFolder.useFolderButton.click){
+      reset();
       imagesLoaded = false;
       imagesLayered = false;
       layeredImageCreated = false;
@@ -241,6 +239,5 @@ void reset(){
   imagesLoaded = false;
   imagesLayered = false;
   layeredImageCreated = false;
-  selectFolder.folderReadout = "No folder selected";
   newAnalysis.confirmButton.click = false;
 }
