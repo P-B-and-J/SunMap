@@ -60,8 +60,8 @@ void setup() {
   surface.setSize(2 * displayWidth / 4, 2 * displayHeight / 4);
   surface.setLocation(displayWidth / 12, displayHeight / 12);
   surface.setResizable(true);
-  sidebarGraphics=createGraphics(int(sideBarWidth), height);
-  sidebarGraphics.smooth(4);
+  sidebarGraphics=createGraphics(int(sideBarWidth), displayHeight);
+  sidebarGraphics.smooth(3);
   //sideBarWidth = 0.16 * displayWidth;
   //buffer = .02 * displayWidth;
   //miniViewWidth = sideBarWidth - 2 * buffer;
