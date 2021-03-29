@@ -25,16 +25,31 @@ class Slider {
   float labelBuffer = 2 * radius;
   int style = 1;
   float knobWidth;
-  
+  PGraphics drawTo;
+  editInt offsetX;
+  editInt offsetY;
   Slider(float _X, float _Y, float _sliderLength){
     X = _X;
     Y = _Y;
     sliderLength = _sliderLength;
     position = map(value, min, max, radius, sliderLength - radius);
+    if(drawTo==null){
+      drawTo=g;
+      offsetX=new editInt(0);
+      offsetY=new editInt(0);
+    }
   }
-  
+
+  Slider(float _X, float _Y, float _sliderLength, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
+    this(_X,_Y,_sliderLength);
+    drawTo=_drawTo;
+    offsetX=_offsetX;
+    offsetY=_offsetY;
+    
+  }
+
   void detectDrag(){                     //< if mouse is within knob in X dimension ->   < if mouse is within knob in Y direction-->
-    if(mousePressed && !lastMousePressed && mouseX > X - 25 && mouseX < X + sliderLength + 25 && mouseY > Y - 25 && mouseY < Y + 25){
+    if(mousePressed && !lastMousePressed && (mouseX-offsetX.val) > X - 25 && (mouseX-offsetX.val) < X + sliderLength + 25 && (mouseY-offsetY.val) > Y - 25 && (mouseY-offsetY.val) < Y + 25){
       pressed = true;
     }
     lastMousePressed = mousePressed;
@@ -50,13 +65,13 @@ class Slider {
       knobWidth = radius / 4;
     }
     
-    if(pressed && mouseX - X >= knobWidth && mouseX - X <= sliderLength - knobWidth){
-      position = mouseX - X;
+    if(pressed && (mouseX-offsetX.val) - X >= knobWidth && (mouseX-offsetX.val) - X <= sliderLength - knobWidth){
+      position = (mouseX-offsetX.val) - X;
     }
-    else if(pressed && mouseX < X + knobWidth){
+    else if(pressed && (mouseX-offsetX.val) < X + knobWidth){
       position = knobWidth;
     }
-    else if(pressed && mouseX > sliderLength - knobWidth){
+    else if(pressed && (mouseX-offsetX.val) > sliderLength - knobWidth){
       position = sliderLength - knobWidth;
     }
     
@@ -65,56 +80,60 @@ class Slider {
   }
   
   void showValue(){
-    pushStyle();
-    textAlign(CENTER);
-    textSize(textSize);
-    fill(textColor);
+    drawTo.beginDraw();
+    drawTo.pushStyle();
+    drawTo.textAlign(CENTER);
+    drawTo.textSize(textSize);
+    drawTo.fill(textColor);
     if (pressed){
-      text(int(value), X + position, Y - radius - textHeight);
+      drawTo.text(int(value), X + position, Y - radius - textHeight);
     }
-    popStyle();
+    drawTo.popStyle();
+    drawTo.endDraw();
   }
   
   void display(String label){
     detectDrag();
-    pushStyle();
-    colorMode(HSB);
-    strokeCap(ROUND);
-    stroke(primaryColor);
-    strokeWeight(weight);
-    line(X, Y, X + position, Y);
-    stroke(secondaryColor);
-    line(X + position, Y, X + sliderLength, Y);
+    drawTo.beginDraw();
+    drawTo.pushStyle();
+    drawTo.colorMode(HSB);
+    drawTo.strokeCap(ROUND);
+    drawTo.stroke(primaryColor);
+    drawTo.strokeWeight(weight);
+    drawTo.line(X, Y, X + position, Y);
+    drawTo.stroke(secondaryColor);
+    drawTo.line(X + position, Y, X + sliderLength, Y);
     if(pressed){
-      fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25);
-      stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25); 
+      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25);
+      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25); 
     }
-    else if(mouseX > X - radius && mouseX < X + sliderLength + radius && mouseY > Y - radius && mouseY < Y + radius){
-      fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30);
-      stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30);
+    else if((mouseX-offsetX.val) > X - radius && (mouseX-offsetX.val) < X + sliderLength + radius && (mouseY-offsetY.val) > Y - radius && (mouseY-offsetY.val) < Y + radius){
+      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30);
+      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30);
     }
     else{
-      fill(primaryColor);
-      stroke(primaryColor);
+      drawTo.fill(primaryColor);
+      drawTo.stroke(primaryColor);
     }
     if(style == 1){
-      ellipse(X + position, Y, radius * 2, radius * 2);
+      drawTo.ellipse(X + position, Y, radius * 2, radius * 2);
     }
     else if(style == 2){
-      strokeWeight(radius / 2);
-      strokeCap(ROUND);
-      line(X + position, Y - radius, X + position, Y + radius);
+      drawTo.strokeWeight(radius / 2);
+      drawTo.strokeCap(ROUND);
+      drawTo.line(X + position, Y - radius, X + position, Y + radius);
     }
-    popStyle();
+    drawTo.popStyle();
     if(floatingVal){
       showValue();
     }
     if(label != null){
-      pushStyle();
-      textSize(textSize);
-      fill(textColor);
-      text(label, X, Y - labelBuffer);
-      popStyle();
+      drawTo.pushStyle();
+      drawTo.textSize(textSize);
+      drawTo.fill(textColor);
+      drawTo.text(label, X, Y - labelBuffer);
+      drawTo.popStyle();
     }
+    drawTo.endDraw();
   }
 }

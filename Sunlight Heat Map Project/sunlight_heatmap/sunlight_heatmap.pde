@@ -32,6 +32,9 @@ float labelSize = 20;
 int previewImage = 0;
 PGraphics displayImages;
 int scaleFactor = 1;
+PGraphics sidebarGraphics;
+editInt sidebarOffsetX = new editInt(0);
+editInt sidebarOffsetY = new editInt(0);
 
 Folder_Selector selectFolder;
 Button processImagesButton;
@@ -53,9 +56,12 @@ void setup() {
   frameRate(120);
   colorMode(HSB);
   size(1920, 1080, JAVA2D);
+  noSmooth();
   surface.setSize(2 * displayWidth / 4, 2 * displayHeight / 4);
   surface.setLocation(displayWidth / 12, displayHeight / 12);
   surface.setResizable(true);
+  sidebarGraphics=createGraphics(int(sideBarWidth), height);
+  sidebarGraphics.smooth(4);
   //sideBarWidth = 0.16 * displayWidth;
   //buffer = .02 * displayWidth;
   //miniViewWidth = sideBarWidth - 2 * buffer;
@@ -75,12 +81,15 @@ void setup() {
 }
 
 void draw() {
-  if(focused){
+  if(focused||frameCount<5||loading||layering){
     noStroke();
     fill(backgroundColor);
     rect(0, 0, width - sideBarWidth, height);
     fill(sideBarColor);
     rect(width - sideBarWidth, 0, sideBarWidth, height);
+    sidebarGraphics.beginDraw();
+    sidebarGraphics.background(color(255,0));
+    sidebarGraphics.endDraw();
     fill(backgroundColor);
     rect(width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
     
@@ -232,6 +241,14 @@ void draw() {
     if(newAnalysis.confirmed){                                                           // Reset vvv
       reset();
     }
+    image(sidebarGraphics,width-sideBarWidth,0);
+  }
+}
+
+class editInt{
+  int val;
+  editInt(int v){
+    val=v;
   }
 }
 
