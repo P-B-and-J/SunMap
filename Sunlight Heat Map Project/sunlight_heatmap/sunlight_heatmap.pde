@@ -14,9 +14,10 @@ int counter=0;
 float contrast = 0;
 float brightness = 0;
 color backgroundColor = #292929;
+color topBarColor = #242424;  //for custom title bar mode
 color sideBarColor;
 float sideBarWidth = 450;
-float topBarHeight = 50;
+float topBarHeight = 70;
 float buffer = 50;  //something's wrong with the toggle class; it works if this is set to 50 but moves too far if it's set to 40
 float miniViewWidth = sideBarWidth - 2 * buffer;
 float miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
@@ -46,6 +47,7 @@ Button bigRightButton;
 Progress_Bar loadingProgress;
 Progress_Bar layeringProgress;
 Button saveButton;
+Button exportButton;
 
 void setup() {
   frameRate(120);

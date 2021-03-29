@@ -32,14 +32,14 @@ void initializeInputs() {
   smallRightButton.borderWeight = 15;
   smallRightButton.visible = true;
 
-  bigLeftButton = new Button(0, topBarHeight, displayWidth / 20 * scaleFactor, height - topBarHeight);
+  bigLeftButton = new Button(0, topBarHeight + buffer, displayWidth / 20 * scaleFactor, height - topBarHeight);
   bigLeftButton.arrowOn = true;
   bigLeftButton.arrowDir = 0;
   bigLeftButton.primaryColor = color(#FFFFFF, 0);
   bigLeftButton.borderWeight = 15;
   bigLeftButton.visible = true;
 
-  bigRightButton = new Button(width - sideBarWidth - displayWidth / 20 * scaleFactor, topBarHeight, displayWidth / 20 * scaleFactor, height - topBarHeight);
+  bigRightButton = new Button(width - sideBarWidth - displayWidth / 20 * scaleFactor, topBarHeight + buffer, displayWidth / 20 * scaleFactor, height - topBarHeight);
   bigRightButton.arrowOn = true;
   bigRightButton.arrowDir = 2;
   bigRightButton.primaryColor = color(#FFFFFF, 0);
@@ -91,12 +91,19 @@ void initializeInputs() {
   contrastSlider.floatingVal = false;
   contrastSlider.visible = false;
   
-  saveButton = new Button(0, 0, 1.75 * topBarHeight, topBarHeight);
+  saveButton = new Button(5, 5, topBarHeight - 5, topBarHeight - 5);
   saveButton.primaryColor = color(#FFFFFF, 0);
   saveButton.hoveredColor = accentBlue;
-  saveButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue));
+  saveButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);
   saveButton.borderOn = false;
   saveButton.visible = true;
+  
+  exportButton = new Button(saveButton.X + saveButton.buttonWidth + 5, 5, topBarHeight - 5, topBarHeight - 5);
+  exportButton.primaryColor = color(#FFFFFF, 0);
+  exportButton.hoveredColor = accentBlue;
+  exportButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);
+  exportButton.borderOn = false;
+  exportButton.visible = true;
 }
 
 
@@ -143,6 +150,20 @@ void setVisibility() {
 
   if (saveButton.visible){
     saveButton.display();
+    float iconWidth = .5 * saveButton.buttonWidth;
+    float iconHeight = 1.2 * iconWidth;
+    float iconBufferX = (saveButton.buttonWidth - iconWidth) / 2;
+    float iconBufferY = (saveButton.buttonHeight - iconHeight) / 2;
+    saveIcon(saveButton.X + iconBufferX, saveButton.Y + iconBufferY, iconWidth, #FFFFFF);
+  }
+  
+  if (exportButton.visible){
+    exportButton.display();
+    float iconWidth = .5 * saveButton.buttonWidth;
+    float iconHeight = 1.2 * iconWidth;
+    float iconBufferX = (saveButton.buttonWidth - iconWidth) / 2;
+    float iconBufferY = (saveButton.buttonHeight - iconHeight) / 2;
+    exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
   }
   smallLeftButton.display();
   smallRightButton.display();
