@@ -2,11 +2,6 @@ void centeredImage(PImage image, float xPos, float yPos, float windowWidth, floa
   float imageRatio = 1.0 * image.width / image.height;
   float windowRatio = 1.0 * windowWidth / windowHeight;
 
-  //displayImages = createGraphics(image.width, image.height);
-  //displayImages.beginDraw();
-  //displayImages.noSmooth();
-  //displayImages.image(image, 0, 0);
-  //PImage tempImage = displayImages.get();
   if (imageRatio < windowRatio) {
     //window is wider than image
     image(image, xPos + windowWidth / 2 - imageRatio * windowHeight / 2, yPos, imageRatio * windowHeight, windowHeight);
