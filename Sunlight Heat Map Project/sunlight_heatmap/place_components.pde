@@ -32,14 +32,14 @@ void initializeInputs() {
   smallRightButton.borderWeight = 15;
   smallRightButton.visible = true;
 
-  bigLeftButton = new Button(0, topBarHeight + buffer, displayWidth / 20 * scaleFactor, height - topBarHeight);
+  bigLeftButton = new Button(0, topBarHeight + buffer, displayWidth / 20 * scaleFactor, height - topBarHeight-2*buffer);
   bigLeftButton.arrowOn = true;
   bigLeftButton.arrowDir = 0;
   bigLeftButton.primaryColor = color(#FFFFFF, 0);
   bigLeftButton.borderWeight = 15;
   bigLeftButton.visible = true;
 
-  bigRightButton = new Button(width - sideBarWidth - displayWidth / 20 * scaleFactor, topBarHeight + buffer, displayWidth / 20 * scaleFactor, height - topBarHeight);
+  bigRightButton = new Button(width - sideBarWidth - displayWidth / 20 * scaleFactor, topBarHeight + buffer, displayWidth / 20 * scaleFactor, height - topBarHeight-2*buffer);
   bigRightButton.arrowOn = true;
   bigRightButton.arrowDir = 2;
   bigRightButton.primaryColor = color(#FFFFFF, 0);
@@ -199,7 +199,7 @@ void setCoords() {
   bigRightButton.X = width - sideBarWidth - bigRightButton.buttonWidth;
 
   bigLeftButton.buttonWidth = displayWidth / 20 * scaleFactor;
-  bigLeftButton.buttonHeight = height - topBarHeight;
+  bigLeftButton.buttonHeight = height - topBarHeight-2*buffer;
   bigRightButton.buttonWidth = displayWidth / 20 * scaleFactor;
-  bigRightButton.buttonHeight = height - topBarHeight;
+  bigRightButton.buttonHeight = height - topBarHeight-2*buffer;
 }

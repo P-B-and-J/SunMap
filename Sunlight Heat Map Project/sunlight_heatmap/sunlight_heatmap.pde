@@ -97,7 +97,6 @@ void draw() {
     
     println(frameRate);
     
-    setVisibility();
     setCoords();
   
     if (selectFolder.browseButton.click) {                                  //folder selection >>>
@@ -240,6 +239,9 @@ void draw() {
     if(newAnalysis.confirmed){                                                           // Reset vvv
       reset();
     }
+    
+    setVisibility();
+
     image(sidebarGraphics,width-sideBarWidth,0);
   }
   lastWidth = width;
