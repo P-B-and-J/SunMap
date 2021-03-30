@@ -28,24 +28,24 @@ class Slider {
   PGraphics drawTo;
   editInt offsetX;
   editInt offsetY;
+  boolean useG=false;
   Slider(float _X, float _Y, float _sliderLength){
     X = _X;
     Y = _Y;
     sliderLength = _sliderLength;
     position = map(value, min, max, radius, sliderLength - radius);
-    if(drawTo==null){
-      drawTo=g;
-      offsetX=new editInt(0);
-      offsetY=new editInt(0);
-    }
+    drawTo=g;
+    useG=true;
+    offsetX=new editInt(0);
+    offsetY=new editInt(0);
   }
 
   Slider(float _X, float _Y, float _sliderLength, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
     this(_X,_Y,_sliderLength);
     drawTo=_drawTo;
     offsetX=_offsetX;
-    offsetY=_offsetY;
-    
+    offsetY=_offsetY;   
+    useG=false;
   }
 
   void detectDrag(){                     //< if mouse is within knob in X dimension ->   < if mouse is within knob in Y direction-->
@@ -80,7 +80,6 @@ class Slider {
   }
   
   void showValue(){
-    drawTo.beginDraw();
     drawTo.pushStyle();
     drawTo.textAlign(CENTER);
     drawTo.textSize(textSize);
@@ -89,12 +88,13 @@ class Slider {
       drawTo.text(int(value), X + position, Y - radius - textHeight);
     }
     drawTo.popStyle();
-    drawTo.endDraw();
   }
   
   void display(String label){
     detectDrag();
-    drawTo.beginDraw();
+    if(!useG){
+      drawTo.beginDraw();
+    }
     drawTo.pushStyle();
     drawTo.colorMode(HSB);
     drawTo.strokeCap(ROUND);
@@ -134,6 +134,8 @@ class Slider {
       drawTo.text(label, X, Y - labelBuffer);
       drawTo.popStyle();
     }
-    drawTo.endDraw();
+    if(!useG){
+      drawTo.endDraw();
+    }
   }
 }

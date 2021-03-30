@@ -22,6 +22,10 @@ class Button {
   boolean borderOn = true;
   color pressedColor = 256;
   color hoveredColor = 256;
+  PGraphics drawTo;
+  editInt offsetX;
+  editInt offsetY;
+  boolean useG=false;
   
   Button(float _X, float _Y, float _buttonWidth, float _buttonHeight){
     X = _X;
@@ -29,12 +33,22 @@ class Button {
     buttonWidth = _buttonWidth;
     buttonHeight = _buttonHeight;
     font = createFont("Lucida Sans Regular", textSize);
+    drawTo=g;
+    useG=true;
+    offsetX=new editInt(0);
+    offsetY=new editInt(0);
   }
-  
+  Button(float _X, float _Y, float _buttonWidth, float _buttonHeight, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
+    this(_X,_Y,_buttonWidth,_buttonHeight);
+    drawTo=_drawTo;
+    offsetX=_offsetX;
+    offsetY=_offsetY;   
+    useG=false;
+  }
   void detectClick(){
     if(mousePressed && !mouseWasPressed){
-        clickX = mouseX;
-        clickY = mouseY;
+        clickX = (mouseX-offsetX.val);
+        clickY = (mouseY-offsetY.val);
         mouseWasPressed = true;
     }
     
@@ -51,7 +65,7 @@ class Button {
     }
     
     if(justPressed && !pressed){
-      if(!mousePressed && mouseX >= X && mouseX <= X + buttonWidth && mouseY >= Y && mouseY <= Y + buttonHeight){
+      if(!mousePressed && (mouseX-offsetX.val) >= X && (mouseX-offsetX.val) <= X + buttonWidth && (mouseY-offsetY.val) >= Y && (mouseY-offsetY.val) <= Y + buttonHeight){
         click = true;
       }
       justPressed = false;
@@ -61,79 +75,85 @@ class Button {
   }
   
   void drawText(){
-    pushStyle();
-    textAlign(CENTER, CENTER);
-    textFont(font);
-    textSize(textSize);
-    fill(textColor);
-    text(text, X + buttonWidth / 2, Y + buttonHeight / 2);
-    popStyle();
+    drawTo.pushStyle();
+    drawTo.textAlign(CENTER, CENTER);
+    drawTo.textFont(font);
+    drawTo.textSize(textSize);
+    drawTo.fill(textColor);
+    drawTo.text(text, X + buttonWidth / 2, Y + buttonHeight / 2);
   }
   
   void drawArrow(){
-    pushStyle();
-    stroke(textColor);
+    drawTo.pushStyle();
+    drawTo.stroke(textColor);
     if(arrowDir == 0){
-      line(X + .25 * buttonWidth, Y + .5 * buttonHeight, X + .75 * buttonWidth, Y + .5 * buttonHeight + .5 * buttonWidth);
-      line(X + .25 * buttonWidth, Y + .5 * buttonHeight, X + .75 * buttonWidth, Y + .5 * buttonHeight - .5 * buttonWidth);
+      drawTo.line(X + .25 * buttonWidth, Y + .5 * buttonHeight, X + .75 * buttonWidth, Y + .5 * buttonHeight + .5 * buttonWidth);
+      drawTo.line(X + .25 * buttonWidth, Y + .5 * buttonHeight, X + .75 * buttonWidth, Y + .5 * buttonHeight - .5 * buttonWidth);
     }
     if(arrowDir == 1){
-      line(X + .5 * buttonWidth, Y + .25 * buttonHeight, X + .5 * buttonWidth + .5 * buttonHeight, Y + .75 * buttonHeight);
-      line(X + .5 * buttonWidth, Y + .25 * buttonHeight, X + .5 * buttonWidth - .5 * buttonHeight, Y + .75 * buttonHeight);
+      drawTo.line(X + .5 * buttonWidth, Y + .25 * buttonHeight, X + .5 * buttonWidth + .5 * buttonHeight, Y + .75 * buttonHeight);
+      drawTo.line(X + .5 * buttonWidth, Y + .25 * buttonHeight, X + .5 * buttonWidth - .5 * buttonHeight, Y + .75 * buttonHeight);
     }
     if(arrowDir == 2){
-      line(X + .75 * buttonWidth, Y + .5 * buttonHeight, X + .25 * buttonWidth, Y + .5 * buttonHeight + .5 * buttonWidth);
-      line(X + .75 * buttonWidth, Y + .5 * buttonHeight, X + .25 * buttonWidth, Y + .5 * buttonHeight - .5 * buttonWidth);
+      drawTo.line(X + .75 * buttonWidth, Y + .5 * buttonHeight, X + .25 * buttonWidth, Y + .5 * buttonHeight + .5 * buttonWidth);
+      drawTo.line(X + .75 * buttonWidth, Y + .5 * buttonHeight, X + .25 * buttonWidth, Y + .5 * buttonHeight - .5 * buttonWidth);
     }
     if(arrowDir == 3){
-      line(X + .5 * buttonWidth, Y + .75 * buttonHeight, X + .5 * buttonWidth + .5 * buttonHeight, Y + .25 * buttonHeight);
-      line(X + .5 * buttonWidth, Y + .75 * buttonHeight, X + .5 * buttonWidth - .5 * buttonHeight, Y + .25 * buttonHeight);
+      drawTo.line(X + .5 * buttonWidth, Y + .75 * buttonHeight, X + .5 * buttonWidth + .5 * buttonHeight, Y + .25 * buttonHeight);
+      drawTo.line(X + .5 * buttonWidth, Y + .75 * buttonHeight, X + .5 * buttonWidth - .5 * buttonHeight, Y + .25 * buttonHeight);
     }
-    popStyle();
+    drawTo.popStyle();
   }
   
   void display(){
     if(enabled){
       detectClick();
     }
-    pushStyle();
-    noStroke();
-    colorMode(HSB);
+    if(!useG){
+      drawTo.beginDraw();
+    }
+    drawTo.pushStyle();
+    drawTo.noStroke();
+    drawTo.colorMode(HSB);
     if(pressed){
       if(pressedColor == 256){
-        fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
-        stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
+        drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
+        drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
       }
       else{
-        fill(pressedColor);
-        stroke(pressedColor);
+        drawTo.fill(pressedColor);
+        drawTo.stroke(pressedColor);
       }
     }
-    else if(enabled && mouseX >= X && mouseX <= X + buttonWidth && mouseY >= Y && mouseY <= Y + buttonHeight){
+    else if(enabled && (mouseX-offsetX.val) >= X && (mouseX-offsetX.val) <= X + buttonWidth && (mouseY-offsetY.val) >= Y && (mouseY-offsetY.val) <= Y + buttonHeight){
       if(hoveredColor == 256){
-        fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
-        stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
+        drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
+        drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
       }
       else{
-        fill(hoveredColor);
-        stroke(hoveredColor);
+        drawTo.fill(hoveredColor);
+        drawTo.stroke(hoveredColor);
       }
       if(arrowOn){
         drawArrow();
       }
     }
     else{
-      fill(primaryColor);
-      stroke(primaryColor);
+      drawTo.fill(primaryColor);
+      drawTo.stroke(primaryColor);
     }
-    strokeCap(SQUARE);
-    strokeWeight(borderWeight);
+    drawTo.strokeCap(SQUARE);
+    drawTo.strokeWeight(borderWeight);
     if(!borderOn){
-      noStroke();
+      drawTo.noStroke();
     }
-    rect(X, Y, buttonWidth, buttonHeight);
+    drawTo.rect(X, Y, buttonWidth, buttonHeight);
     drawText();
-    popStyle();
+    drawTo.popStyle();
+    drawTo.popStyle();
+    if(!useG){
+      drawTo.endDraw();
+    }
   }
 }
 
@@ -153,12 +173,28 @@ class Two_Step_Button{
   boolean confirmed;
   boolean visible;
   float buffer = 10;
+  PGraphics drawTo;
+  editInt offsetX;
+  editInt offsetY;
+  boolean useG=false;
   
   Two_Step_Button(float _X, float _Y, float _buttonWidth, float _buttonHeight){
     X = _X;
     Y = _Y;
+    useG=true;
+    drawTo=g;
     buttonWidth = _buttonWidth;
     buttonHeight = _buttonHeight;
+    offsetX=new editInt(0);
+    offsetY=new editInt(0);
+  }
+  
+  Two_Step_Button(float _X, float _Y, float _buttonWidth, float _buttonHeight, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
+   this(_X,_Y,_buttonWidth,_buttonHeight);
+   drawTo=_drawTo;
+   useG=false;
+   offsetX=_offsetX;
+   offsetY=_offsetY;
   }
   
   Button mainButton;
@@ -166,7 +202,7 @@ class Two_Step_Button{
   Button cancelButton;
   
   void begin(){
-    mainButton = new Button(X, Y, buttonWidth, buttonHeight);
+    mainButton = new Button(X, Y, buttonWidth, buttonHeight,drawTo,offsetX,offsetY);
     mainButton.primaryColor = primaryColor;
     mainButton.borderOn = false;
     mainButton.textSize = textSize;
@@ -174,7 +210,7 @@ class Two_Step_Button{
     mainButton.text = mainText;
     mainButton.visible = true;
     
-    confirmButton = new Button(X, Y, buttonWidth / 2 - buffer, buttonHeight);
+    confirmButton = new Button(X, Y, buttonWidth / 2 - buffer, buttonHeight,drawTo,offsetX,offsetY);
     confirmButton.primaryColor = secondaryColor;
     confirmButton.borderOn = false;
     confirmButton.textSize = textSize;

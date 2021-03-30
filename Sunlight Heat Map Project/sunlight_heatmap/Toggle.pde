@@ -29,6 +29,7 @@ class Toggle{
   PGraphics drawTo;
   editInt offsetX;
   editInt offsetY;
+  boolean useG=false;
 
   
   Toggle(float _X, float _Y, float _slotLength){
@@ -37,17 +38,17 @@ class Toggle{
     slotLength = _slotLength;
     slotWidth = slotLength / 2.5;
     slotRadius = slotWidth / 2;
-    if(drawTo==null){
-      drawTo=g;
-      offsetX=new editInt(0);
-      offsetY=new editInt(0);
-    }
+    drawTo=g;
+    useG=true;
+    offsetX=new editInt(0);
+    offsetY=new editInt(0);
   }
   Toggle(float _X, float _Y, float _slotLength, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
     this(_X,_Y,_slotLength);
     drawTo=_drawTo;
     offsetX=_offsetX;
     offsetY=_offsetY;
+    useG=false;
   }
   
   void detectClick(){
@@ -100,7 +101,9 @@ class Toggle{
     
   
   void display(String label, String on, String off){
-    drawTo.beginDraw();
+    if(!useG){
+      drawTo.beginDraw();
+    }
     drawTo.pushStyle();
     drawTo.textSize(textSize); //This shouldn't need to be set manually...
     drawTo.fill(textColor);
@@ -180,6 +183,8 @@ class Toggle{
     drawTo.stroke(knobColor);
     drawTo.ellipse(X + slotRadius + position, Y, slotRadius, slotRadius);
     drawTo.popStyle();
-    drawTo.endDraw();
+    if(!useG){
+      drawTo.endDraw();
+    }
   }
 }
