@@ -47,7 +47,7 @@ void initializeInputs() {
   bigRightButton.visible = true;
 
   loadingX = selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer + 1;
-  loadingWidth = int(selectFolder.selectorWidth - (selectFolder.folderWidth + selectFolder.buffer));
+  loadingWidth = int(selectFolder.selectorWidth - (selectFolder.folderWidth + 3*selectFolder.buffer));
   loadingHeight = int(selectFolder.textSize) + 10;
   loadingY = selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingHeight / 2;
   loadingProgress = new Progress_Bar(loadingX, loadingY, loadingWidth, loadingHeight,sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
