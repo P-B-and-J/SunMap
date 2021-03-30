@@ -26,7 +26,7 @@ void loadImages() {
       String fileName=filenames[counter];
       PImage tempImage = loadImage(folderPath + "/" + fileName);
       if (tempImage!=null) {
-        tempImage.resize(500, 0);
+        tempImage.resize(400, 0);
         images.add(tempImage);
         if (firstImage == null) {
           firstImage = tempImage;

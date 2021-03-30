@@ -26,6 +26,11 @@ class Toggle{
   float labelBuffer = 30;
   color textColor = knobColorOn;
   float textSize = 25;
+  PGraphics drawTo;
+  editInt offsetX;
+  editInt offsetY;
+  boolean useG=false;
+
   
   Toggle(float _X, float _Y, float _slotLength){
     X = _X;
@@ -33,12 +38,23 @@ class Toggle{
     slotLength = _slotLength;
     slotWidth = slotLength / 2.5;
     slotRadius = slotWidth / 2;
+    drawTo=g;
+    useG=true;
+    offsetX=new editInt(0);
+    offsetY=new editInt(0);
+  }
+  Toggle(float _X, float _Y, float _slotLength, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
+    this(_X,_Y,_slotLength);
+    drawTo=_drawTo;
+    offsetX=_offsetX;
+    offsetY=_offsetY;
+    useG=false;
   }
   
   void detectClick(){
     if(mousePressed && !mouseWasPressed){
-        clickX = mouseX;
-        clickY = mouseY;
+        clickX = (mouseX-offsetX.val);
+        clickY = (mouseY-offsetY.val);
         mouseWasPressed = true;
     }
     
@@ -85,25 +101,28 @@ class Toggle{
     
   
   void display(String label, String on, String off){
-    pushStyle();
-    textSize(textSize); //This shouldn't need to be set manually...
-    fill(textColor);
-    text(label, X, Y - 1.25 * labelBuffer);
+    if(!useG){
+      drawTo.beginDraw();
+    }
+    drawTo.pushStyle();
+    drawTo.textSize(textSize); //This shouldn't need to be set manually...
+    drawTo.fill(textColor);
+    drawTo.text(label, X, Y - 1.25 * labelBuffer);
     if(toggled){
-      text(on, X + slotLength + .5 * labelBuffer, Y + .5 * slotRadius);
+      drawTo.text(on, X + slotLength + .5 * labelBuffer, Y + .5 * slotRadius);
     }
     else{
-      text(off, X + slotLength + .5 * labelBuffer, Y + .5 * slotRadius);
+      drawTo.text(off, X + slotLength + .5 * labelBuffer, Y + .5 * slotRadius);
     }
-    popStyle();
+    drawTo.popStyle();
     
     detectClick();
-    pushStyle();
-    colorMode(HSB);
-    strokeWeight(borderWeight);
+    drawTo.pushStyle();
+    drawTo.colorMode(HSB);
+    drawTo.strokeWeight(borderWeight);
     
     
-    if(clicked && mouseX >= X - toggleRadius && mouseX <= X + slotLength + toggleRadius && mouseY >= Y - slotRadius - borderWeight && mouseY <= Y + slotRadius + borderWeight){
+    if(clicked && (mouseX-offsetX.val) >= X - toggleRadius && (mouseX-offsetX.val) <= X + slotLength + toggleRadius && (mouseY-offsetY.val) >= Y - slotRadius - borderWeight && (mouseY-offsetY.val) <= Y + slotRadius + borderWeight){
       if(!toggled){
         toggled = true;
       }
@@ -134,15 +153,15 @@ class Toggle{
     }
     
     
-    fill(fillColor);  //fill the center of the rectangle
-    noStroke();
-    rect(X + slotRadius, Y - slotRadius, slotLength - 2 * slotRadius, 2 * slotRadius);
+    drawTo.fill(fillColor);  //fill the center of the rectangle
+    drawTo.noStroke();
+    drawTo.rect(X + slotRadius, Y - slotRadius, slotLength - 2 * slotRadius, 2 * slotRadius);
     
-    stroke(borderColor);
-    line(X + slotRadius, Y - slotRadius, X + slotLength - slotRadius, Y - slotRadius);
-    line(X + slotRadius, Y + slotRadius, X + slotLength - slotRadius, Y + slotRadius);
-    arc(X + slotRadius, Y, slotWidth, slotWidth, PI / 2, 3 * PI / 2);
-    arc(X + slotLength - slotRadius, Y, slotWidth, slotWidth, 3 * PI / 2, 5 * PI / 2);
+    drawTo.stroke(borderColor);
+    drawTo.line(X + slotRadius, Y - slotRadius, X + slotLength - slotRadius, Y - slotRadius);
+    drawTo.line(X + slotRadius, Y + slotRadius, X + slotLength - slotRadius, Y + slotRadius);
+    drawTo.arc(X + slotRadius, Y, slotWidth, slotWidth, PI / 2, 3 * PI / 2);
+    drawTo.arc(X + slotLength - slotRadius, Y, slotWidth, slotWidth, 3 * PI / 2, 5 * PI / 2);
     
     
     float frames = 15;
@@ -160,9 +179,12 @@ class Toggle{
       toggling = false;
     }
     
-    fill(knobColor);
-    stroke(knobColor);
-    ellipse(X + slotRadius + position, Y, slotRadius, slotRadius);
-    popStyle();
+    drawTo.fill(knobColor);
+    drawTo.stroke(knobColor);
+    drawTo.ellipse(X + slotRadius + position, Y, slotRadius, slotRadius);
+    drawTo.popStyle();
+    if(!useG){
+      drawTo.endDraw();
+    }
   }
 }

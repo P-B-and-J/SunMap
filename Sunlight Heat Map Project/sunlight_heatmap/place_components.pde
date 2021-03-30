@@ -1,11 +1,11 @@
 void initializeInputs() {
-  processImagesButton = new Button(width - sideBarWidth + buffer, /*topBarHeight + buffer*/ height - buffer - 75, sideBarWidth - 2 * buffer, 80);
+  processImagesButton = new Button(/*width - sideBarWidth +*/ buffer, /*topBarHeight + buffer*/ height - buffer - 75, sideBarWidth - 2 * buffer, 80,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
   processImagesButton.textSize = 25;
   processImagesButton.borderOn = false;
   processImagesButton.text = "Process Images";
   processImagesButton.visible = true;
 
-  newAnalysis = new Two_Step_Button(width - sideBarWidth + buffer, height - buffer - 75, sideBarWidth - 2 * buffer, 80);
+  newAnalysis = new Two_Step_Button(/*width - sideBarWidth + */buffer, height - buffer - 75, sideBarWidth - 2 * buffer, 80,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
   newAnalysis.textSize = 25;
   newAnalysis.mainText = "New Analysis";
   newAnalysis.primaryColor = accentBlue;
@@ -13,7 +13,7 @@ void initializeInputs() {
   newAnalysis.visible = false;
   newAnalysis.begin();
 
-  selectFolder = new Folder_Selector(width - sideBarWidth + buffer, miniViewHeight + 2 * buffer, sideBarWidth - 2 * buffer);
+  selectFolder = new Folder_Selector(/*width - sideBarWidth +*/ buffer, miniViewHeight + 2 * buffer, sideBarWidth - 2 * buffer,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
   selectFolder.useFolderButton.primaryColor = accentBlue;
   selectFolder.useFolderButton.visible = false;
   selectFolder.visible = true;
@@ -50,14 +50,14 @@ void initializeInputs() {
   loadingWidth = int(selectFolder.selectorWidth - (selectFolder.folderWidth + selectFolder.buffer));
   loadingHeight = int(selectFolder.textSize) + 10;
   loadingY = selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingHeight / 2;
-  loadingProgress = new Progress_Bar(loadingX, loadingY, loadingWidth, loadingHeight);
+  loadingProgress = new Progress_Bar(loadingX, loadingY, loadingWidth, loadingHeight,sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   loadingProgress.text = "\\sample_folder";
   loadingProgress.textSize = selectFolder.textSize;
   loadingProgress.backgroundColor = sideBarColor;
   //loadingProgress.rectOn = false;
   loadingProgress.begin();
 
-  layeringProgress = new Progress_Bar(processImagesButton.X, processImagesButton.Y, int(processImagesButton.buttonWidth), int(processImagesButton.buttonHeight));
+  layeringProgress = new Progress_Bar(processImagesButton.X, processImagesButton.Y, int(processImagesButton.buttonWidth), int(processImagesButton.buttonHeight),sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   layeringProgress.text = "Processing Images...";
   layeringProgress.textAlignH = CENTER;
   layeringProgress.textX = layeringProgress.barWidth / 2;
@@ -67,24 +67,24 @@ void initializeInputs() {
   layeringProgress.rectOn = false;
   layeringProgress.begin();
 
-  colorModeToggle = new Toggle(width - sideBarWidth + buffer, 0, 2 * buffer);
+  colorModeToggle = new Toggle(/*width - sideBarWidth +*/ buffer, 0, 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   colorModeToggle.Y = miniViewHeight + colorModeToggle.labelBuffer + 2 * buffer;
   colorModeToggle.textSize = labelSize;
   colorModeToggle.visible = false;
 
-  overlayToggle = new Toggle(width - sideBarWidth + buffer, 0, 2 * buffer);
+  overlayToggle = new Toggle(/*width - sideBarWidth +*/ buffer, 0, 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   overlayToggle.Y = colorModeToggle.Y + colorModeToggle.slotRadius + overlayToggle.labelBuffer + buffer;
   overlayToggle.textSize = labelSize;
   overlayToggle.visible = false;
 
-  brightnessSlider = new Slider(width - sideBarWidth + buffer, 0, sideBarWidth - 2 * buffer);
+  brightnessSlider = new Slider(/*width - sideBarWidth +*/ buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   brightnessSlider.Y = overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + buffer;
   brightnessSlider.labelBuffer = .7 * buffer;
   brightnessSlider.textSize = labelSize;
   brightnessSlider.floatingVal = false;
   brightnessSlider.visible = false;
 
-  contrastSlider = new Slider(width - sideBarWidth + buffer, 0, sideBarWidth - 2 * buffer);
+  contrastSlider = new Slider(/*width - sideBarWidth +*/ buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
   contrastSlider.labelBuffer = .7 * buffer;
   contrastSlider.textSize = labelSize;
@@ -172,26 +172,27 @@ void setVisibility() {
 }
 
 void setCoords() {
-  selectFolder.X = width - sideBarWidth + buffer;  //setting select folder button position and visibility
+  sidebarOffsetX.val=int(width - sideBarWidth);
+  //selectFolder.X = width - sideBarWidth + buffer;  //setting select folder button position and visibility
 
-  processImagesButton.X = width - sideBarWidth + buffer;  //setting process images button position and visibility
+  //processImagesButton.X = width - sideBarWidth + buffer;  //setting process images button position and visibility
   processImagesButton.Y = height - buffer - 75;
 
-  newAnalysis.X = width - sideBarWidth + buffer;
+  //newAnalysis.X = width - sideBarWidth + buffer;
   newAnalysis.Y = height - buffer - 75;
 
-  layeringProgress.X = processImagesButton.X;
+  //layeringProgress.X = processImagesButton.X;
   layeringProgress.Y = processImagesButton.Y;
-  loadingProgress.X = /*loadingX; */selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer;
-  loadingProgress.Y = /*loadingY; */selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingProgress.barHeight / 2;
+  //loadingProgress.X = /*loadingX; */selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer;
+  //loadingProgress.Y = /*loadingY; */selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingProgress.barHeight / 2;
 
-  overlayToggle.X = width - sideBarWidth + buffer;  //setting toggle position and visibility
+  //overlayToggle.X = width - sideBarWidth + buffer;  //setting toggle position and visibility
 
-  colorModeToggle.X = width - sideBarWidth + buffer;
+  //colorModeToggle.X = width - sideBarWidth + buffer;
 
-  brightnessSlider.X = width - sideBarWidth + buffer;
+  //brightnessSlider.X = width - sideBarWidth + buffer;
 
-  contrastSlider.X = width - sideBarWidth + buffer;
+  //contrastSlider.X = width - sideBarWidth + buffer;
 
   smallLeftButton.X = width - sideBarWidth + buffer;
   smallRightButton.X = width - buffer - miniViewWidth / 8;

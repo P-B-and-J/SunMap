@@ -17,6 +17,10 @@ class Progress_Bar{
   boolean rectOn = true;
   int textAlignV = CENTER;
   int textAlignH = LEFT;
+  PGraphics drawTo;
+  editInt offsetX;
+  editInt offsetY;
+  boolean useG=false;
   
   Progress_Bar(float _X, float _Y, int _barWidth, int _barHeight){
     X = _X;
@@ -24,8 +28,18 @@ class Progress_Bar{
     barHeight = _barHeight;
     barWidth = _barWidth;
     textY = barHeight / 2;
+    drawTo=g;
+    useG=true;
+    offsetX=new editInt(0);
+    offsetY=new editInt(0);
   }
-  
+  Progress_Bar(float _X, float _Y, int _barWidth, int _barHeight, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
+    this(_X,_Y,_barWidth,_barHeight);
+    drawTo=_drawTo;
+    offsetX=_offsetX;
+    offsetY=_offsetY;   
+    useG=false;
+  }
   void begin(){
     PGraphics canvas;
     textFont = createFont("Lucida Sans Regular", textSize);
@@ -55,7 +69,10 @@ class Progress_Bar{
   }
   
   void display(float progress){
-    image(background, X, Y);
+    if(!useG){
+      drawTo.beginDraw();
+    }
+    drawTo.image(background, X, Y);
     PGraphics mask;
     mask = createGraphics(barWidth, barHeight);
     mask.smooth();
@@ -67,14 +84,17 @@ class Progress_Bar{
     mask.endDraw();
     PImage tempImage = progressBar;
     tempImage.mask(mask.get());
-    image(tempImage, X, Y);
+    drawTo.image(tempImage, X, Y);
     if(rectOn){
-      pushStyle();
-      stroke(primaryColor);
-      strokeWeight(borderWidth);
-      noFill();
-      rect(X - 2 * borderWidth, Y - 2 * borderWidth, barWidth + 4 * borderWidth, barHeight + 4 * borderWidth);
-      popStyle();
+      drawTo.pushStyle();
+      drawTo.stroke(primaryColor);
+      drawTo.strokeWeight(borderWidth);
+      drawTo.noFill();
+      drawTo.rect(X - 2 * borderWidth, Y - 2 * borderWidth, barWidth + 4 * borderWidth, barHeight + 4 * borderWidth);
+      drawTo.popStyle();
+    }
+    if(!useG){
+      drawTo.endDraw();
     }
   }
 }
