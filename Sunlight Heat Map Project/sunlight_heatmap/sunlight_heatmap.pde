@@ -109,15 +109,12 @@ void draw() {
       }
     }
     
-    if(folderPath != null){
-      String[] savePath = {folderPath};
-      saveStrings("path.txt", savePath);
-      selectFolder.setText(folderPath);
-      selectFolder.useFolderButton.visible = true;
-    }
-    else{
+    if(folderPath == null){      
       selectFolder.useFolderButton.visible = false;
       selectFolder.folderReadout = "No folder selected";
+    }else{ 
+      selectFolder.setText(folderPath);
+      selectFolder.useFolderButton.visible = true;
     }
     
     if(selectFolder.useFolderButton.click){
