@@ -35,6 +35,8 @@ int scaleFactor = 1;
 PGraphics sidebarGraphics;
 editInt sidebarOffsetX = new editInt(0);
 editInt sidebarOffsetY = new editInt(0);
+int lastHeight=0;
+int lastWidth=0;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
@@ -81,7 +83,7 @@ void setup() {
 }
 
 void draw() {
-  if(focused||frameCount<5||loading||layering){
+  if(focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)){
     noStroke();
     fill(backgroundColor);
     rect(0, 0, width - sideBarWidth, height);
@@ -243,6 +245,8 @@ void draw() {
     }
     image(sidebarGraphics,width-sideBarWidth,0);
   }
+  lastWidth = width;
+  lastHeight = height;
 }
 
 class editInt{
