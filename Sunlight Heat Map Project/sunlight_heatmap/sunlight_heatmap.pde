@@ -39,6 +39,8 @@ int lastHeight=0;
 int lastWidth=0;
 float exportProgress=-1.0;
 boolean stopExport=false;
+String exportPath;
+boolean exportButtonClicked=false;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
@@ -238,10 +240,14 @@ void draw() {
       } 
       
       if(exportButton.click){
-        thread("exportThread");
+        selectOutput("choose where to save", "exportFileSelected", dataFile(folderPath+"/export.png"));
       }
     }                                                                                    //<<< Displaying images in their proper locations
-    
+    if(exportPath!=null&&exportButtonClicked){
+        thread("exportThread");
+        exportButtonClicked=false;
+    }
+      
     if(newAnalysis.confirmed){                                                           // Reset vvv
       reset();
     }

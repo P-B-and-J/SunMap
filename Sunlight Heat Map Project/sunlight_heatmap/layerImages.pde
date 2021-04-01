@@ -34,8 +34,10 @@ void exportThread() {
   float Ebrightness=brightness;
   exportProgress=0.0;
   ArrayList<PImage> EImages=new ArrayList<PImage>(images.size());
-  for (PImage im : images) {
-    EImages.add(im);
+  if (!stopExport) {
+    for (PImage im : images) {
+      EImages.add(im);
+    }
   }
   int ECounter=0;
   int ENumImages=EImages.size();
@@ -51,38 +53,52 @@ void exportThread() {
     for (int i = 0; i < EPixVal.length; i++) {
       EPixVal[i] = EPixVal[i] + 1.0 * brightness(tImage.pixels[i]) / ENumImages;
     }
-
     ECounter++;
     exportProgress=.5*ECounter/ENumImages;
   }
-
-  exportProgress=.75;
-  PImage ELayeredImage = createImage(EImageWidth, EImageHeight, RGB);
-  ELayeredImage.loadPixels();
-  for (int i = 0; i < EPixVal.length; i++) {
-    ELayeredImage.pixels[i] = bitShiftColor(int((EPixVal[i]-127) * Econtrast + 127 + Ebrightness));
-  }
-  ELayeredImage.updatePixels();
-  if (!overlayToggle.toggled) {
-    if (colorModeToggle.toggled) {
-      exportProgress=.90;
-      PImage ErecoloredImage=recolor(ELayeredImage);
-      exportProgress=.99;
-      ErecoloredImage.save("test_photo_recolored.png");
-    } else {
-      exportProgress=.99;
-      ELayeredImage.save("test_photo_grayscale.png");
+  if (!stopExport) {
+    exportProgress=.75;
+    PImage ELayeredImage = createImage(EImageWidth, EImageHeight, RGB);
+    ELayeredImage.loadPixels();
+    for (int i = 0; i < EPixVal.length; i++) {
+      ELayeredImage.pixels[i] = bitShiftColor(int((EPixVal[i]-127) * Econtrast + 127 + Ebrightness));
     }
-  } else {
-    //TODO: overlay yay
+    ELayeredImage.updatePixels();
+    if (!overlayToggle.toggled) {
+      if (colorModeToggle.toggled) {
+        exportProgress=.90;
+        PImage ErecoloredImage=recolor(ELayeredImage);
+        exportProgress=.99;
+        ErecoloredImage.save(exportPath);        
+        launch(exportPath);
+      } else {
+        exportProgress=.99;
+        ELayeredImage.save(exportPath);
+        launch(exportPath);
+      }
+    } else {
+      //TODO: overlay yay
+    }
   }
   exportProgress=-1.0;
   stopExport=false;
+  exportPath=null;
 }
 
-int bitShiftColor(int b){
-  b=constrain(b,0,255);
-// Equivalent to "color argb = color(b)" but faster 
-// and doesn't require setting colorMode(RGB)
+void exportFileSelected(File selection) {
+  if (selection == null) {
+    exportPath=null;
+    //    println("Window was closed or the user hit cancel.");
+  } else {
+    //println("User selected " + selection.getAbsolutePath());
+    exportPath=selection.getAbsolutePath();
+    exportButtonClicked=true;
+  }
+}
+
+int bitShiftColor(int b) {
+  b=constrain(b, 0, 255);
+  // Equivalent to "color argb = color(b)" but faster 
+  // and doesn't require setting colorMode(RGB)
   return  (0xFF<<24) | (b<<16) | (b<<8) | b;
 }
