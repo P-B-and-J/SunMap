@@ -47,38 +47,35 @@ void exportThread() {
     //tImage.resize(EResolution, 0);
     //imageWidth = tempImage.width;
     //imageHeight = tempImage.height;
-    ECounter++;
     tImage.loadPixels();
-    for (int i = 0; i < pixVal.length; i++) {
+    for (int i = 0; i < EPixVal.length; i++) {
       EPixVal[i] = EPixVal[i] + 1.0 * brightness(tImage.pixels[i]) / ENumImages;
     }
 
     ECounter++;
-    exportProgress=1.0*ECounter/ENumImages;
+    exportProgress=.5*ECounter/ENumImages;
   }
 
+  exportProgress=.75;
   PImage ELayeredImage = createImage(EImageWidth, EImageHeight, RGB);
   ELayeredImage.loadPixels();
-  println(contrast);
-  println(Econtrast);
-  println(brightness);
-  println(Ebrightness);
-  for (int i = 0; i < pixVal.length; i++) {
+  for (int i = 0; i < EPixVal.length; i++) {
     ELayeredImage.pixels[i] = color((EPixVal[i]-127) * Econtrast + 127 + Ebrightness);
   }
   ELayeredImage.updatePixels();
-
   if (!overlayToggle.toggled) {
     if (colorModeToggle.toggled) {
+      exportProgress=.90;
       PImage ErecoloredImage=recolor(ELayeredImage);
-      ErecoloredImage.save("test_photo_recolored-#####.jpg");
+      exportProgress=.99;
+      ErecoloredImage.save("test_photo_recolored.png");
     } else {
-      ELayeredImage.save("test_photo_grayscale-#####.jpg");
+      exportProgress=.99;
+      ELayeredImage.save("test_photo_grayscale.png");
     }
   } else {
-    //overlay yay
+    //TODO: overlay yay
   }
-
   exportProgress=-1.0;
   stopExport=false;
 }
