@@ -183,7 +183,7 @@ void draw() {
     
     if(layering && !imagesLayered){
       layeringProgress.visible = true;
-      layerImages(400);
+      layerImages(500);
     }
     else{
       layeringProgress.visible = false;
