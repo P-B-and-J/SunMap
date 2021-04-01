@@ -37,6 +37,8 @@ editInt sidebarOffsetX = new editInt(0);
 editInt sidebarOffsetY = new editInt(0);
 int lastHeight=0;
 int lastWidth=0;
+float exportProgress=-1.0;
+boolean stopExport=false;
 
 Folder_Selector selectFolder;
 Button processImagesButton;
@@ -95,7 +97,7 @@ void draw() {
     fill(backgroundColor);
     rect(width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
     
-    println(frameRate);
+    //println(frameRate);
     
     setCoords();
   
@@ -221,7 +223,7 @@ void draw() {
       //fill(backgroundColor);
       //rect(0, 0, width - sideBarWidth, height);
       if(colorModeToggle.toggled){
-        recolor();
+        recoloredImage=recolor(layeredImage);
         centeredImage(recoloredImage, buffer, topBarHeight + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarHeight);  //showing recolored image in main image viewer
       }
       else{
@@ -236,17 +238,7 @@ void draw() {
       } 
       
       if(exportButton.click){
-        if(!overlayToggle.toggled){
-          if(colorModeToggle.toggled){
-            recoloredImage.save("test_photo_recolored.png");
-          }
-          else{
-            layeredImage.save("test_photo_grayscale.png");
-          }
-        }
-        else{
-          
-        }
+        thread("exportThread");
       }
     }                                                                                    //<<< Displaying images in their proper locations
     
