@@ -1,6 +1,12 @@
-void layerImages() {
+void layerImages(int resolution) {
   if (counter<numImages) {
     PImage tempImage = images.get(counter);
+    tempImage.resize(resolution, 0);
+    imageWidth = tempImage.width;
+    imageHeight = tempImage.height;
+    if(counter == 0){
+      pixVal = new float[imageWidth * imageHeight];
+    }
     counter++;
     tempImage.loadPixels();
     for (int i = 0; i < pixVal.length; i++) {

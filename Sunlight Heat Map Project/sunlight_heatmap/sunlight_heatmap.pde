@@ -179,7 +179,7 @@ void draw() {
     
     if(layering && !imagesLayered){
       layeringProgress.visible = true;
-      layerImages();
+      layerImages(400);
     }
     else{
       layeringProgress.visible = false;
@@ -234,6 +234,20 @@ void draw() {
         centeredImage(images.get(previewImage), buffer, topBarHeight + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarHeight);  //showing first image as an overlay
         noTint();
       } 
+      
+      if(exportButton.click){
+        if(!overlayToggle.toggled){
+          if(colorModeToggle.toggled){
+            recoloredImage.save("test_photo_recolored.png");
+          }
+          else{
+            layeredImage.save("test_photo_grayscale.png");
+          }
+        }
+        else{
+          
+        }
+      }
     }                                                                                    //<<< Displaying images in their proper locations
     
     if(newAnalysis.confirmed){                                                           // Reset vvv
