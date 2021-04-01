@@ -60,7 +60,7 @@ void exportThread() {
   PImage ELayeredImage = createImage(EImageWidth, EImageHeight, RGB);
   ELayeredImage.loadPixels();
   for (int i = 0; i < EPixVal.length; i++) {
-    ELayeredImage.pixels[i] = color((EPixVal[i]-127) * Econtrast + 127 + Ebrightness);
+    ELayeredImage.pixels[i] = bitShiftColor(int((EPixVal[i]-127) * Econtrast + 127 + Ebrightness));
   }
   ELayeredImage.updatePixels();
   if (!overlayToggle.toggled) {
@@ -78,4 +78,11 @@ void exportThread() {
   }
   exportProgress=-1.0;
   stopExport=false;
+}
+
+int bitShiftColor(int b){
+  b=constrain(b,0,255);
+// Equivalent to "color argb = color(b)" but faster 
+// and doesn't require setting colorMode(RGB)
+  return  (0xFF<<24) | (b<<16) | (b<<8) | b;
 }
