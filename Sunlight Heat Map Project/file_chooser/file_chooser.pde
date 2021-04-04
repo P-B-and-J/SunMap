@@ -5,16 +5,19 @@ import javafx.stage.Stage.*;
 import processing.javafx.PSurfaceFX;
 Stage stage;
 void setup() {
-  size(500, 500, FX2D);
+  size(500, 500, JAVA2D);
   background(0);
 }
 void draw() {
+  
   FileChooser fileChooser = new FileChooser();
   fileChooser.setTitle("Open Resource File");
   fileChooser.getExtensionFilters().addAll(
-    new ExtensionFilter("PNG Image", "*.png"), 
-    new ExtensionFilter("JPG Image", "*.jpg"));
-  File selectedFile = fileChooser.showOpenDialog(stage);
+    new ExtensionFilter("PNG", "*.png"), 
+    new ExtensionFilter("JPG", "*.jpg"),
+    new ExtensionFilter("TIFF", "*.tif"),
+    new ExtensionFilter("PDF", "*.pdf"));
+  File selectedFile = fileChooser.showSaveDialog(stage);
   println("---");
   if (selectedFile != null) {
     println(selectedFile.getAbsolutePath());

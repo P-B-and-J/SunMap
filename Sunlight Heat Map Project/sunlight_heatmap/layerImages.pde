@@ -85,17 +85,6 @@ void exportThread() {
   exportPath=null;
 }
 
-void exportFileSelected(File selection) {
-  if (selection == null) {
-    exportPath=null;
-    //    println("Window was closed or the user hit cancel.");
-  } else {
-    //println("User selected " + selection.getAbsolutePath());
-    exportPath=selection.getAbsolutePath();
-    exportButtonClicked=true;
-  }
-}
-
 int bitShiftColor(int b) {
   b=constrain(b, 0, 255);
   // Equivalent to "color argb = color(b)" but faster 

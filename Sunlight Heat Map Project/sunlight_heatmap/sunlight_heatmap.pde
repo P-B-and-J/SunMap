@@ -42,7 +42,12 @@ boolean stopExport=false;
 String exportPath;
 boolean exportButtonClicked=false;
 
-Folder_Selector selectFolder;
+import javax.swing.*;
+import javax.swing.JFileChooser.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+JFileChooser export;
+FileNameExtensionFilter png, jpg, tif, tga;Folder_Selector selectFolder;
 Button processImagesButton;
 Two_Step_Button newAnalysis;
 Toggle colorModeToggle;
@@ -59,6 +64,30 @@ Button saveButton;
 Button exportButton;
 
 void setup() {
+  try {
+    // Set System L&F
+    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+  } 
+  catch (UnsupportedLookAndFeelException e) {
+       // handle exception
+  }
+  catch (ClassNotFoundException e) {
+     // handle exception
+  }
+  catch (InstantiationException e) {
+     // handle exception
+  }
+  catch (IllegalAccessException e) {
+     // handle exception
+  }
+  
+  export = new JFileChooser();
+  export.setFileSelectionMode(JFileChooser.FILES_ONLY);
+  png = new FileNameExtensionFilter(".png", ".png");
+  jpg = new FileNameExtensionFilter(".jpg", ".jpg");
+  tif = new FileNameExtensionFilter(".tif", ".tif");
+  tga = new FileNameExtensionFilter(".tga", ".tga");
+  
   frameRate(120);
   colorMode(HSB);
   size(1920, 1080, JAVA2D);
@@ -240,9 +269,28 @@ void draw() {
       } 
       
       if(exportButton.click){
-        selectOutput("choose where to save", "exportFileSelected", dataFile(folderPath+"/export.png"));
+        export.addChoosableFileFilter(png);
+        export.addChoosableFileFilter(jpg);
+        export.addChoosableFileFilter(tif);
+        export.addChoosableFileFilter(tga);
+        export.setAcceptAllFileFilterUsed(false);
+        export.setMultiSelectionEnabled(false);
+        export.setDialogType(JFileChooser.SAVE_DIALOG); //not sure why this is necessary but it is a workaround for a bug in the JFileChooser class that results in export button text not being set properly
+        export.setDialogTitle("Export Image");
+        export.setApproveButtonText("Export");
+        int returnVal = export.showSaveDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+          exportPath = export.getSelectedFile().getAbsolutePath() + export.getFileFilter().getDescription();
+          exportButtonClicked = true;
+        }
+        else{
+          exportPath = null;
+        }
+        //selectOutput("choose where to save", "exportFileSelected", dataFile(folderPath+"/export.png"));
       }
-    }                                                                                    //<<< Displaying images in their proper locations
+    }       //<<< Displaying images in their proper locations
+    
+    println(exportPath);
     if(exportPath!=null&&exportButtonClicked){
         thread("exportThread");
         exportButtonClicked=false;
