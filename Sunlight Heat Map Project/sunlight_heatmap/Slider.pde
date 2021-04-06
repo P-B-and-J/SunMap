@@ -33,6 +33,7 @@ class Slider {
     X = _X;
     Y = _Y;
     sliderLength = _sliderLength;
+    value = (max - min) / 2;
     position = map(value, min, max, radius, sliderLength - radius);
     drawTo=g;
     useG=true;

@@ -77,19 +77,26 @@ void initializeInputs() {
   overlayToggle.textSize = labelSize;
   overlayToggle.visible = false;
 
-  brightnessSlider = new Slider(/*width - sideBarWidth +*/ buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  brightnessSlider = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   brightnessSlider.Y = overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + buffer;
   brightnessSlider.labelBuffer = .7 * buffer;
   brightnessSlider.textSize = labelSize;
   brightnessSlider.floatingVal = false;
   brightnessSlider.visible = false;
 
-  contrastSlider = new Slider(/*width - sideBarWidth +*/ buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  contrastSlider = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
   contrastSlider.labelBuffer = .7 * buffer;
   contrastSlider.textSize = labelSize;
   contrastSlider.floatingVal = false;
   contrastSlider.visible = false;
+  
+  overlayStrength = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  overlayStrength.Y = contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer;
+  overlayStrength.labelBuffer = .7 * buffer;
+  overlayStrength.textSize = labelSize;
+  overlayStrength.floatingVal = false;
+  overlayStrength.visible = false;
   
   saveButton = new Button(5, 5, topBarHeight - 5, topBarHeight - 5);
   saveButton.primaryColor = color(#FFFFFF, 0);
@@ -146,6 +153,10 @@ void setVisibility() {
 
   if (contrastSlider.visible) {
     contrastSlider.display("Contrast: " + int(contrastSlider.value));
+  }
+  
+  if (overlayStrength.visible) {
+    overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
   }
 
   if (saveButton.visible){

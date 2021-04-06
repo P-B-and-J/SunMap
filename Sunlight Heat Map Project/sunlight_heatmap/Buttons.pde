@@ -177,6 +177,11 @@ class Two_Step_Button{
   editInt offsetX;
   editInt offsetY;
   boolean useG=false;
+  String animationStyle = "SLIDE_LEFT"; //starts as a wide button that contracts while another expands  eg:  [------] -> [][----] -> [-][---] -> [--][--]
+  //String animationStyle = "SLIDE_RIGHT";
+  //String animationStyle = "SPLIT"; //starts as a wide button and splits symmetrically into two smaller buttons  eg: [------] -> [--][--]
+  //String animationStyle = "EXPAND_LEFT"; //starts as one small button and splits into two small buttons  eg: [--] -> [--][--]
+  //String animationStyle = "EXPAND_RIGHT";
   
   Two_Step_Button(float _X, float _Y, float _buttonWidth, float _buttonHeight){
     X = _X;

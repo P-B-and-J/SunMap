@@ -54,6 +54,7 @@ Toggle colorModeToggle;
 Toggle overlayToggle;
 Slider brightnessSlider;
 Slider contrastSlider;
+Slider overlayStrength;
 Button smallLeftButton;
 Button smallRightButton;
 Button bigLeftButton;
@@ -82,6 +83,7 @@ void setup() {
   }
   
   export = new JFileChooser();
+
   export.setFileSelectionMode(JFileChooser.FILES_ONLY);
   png = new FileNameExtensionFilter(".png", ".png");
   jpg = new FileNameExtensionFilter(".jpg", ".jpg");
@@ -263,10 +265,14 @@ void draw() {
       
       
       if(overlayToggle.toggled){
-        tint(255, 160);
+        overlayStrength.visible = true;
+        tint(255, map(overlayStrength.value, 0, 10, 100, 220));
         centeredImage(images.get(previewImage), buffer, topBarHeight + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarHeight);  //showing first image as an overlay
         noTint();
       } 
+      else{
+        overlayStrength.visible = false;
+      }
       
       if(exportButton.click){
         export.addChoosableFileFilter(png);
