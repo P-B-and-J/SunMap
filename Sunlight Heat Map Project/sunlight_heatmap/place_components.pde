@@ -98,14 +98,14 @@ void initializeInputs() {
   overlayStrength.floatingVal = false;
   overlayStrength.visible = false;
   
-  saveButton = new Button(5, 5, topBarHeight - 5, topBarHeight - 5);
-  saveButton.primaryColor = color(#FFFFFF, 0);
-  saveButton.hoveredColor = accentBlue;
-  saveButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);
-  saveButton.borderOn = false;
-  saveButton.visible = true;
+  settingsButton = new Button(5, 5, topBarHeight - 5, topBarHeight - 5);
+  settingsButton.primaryColor = color(#FFFFFF, 0);
+  settingsButton.hoveredColor = accentBlue;
+  settingsButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);
+  settingsButton.borderOn = false;
+  settingsButton.visible = true;
   
-  exportButton = new Button(saveButton.X + saveButton.buttonWidth + 5, 5, topBarHeight - 5, topBarHeight - 5);
+  exportButton = new Button(settingsButton.X + settingsButton.buttonWidth + 5, 5, topBarHeight - 5, topBarHeight - 5);
   exportButton.primaryColor = color(#FFFFFF, 0);
   exportButton.hoveredColor = accentBlue;
   exportButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);
@@ -172,21 +172,21 @@ void setVisibility() {
   
   
 
-  if (saveButton.visible){
-    saveButton.display();
-    float iconWidth = .5 * saveButton.buttonWidth;
+  if (settingsButton.visible){
+    settingsButton.display();
+    float iconWidth = .5 * settingsButton.buttonWidth;
     float iconHeight = 1.2 * iconWidth;
-    float iconBufferX = (saveButton.buttonWidth - iconWidth) / 2;
-    float iconBufferY = (saveButton.buttonHeight - iconHeight) / 2;
-    saveIcon(saveButton.X + iconBufferX, saveButton.Y + iconBufferY, iconWidth, #FFFFFF);
+    float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
+    float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
+    saveIcon(settingsButton.X + iconBufferX, settingsButton.Y + iconBufferY, iconWidth, #FFFFFF);
   }
   
   if (exportButton.visible){
     exportButton.display();
-    float iconWidth = .5 * saveButton.buttonWidth;
+    float iconWidth = .5 * settingsButton.buttonWidth;
     float iconHeight = 1.2 * iconWidth;
-    float iconBufferX = (saveButton.buttonWidth - iconWidth) / 2;
-    float iconBufferY = (saveButton.buttonHeight - iconHeight) / 2;
+    float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
+    float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
     exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
   }
   smallLeftButton.display();
