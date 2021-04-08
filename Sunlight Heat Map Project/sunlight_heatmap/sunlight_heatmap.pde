@@ -47,6 +47,9 @@ float frameRateOG=0.01;
 import javax.swing.*;
 import javax.swing.JFileChooser.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import processing.awt.PSurfaceAWT.SmoothCanvas;
+import javax.swing.JFrame;
+import java.awt.Dimension;
 
 JFileChooser export;
 FileNameExtensionFilter png, jpg, tif, tga;Folder_Selector selectFolder;
@@ -105,6 +108,10 @@ void setup() {
   //buffer = .02 * displayWidth;
   //miniViewWidth = sideBarWidth - 2 * buffer;
   //miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
+  
+  SmoothCanvas sc = (SmoothCanvas) getSurface().getNative();
+  JFrame jf = (JFrame) sc.getFrame();
+  jf.setMinimumSize(new Dimension(2 * displayWidth / 4, 2 * displayHeight / 3));
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   
