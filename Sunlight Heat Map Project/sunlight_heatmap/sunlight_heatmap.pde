@@ -16,9 +16,9 @@ float brightness = 0;
 color backgroundColor = #292929;
 color topBarColor = #242424;  //for custom title bar mode
 color sideBarColor;
-float sideBarWidth = 450;
-float topBarHeight = 70;
-float buffer = 50;  //something's wrong with the toggle class; it works if this is set to 50 but moves too far if it's set to 40
+float sideBarWidth;
+float topBarHeight;
+float buffer = 25;  //something's wrong with the toggle class; it works if this is set to 50 but moves too far if it's set to 40
 float miniViewWidth = sideBarWidth - 2 * buffer;
 float miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
 boolean layering = false;
@@ -28,7 +28,7 @@ color accentRed = #F00F16;
 int numInvalidImages = 0;
 float loadingX, loadingY;
 int loadingWidth, loadingHeight;
-float labelSize = 20;
+float labelSize = 20; //HARDCODED
 int previewImage = 0;
 PGraphics displayImages;
 int scaleFactor = 1;
@@ -102,12 +102,13 @@ void setup() {
   surface.setSize(2 * displayWidth / 4, 2 * displayHeight / 4);
   surface.setLocation(displayWidth / 12, displayHeight / 12);
   surface.setResizable(true);
-  sidebarGraphics=createGraphics(int(sideBarWidth), displayHeight);
+  sideBarWidth = 0.21 * displayWidth;
+  buffer = .02 * displayWidth;
+  miniViewWidth = sideBarWidth - 2 * buffer;
+  miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
+  topBarHeight = .075 * displayHeight;
+  sidebarGraphics = createGraphics(int(sideBarWidth), displayHeight);
   sidebarGraphics.smooth(3);
-  //sideBarWidth = 0.16 * displayWidth;
-  //buffer = .02 * displayWidth;
-  //miniViewWidth = sideBarWidth - 2 * buffer;
-  //miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
   
   SmoothCanvas sc = (SmoothCanvas) getSurface().getNative();
   JFrame jf = (JFrame) sc.getFrame();

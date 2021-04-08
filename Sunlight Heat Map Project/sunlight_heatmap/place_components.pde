@@ -1,12 +1,12 @@
 void initializeInputs() {
   processImagesButton = new Button(/*width - sideBarWidth +*/ buffer, /*topBarHeight + buffer*/ height - buffer - 75, sideBarWidth - 2 * buffer, 80,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
-  processImagesButton.textSize = 25;
+  processImagesButton.textSize = 25; //HARDCODED
   processImagesButton.borderOn = false;
   processImagesButton.text = "Process Images";
   processImagesButton.visible = true;
 
   newAnalysis = new Two_Step_Button(/*width - sideBarWidth + */buffer, height - buffer - 75, sideBarWidth - 2 * buffer, 80,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
-  newAnalysis.textSize = 25;
+  newAnalysis.textSize = 25; //HARDCODED
   newAnalysis.mainText = "New Analysis";
   newAnalysis.primaryColor = accentBlue;
   newAnalysis.secondaryColor = accentRed;
@@ -22,33 +22,33 @@ void initializeInputs() {
   smallLeftButton.arrowOn = true;
   smallLeftButton.arrowDir = 0;
   smallLeftButton.primaryColor = color(#FFFFFF, 0);
-  smallLeftButton.borderWeight = 15;
+  smallLeftButton.borderWeight = 15; //HARDCODED
   smallLeftButton.visible = true;
 
   smallRightButton = new Button(width - buffer - miniViewWidth / 8, buffer, miniViewWidth / 8, miniViewHeight);
   smallRightButton.arrowOn = true;
   smallRightButton.arrowDir = 2;
   smallRightButton.primaryColor = color(#FFFFFF, 0);
-  smallRightButton.borderWeight = 15;
+  smallRightButton.borderWeight = 15; //HARDCODED
   smallRightButton.visible = true;
 
   bigLeftButton = new Button(0, topBarHeight + buffer, displayWidth / 20 * scaleFactor, height - topBarHeight-2*buffer);
   bigLeftButton.arrowOn = true;
   bigLeftButton.arrowDir = 0;
   bigLeftButton.primaryColor = color(#FFFFFF, 0);
-  bigLeftButton.borderWeight = 15;
+  bigLeftButton.borderWeight = 15; //HARDCODED
   bigLeftButton.visible = true;
 
   bigRightButton = new Button(width - sideBarWidth - displayWidth / 20 * scaleFactor, topBarHeight + buffer, displayWidth / 20 * scaleFactor, height - topBarHeight-2*buffer);
   bigRightButton.arrowOn = true;
   bigRightButton.arrowDir = 2;
   bigRightButton.primaryColor = color(#FFFFFF, 0);
-  bigRightButton.borderWeight = 15;
+  bigRightButton.borderWeight = 15; //HARDCODED
   bigRightButton.visible = true;
 
-  loadingX = selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer + 1;
+  loadingX = selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer + 1; //+1?
   loadingWidth = int(selectFolder.selectorWidth - (selectFolder.folderWidth + 3*selectFolder.buffer));
-  loadingHeight = int(selectFolder.textSize) + 10;
+  loadingHeight = int(selectFolder.textSize) + 10;  //HARDCODED
   loadingY = selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingHeight / 2;
   loadingProgress = new Progress_Bar(loadingX, loadingY, loadingWidth, loadingHeight,sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   loadingProgress.text = "\\sample_folder";
@@ -150,14 +150,27 @@ void setVisibility() {
   if (brightnessSlider.visible) {
     brightnessSlider.display("Brightness: " + int(brightnessSlider.value));
   }
+  
+  if (overlayStrength.visible) {
+    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer, 12 / frameRateOG);
+    overlayStrength.alpha = easeValue(overlayStrength.alpha, 255, 12 / frameRateOG);
+    overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
+    overlayStrength.enabled = true;
+  }
+  else{
+    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y, 8 / frameRateOG);
+    overlayStrength.alpha = easeValue(overlayStrength.alpha, 0, 8 / frameRateOG);
+    overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
+    overlayStrength.enabled = false;
+  }
 
   if (contrastSlider.visible) {
+    contrastSlider.backgroundOn = true;
+    contrastSlider.backgroundColor = sideBarColor;
     contrastSlider.display("Contrast: " + int(contrastSlider.value));
   }
   
-  if (overlayStrength.visible) {
-    overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
-  }
+  
 
   if (saveButton.visible){
     saveButton.display();
