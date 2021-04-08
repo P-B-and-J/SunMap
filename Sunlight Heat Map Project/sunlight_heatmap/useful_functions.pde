@@ -1,11 +1,11 @@
-float easeValue(float input, float end, float amt){
-  float d = end - input;
-  input += d * constrain(amt,0.0,1.0);
+float easeValue(float val, float end, float amt){
+  float d = end - val;
+  val += d * constrain(amt,0.0,1.0);
   if(abs(d) < .001){
     d = 0;
-    input = end;
+    val = end;
   }
-  return input;
+  return val;
 }
 
 boolean hovered(float x, float y, float w, float h){

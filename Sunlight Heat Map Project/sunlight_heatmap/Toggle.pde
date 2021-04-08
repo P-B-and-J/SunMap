@@ -17,7 +17,7 @@ class Toggle{
   boolean pressed = false;
   boolean justPressed = false;
   boolean toggled = false;
-  boolean toggling = false;
+  //boolean toggling = false;
   float position = 0;
   float clickX;
   float clickY;
@@ -180,10 +180,10 @@ class Toggle{
     //}
     
     if(toggled){
-      position = easeValue(position, slotLength - 2 * slotRadius, 5 / frameRate);
+      position = easeValue(position, slotLength - 2 * slotRadius, 5 / frameRateOG);
     }
     else{
-      position = easeValue(position, 0, 5 / frameRate);
+      position = easeValue(position, 0, 5 / frameRateOG);
     }
     
     drawTo.fill(knobColor);

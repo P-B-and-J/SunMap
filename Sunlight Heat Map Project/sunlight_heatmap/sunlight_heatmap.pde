@@ -41,6 +41,8 @@ float exportProgress=-1.0;
 boolean stopExport=false;
 String exportPath;
 boolean exportButtonClicked=false;
+long lastDrawMillis=0;
+float frameRateOG=0.01;
 
 import javax.swing.*;
 import javax.swing.JFileChooser.*;
@@ -296,7 +298,7 @@ void draw() {
       }
     }       //<<< Displaying images in their proper locations
     
-    println(exportPath);
+    //println(exportPath);
     if(exportPath!=null&&exportButtonClicked){
         thread("exportThread");
         exportButtonClicked=false;
@@ -310,8 +312,11 @@ void draw() {
 
     image(sidebarGraphics,width-sideBarWidth,0);
   }
+  
   lastWidth = width;
   lastHeight = height;
+  frameRateOG=1000.0/(millis()-lastDrawMillis);
+  lastDrawMillis=millis();  
 }
 
 class editInt{
