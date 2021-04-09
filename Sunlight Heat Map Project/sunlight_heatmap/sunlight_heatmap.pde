@@ -135,7 +135,8 @@ void setup() {
 }
 
 void draw() {
-if((focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)) && !settingsPage){
+  println(loadingProgress.targetPos / loadingProgress.barWidth);
+  if ((focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)) && !settingsPage){
     noStroke();
     fill(backgroundColor);
     rect(0, 0, width - sideBarWidth, height);
@@ -174,22 +175,28 @@ if((focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=hei
         loading = true;
         counter = 0;
         numInvalidImages = 0;
+        thread("loadImages");
       }
     }                                                                       //<<< folder selection
     
     if(loading && !imagesLoaded){                                           //Image loading >>>
-      loadImages();
       if(loadingProgress.text != selectFolder.folderReadout){
         loadingProgress.text = selectFolder.folderReadout;
         loadingProgress.textSize = selectFolder.textSize;
         loadingProgress.begin();
       }
       loadingProgress.visible = true;
-      //selectFolder.useFolderButton.enabled = false;
+      loadingProgress.speed = 1;
+      selectFolder.useFolderButton.text = "Loading";
+      selectFolder.useFolderButton.enabled = false;
     }
     else{
       loading=false;
-      loadingProgress.visible = false;
+      loadingProgress.speed = 10;
+      if(loadingProgress.targetPos / loadingProgress.barWidth == 1){
+        loadingProgress.visible = false;
+      }
+      selectFolder.useFolderButton.text = "Load Files";
       selectFolder.useFolderButton.enabled = true;
     }                                                                       //<<< Image loading
     
@@ -348,4 +355,5 @@ void reset(){
   imagesLayered = false;
   layeredImageCreated = false;
   newAnalysis.confirmButton.click = false;
+  images.clear();
 }

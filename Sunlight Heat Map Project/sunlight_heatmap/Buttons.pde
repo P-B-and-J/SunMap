@@ -109,6 +109,9 @@ class Button {
     if(enabled){
       detectClick();
     }
+    else{
+      click = false;
+    }
     if(!useG){
       drawTo.beginDraw();
     }

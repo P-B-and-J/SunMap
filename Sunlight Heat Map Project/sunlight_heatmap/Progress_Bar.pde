@@ -21,6 +21,9 @@ class Progress_Bar{
   editInt offsetX;
   editInt offsetY;
   boolean useG=false;
+  boolean smooth = true;
+  float targetPos;
+  int speed = 1;
   
   Progress_Bar(float _X, float _Y, int _barWidth, int _barHeight){
     X = _X;
@@ -80,7 +83,16 @@ class Progress_Bar{
     mask.noStroke();
     mask.background(0);
     mask.fill(255);
-    mask.rect(0, 0, progress * barWidth, barHeight);
+    if(smooth){
+      if(targetPos > progress * barWidth){
+        targetPos = 0;
+      }
+      targetPos = easeValue(targetPos, progress * barWidth, speed / fps);
+      mask.rect(0, 0, targetPos, barHeight);
+    }
+    else{
+      mask.rect(0, 0, progress * barWidth, barHeight);
+    }
     mask.endDraw();
     PImage tempImage = progressBar;
     tempImage.mask(mask.get());

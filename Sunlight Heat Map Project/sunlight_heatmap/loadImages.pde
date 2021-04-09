@@ -24,7 +24,7 @@ void loadImages() {
   String[] filenames = listFileNames(folderPath);
   if (filenames!=null) {
     numImages=filenames.length;
-    if(counter<numImages){
+    while(counter<numImages){
       String fileName=filenames[counter];
       PImage tempImage = loadImage(folderPath + "/" + fileName);
       if (tempImage!=null) {
@@ -38,13 +38,12 @@ void loadImages() {
       }
       counter++;
     }
-    else{
-      numImages-=numInvalidImages; 
-      counter-=numInvalidImages;
-      //imageWidth = images.get(0).width;
-      //imageHeight = images.get(0).height;
-      //pixVal = new float[imageWidth * imageHeight];
-      imagesLoaded = true;
-    }
-  }
+    
+    numImages-=numInvalidImages; 
+    counter-=numInvalidImages;
+    //imageWidth = images.get(0).width;
+    //imageHeight = images.get(0).height;
+    //pixVal = new float[imageWidth * imageHeight];
+    imagesLoaded = true;
+}
 }
