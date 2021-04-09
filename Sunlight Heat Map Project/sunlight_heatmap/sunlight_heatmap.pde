@@ -42,9 +42,14 @@ boolean stopExport=false;
 String exportPath;
 boolean exportButtonClicked=false;
 long lastDrawMillis=0;
-float frameRateOG=0.01;
+float fps=0.01;
 boolean settingsPage=false;
 long settingsPageMillis=0;
+color recolor1 = #003393;
+color recolor2 = #14FF00;
+color recolor3 = #FFEA00;
+int recolorThreshold1 = 100;
+int recolorThreshold2 = 200;
 
 import javax.swing.*;
 import javax.swing.JFileChooser.*;
@@ -130,33 +135,7 @@ void setup() {
 }
 
 void draw() {
-  if(settingsButton.click){
-    settingsPage=!settingsPage;
-    settingsPageMillis=millis();
-  }
-  if(settingsPage){
-    
-    fill(backgroundColor,constrain(map(millis()-settingsPageMillis,0,/*fade*/700/*speed*/,0,255),0,255));
-    rect(0,0,width,height);
-    
-    
-    //if(millis()-settingsPageMillis<animationTime){
-    //  fill(map(1.0*(millis()-settingsPageMillis)/animationTime,0.0,1.0,brightness(backgroundColor)+30,brightness(backgroundColor)));
-    //  circle(settingsButton.X+settingsButton.buttonWidth/2,settingsButton.Y+settingsButton.buttonHeight/2,2*dist(0,0,width,height)*(millis()-settingsPageMillis)/animationTime);
-    //}else{
-    //  background(backgroundColor);
-    //}
-    
-    if (settingsButton.visible){
-      settingsButton.display();
-      float iconWidth = .5 * settingsButton.buttonWidth;
-      float iconHeight = 1.2 * iconWidth;
-      float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
-      float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
-      saveIcon(settingsButton.X + iconBufferX, settingsButton.Y + iconBufferY, iconWidth, #FFFFFF);
-    }
-    
-  }else if(focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)){
+if((focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)) && !settingsPage){
     noStroke();
     fill(backgroundColor);
     rect(0, 0, width - sideBarWidth, height);
@@ -294,7 +273,7 @@ void draw() {
       //fill(backgroundColor);
       //rect(0, 0, width - sideBarWidth, height);
       if(colorModeToggle.toggled){
-        recoloredImage=recolor(layeredImage);
+        recoloredImage=recolor(layeredImage, recolor1, recolor2, recolor3, recolorThreshold1, recolorThreshold2);
         centeredImage(recoloredImage, buffer, topBarHeight + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarHeight);  //showing recolored image in main image viewer
       }
       else{
@@ -349,9 +328,11 @@ void draw() {
     image(sidebarGraphics,width-sideBarWidth,0);
   }
   
+  showSettings();
+  
   lastWidth = width;
   lastHeight = height;
-  frameRateOG=1000.0/(millis()-lastDrawMillis);
+  fps=1000.0/(millis()-lastDrawMillis);
   lastDrawMillis=millis();  
 }
 

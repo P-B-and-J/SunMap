@@ -180,10 +180,10 @@ class Toggle{
     //}
     
     if(toggled){
-      position = easeValue(position, slotLength - 2 * slotRadius, 8 / frameRateOG);
+      position = easeValue(position, slotLength - 2 * slotRadius, 8 / fps);
     }
     else{
-      position = easeValue(position, 0, 8 / frameRateOG);
+      position = easeValue(position, 0, 8 / fps);
     }
     
     drawTo.fill(knobColor);

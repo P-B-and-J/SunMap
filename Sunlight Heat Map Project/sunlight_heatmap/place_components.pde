@@ -152,14 +152,14 @@ void setVisibility() {
   }
   
   if (overlayStrength.visible) {
-    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer, 12 / frameRateOG);
-    overlayStrength.alpha = easeValue(overlayStrength.alpha, 255, 12 / frameRateOG);
+    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer, 12 / fps);
+    overlayStrength.alpha = easeValue(overlayStrength.alpha, 255, 12 / fps);
     overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
     overlayStrength.enabled = true;
   }
   else{
-    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y, 8 / frameRateOG);
-    overlayStrength.alpha = easeValue(overlayStrength.alpha, 0, 8 / frameRateOG);
+    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y, 8 / fps);
+    overlayStrength.alpha = easeValue(overlayStrength.alpha, 0, 8 / fps);
     overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
     overlayStrength.enabled = false;
   }

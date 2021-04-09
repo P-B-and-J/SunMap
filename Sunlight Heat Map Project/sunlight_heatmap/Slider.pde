@@ -33,6 +33,11 @@ class Slider {
   boolean enabled = true;
   color backgroundColor;
   boolean backgroundOn = false;
+  boolean sticky = false;
+  boolean tickMarks = false;
+  boolean endpoints = false;
+  int clickDiff = 25;
+  int hoverDiff = 30;
   
   Slider(float _X, float _Y, float _sliderLength){
     X = _X;
@@ -83,6 +88,10 @@ class Slider {
     
     
     value = map(position, radius, sliderLength - radius, min, max);
+    if(sticky){
+      value = round(value);
+      position = map(value, min, max, radius, sliderLength - radius);
+    }
   }
   
   void showValue(){
@@ -104,6 +113,17 @@ class Slider {
     drawTo.popStyle();
   }
   
+  void drawTickMarks(){
+    drawTo.pushStyle();
+    drawTo.stroke(secondaryColor, alpha);
+    drawTo.strokeCap(ROUND);
+    drawTo.strokeWeight(weight / 2);
+    for(int i = int(min); i <= max; i++){
+      drawTo.line(X + map(i, min, max, radius, sliderLength - radius), Y - 1.5 * radius, X + map(i, min, max, radius, sliderLength - radius), Y + 1.5 * radius);
+    }
+    drawTo.pushStyle();
+  }
+  
   void display(String label){
     if(enabled){
       detectDrag();
@@ -114,6 +134,9 @@ class Slider {
     if(backgroundOn){
       drawBackground();
     }
+    if(tickMarks){
+      drawTickMarks();
+    }
     drawTo.pushStyle();
     drawTo.colorMode(HSB);
     drawTo.strokeCap(ROUND);
@@ -123,12 +146,12 @@ class Slider {
     drawTo.stroke(secondaryColor, alpha);
     drawTo.line(X + position, Y, X + sliderLength, Y);
     if(pressed){
-      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha);
-      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha); 
+      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - clickDiff, alpha);
+      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - clickDiff, alpha); 
     }
     else if((mouseX-offsetX.val) > X - radius && (mouseX-offsetX.val) < X + sliderLength + radius && (mouseY-offsetY.val) > Y - radius && (mouseY-offsetY.val) < Y + radius){
-      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha);
-      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha);
+      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + hoverDiff, alpha);
+      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + hoverDiff, alpha);
     }
     else{
       drawTo.fill(primaryColor, alpha);
