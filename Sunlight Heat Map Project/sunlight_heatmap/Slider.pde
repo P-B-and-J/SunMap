@@ -33,11 +33,11 @@ class Slider {
   boolean enabled = true;
   color backgroundColor;
   boolean backgroundOn = false;
-  boolean sticky = true;
-  boolean tickMarks = true;
-  boolean endpoints = true;
-  int clickDiff = 0;/*25;*/
-  int hoverDiff = 0;/*30;*/
+  boolean sticky = false;
+  boolean tickMarks = false;
+  boolean endpoints = false;
+  int clickDiff = 25;
+  int hoverDiff = 30;
   
   Slider(float _X, float _Y, float _sliderLength){
     X = _X;
@@ -91,7 +91,6 @@ class Slider {
     if(sticky){
       value = round(value);
       position = map(value, min, max, radius, sliderLength - radius);
-      println(value);
     }
   }
   
