@@ -83,6 +83,10 @@ void initializeInputs() {
   brightnessSlider.textSize = labelSize;
   brightnessSlider.floatingVal = false;
   brightnessSlider.visible = false;
+  brightnessSlider.primaryColor = #FFFFFF;
+  brightnessSlider.secondaryColor = #FFFFFF;
+  brightnessSlider.position = 0;
+  brightnessSlider.max = 5;
 
   contrastSlider = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
@@ -90,6 +94,8 @@ void initializeInputs() {
   contrastSlider.textSize = labelSize;
   contrastSlider.floatingVal = false;
   contrastSlider.visible = false;
+  contrastSlider.primaryColor = #FFFFFF;
+  contrastSlider.secondaryColor = #FFFFFF;
   
   overlayStrength = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   overlayStrength.Y = contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer;
@@ -97,6 +103,8 @@ void initializeInputs() {
   overlayStrength.textSize = labelSize;
   overlayStrength.floatingVal = false;
   overlayStrength.visible = false;
+  overlayStrength.primaryColor = #FFFFFF;
+  overlayStrength.secondaryColor = #FFFFFF;
   
   settingsButton = new Button(5, 5, topBarHeight - 5, topBarHeight - 5);
   settingsButton.primaryColor = color(#FFFFFF, 0);
@@ -152,14 +160,14 @@ void setVisibility() {
   }
   
   if (overlayStrength.visible) {
-    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer, 12 / frameRateOG);
-    overlayStrength.alpha = easeValue(overlayStrength.alpha, 255, 12 / frameRateOG);
+    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer, 12 / fps);
+    overlayStrength.alpha = easeValue(overlayStrength.alpha, 255, 12 / fps);
     overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
     overlayStrength.enabled = true;
   }
   else{
-    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y, 8 / frameRateOG);
-    overlayStrength.alpha = easeValue(overlayStrength.alpha, 0, 8 / frameRateOG);
+    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y, 8 / fps);
+    overlayStrength.alpha = easeValue(overlayStrength.alpha, 0, 8 / fps);
     overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
     overlayStrength.enabled = false;
   }

@@ -42,7 +42,7 @@ boolean stopExport=false;
 String exportPath;
 boolean exportButtonClicked=false;
 long lastDrawMillis=0;
-float frameRateOG=0.01;
+float fps=0.01;
 boolean settingsPage=false;
 long settingsPageMillis=0;
 
@@ -351,7 +351,7 @@ void draw() {
   
   lastWidth = width;
   lastHeight = height;
-  frameRateOG=1000.0/(millis()-lastDrawMillis);
+  fps=1000.0/(millis()-lastDrawMillis);
   lastDrawMillis=millis();  
 }
 
