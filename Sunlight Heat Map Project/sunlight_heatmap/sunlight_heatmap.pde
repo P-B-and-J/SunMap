@@ -50,6 +50,7 @@ color recolor2 = #14FF00;
 color recolor3 = #FFEA00;
 int recolorThreshold1 = 100;
 int recolorThreshold2 = 200;
+int imageProcessingResolution = 500;
 
 import javax.swing.*;
 import javax.swing.JFileChooser.*;
@@ -135,7 +136,7 @@ void setup() {
 }
 
 void draw() {
-  println(loadingProgress.targetPos / loadingProgress.barWidth);
+  //println(layeringProgress.targetPos / layeringProgress.barWidth);
   if ((focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)) && !settingsPage){
     noStroke();
     fill(backgroundColor);
@@ -234,21 +235,31 @@ void draw() {
     if (processImagesButton.click && !imagesLayered) {                      //>>> Layering images
       layering = true;
       counter = 0;
+      thread("layerImages");
     }
     
     if(layering && !imagesLayered){
       layeringProgress.visible = true;
-      layerImages(500);
+      layeringProgress.speed = 5;
+      //layerImages(500);
     }
     else{
-      layeringProgress.visible = false;
+      layeringProgress.speed = 10;
+      
+      
       layering = false;
     }                                                                       //<<< Layering images
     
     contrast = map(contrastSlider.value, 0, 10, 1.5, 8);                                        //>>> Setting contrast and brightness
     brightness = map(brightnessSlider.value, 0, 10, -50, 100);                               //<<<
   
-    if (imagesLayered) {                                                    //>>> Creating an image from layered image array, advancing UI to next phase
+    if (imagesLayered) {         //>>> Creating an image from layered image array, advancing UI to next phase
+      if(layeringProgress.targetPos / layeringProgress.barWidth == 1){
+        layeringProgress.visible = false;
+        counter = 0;
+        println("layering finished");
+      }
+      
       createImageFromArray();
       overlayToggle.visible = true;
       colorModeToggle.visible = true;
