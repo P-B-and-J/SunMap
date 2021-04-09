@@ -67,7 +67,7 @@ void exportThread() {
     if (!overlayToggle.toggled) {
       if (colorModeToggle.toggled) {
         exportProgress=.90;
-        PImage ErecoloredImage=recolor(ELayeredImage);
+        PImage ErecoloredImage=recolor(ELayeredImage, recolor1, recolor2, recolor3, recolorThreshold1, recolorThreshold2);
         exportProgress=.99;
         ErecoloredImage.save(exportPath);        
         launch(exportPath);

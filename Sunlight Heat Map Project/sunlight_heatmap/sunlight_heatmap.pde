@@ -45,6 +45,11 @@ long lastDrawMillis=0;
 float fps=0.01;
 boolean settingsPage=false;
 long settingsPageMillis=0;
+color recolor1 = #003393;
+color recolor2 = #14FF00;
+color recolor3 = #FFEA00;
+int recolorThreshold1 = 100;
+int recolorThreshold2 = 200;
 
 import javax.swing.*;
 import javax.swing.JFileChooser.*;
@@ -268,7 +273,7 @@ if((focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=hei
       //fill(backgroundColor);
       //rect(0, 0, width - sideBarWidth, height);
       if(colorModeToggle.toggled){
-        recoloredImage=recolor(layeredImage);
+        recoloredImage=recolor(layeredImage, recolor1, recolor2, recolor3, recolorThreshold1, recolorThreshold2);
         centeredImage(recoloredImage, buffer, topBarHeight + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarHeight);  //showing recolored image in main image viewer
       }
       else{
