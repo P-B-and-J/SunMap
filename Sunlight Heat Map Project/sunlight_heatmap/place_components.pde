@@ -133,7 +133,7 @@ void setVisibility() {
 
   if (layeringProgress.visible) {
     layeringProgress.speed=4;
-    println(counter+"/"+numImages);
+    //println(counter+"/"+numImages);
     layeringProgress.display(1.0 * counter / numImages);
     if(counter==numImages){
       layeringProgress.speed=20;
