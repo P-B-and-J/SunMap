@@ -11,7 +11,7 @@ void folderSelected(File selection) {
       saveStrings("path.txt", savePath);
     }else{
       //println("error, bad path");
-      errorBox.labelText = "The selected folder does not exist";
+      errorBox.labelText = "The folder you selected does not exist. The most recent folder will be used instead.";
     }
   }
 }

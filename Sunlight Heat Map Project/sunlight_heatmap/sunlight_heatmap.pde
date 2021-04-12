@@ -145,7 +145,7 @@ void draw() {
     fill(sideBarColor);
     rect(width - sideBarWidth, 0, sideBarWidth, height);
     sidebarGraphics.beginDraw();
-    sidebarGraphics.background(color(255,0));
+    sidebarGraphics.background(color(255, 255, 255, 0));
     sidebarGraphics.endDraw();
     fill(backgroundColor);
     rect(width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
@@ -358,4 +358,5 @@ void reset(){
   layeredImageCreated = false;
   newAnalysis.confirmButton.click = false;
   images.clear();
+  errorBox.labelText = "";
 }

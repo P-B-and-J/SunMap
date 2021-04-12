@@ -19,8 +19,8 @@ void initializeInputs() {
   selectFolder.visible = true;
   
   float errorBoxY = selectFolder.Y + selectFolder.folderHeight + selectFolder.buffer + selectFolder.buttonHeight + buffer;
-  errorBox = new Label(buffer, errorBoxY, sideBarWidth - 2 * buffer, processImagesButton.Y - buffer - errorBoxY, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
-  errorBox.textSize = 3 * labelSize;
+  errorBox = new Label(selectFolder.browseButton.X, errorBoxY, sideBarWidth - selectFolder.browseButton.X - buffer, processImagesButton.Y - buffer - errorBoxY, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  errorBox.setFont("SansSerif.italic", int(.9 * labelSize));
   errorBox.textColor = accentRed;
 
   smallLeftButton = new Button(width - sideBarWidth + buffer, buffer, miniViewWidth / 8, miniViewHeight);
@@ -126,6 +126,10 @@ void setVisibility() {
 
   if (selectFolder.visible) {
     selectFolder.display();
+    errorBox.display();
+  }
+  else{
+    errorBox.labelText = "";
   }
 
   if (processImagesButton.visible) {
@@ -203,7 +207,6 @@ void setVisibility() {
     float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
     exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
   }
-  errorBox.display();
   smallLeftButton.display();
   smallRightButton.display();
   bigLeftButton.display();

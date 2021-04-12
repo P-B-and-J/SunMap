@@ -1,8 +1,8 @@
 class Label {
   float x, y, labelWidth, labelHeight;
   String labelText = "";
-  float textSize;
   PFont font;
+  int textSize = 10;
   color textColor = #FFFFFF;
   editInt offsetX;
   editInt offsetY;
@@ -18,6 +18,7 @@ class Label {
     useG=true;
     offsetX=new editInt(0);
     offsetY=new editInt(0);
+    //font = createFont("SansSerif.italic", textSize);
   }
   Label(float _x, float _y, float _w, float _h, PGraphics _drawTo, editInt _offsetX, editInt _offsetY){
     this(_x,_y,_w,_h);
@@ -27,15 +28,18 @@ class Label {
     useG=false;
   }
   
+  void setFont(String fontName, int _textSize){ 
+    textSize = _textSize;
+    font = createFont(fontName, textSize);
+  }
+  
   void display(){
     if(!useG){
       drawTo.beginDraw();
     }
     drawTo.pushStyle();
     drawTo.noStroke();
-    if(font != null){
-      drawTo.textFont(font);
-    }
+    drawTo.textFont(font);
     drawTo.textSize(textSize);
     drawTo.fill(textColor);
     drawTo.text(labelText, int(x), int(y), int(labelWidth), int(labelHeight));
