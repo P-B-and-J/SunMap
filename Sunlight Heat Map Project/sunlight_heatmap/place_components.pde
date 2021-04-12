@@ -1,12 +1,12 @@
 void initializeInputs() {
   processImagesButton = new Button(/*width - sideBarWidth +*/ buffer, /*topBarHeight + buffer*/ height - buffer - 75, sideBarWidth - 2 * buffer, 80,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
-  processImagesButton.textSize = 25;
+  processImagesButton.textSize = 25; //HARDCODED
   processImagesButton.borderOn = false;
   processImagesButton.text = "Process Images";
   processImagesButton.visible = true;
 
   newAnalysis = new Two_Step_Button(/*width - sideBarWidth + */buffer, height - buffer - 75, sideBarWidth - 2 * buffer, 80,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
-  newAnalysis.textSize = 25;
+  newAnalysis.textSize = 25; //HARDCODED
   newAnalysis.mainText = "New Analysis";
   newAnalysis.primaryColor = accentBlue;
   newAnalysis.secondaryColor = accentRed;
@@ -22,33 +22,33 @@ void initializeInputs() {
   smallLeftButton.arrowOn = true;
   smallLeftButton.arrowDir = 0;
   smallLeftButton.primaryColor = color(#FFFFFF, 0);
-  smallLeftButton.borderWeight = 15;
+  smallLeftButton.borderWeight = 15; //HARDCODED
   smallLeftButton.visible = true;
 
   smallRightButton = new Button(width - buffer - miniViewWidth / 8, buffer, miniViewWidth / 8, miniViewHeight);
   smallRightButton.arrowOn = true;
   smallRightButton.arrowDir = 2;
   smallRightButton.primaryColor = color(#FFFFFF, 0);
-  smallRightButton.borderWeight = 15;
+  smallRightButton.borderWeight = 15; //HARDCODED
   smallRightButton.visible = true;
 
   bigLeftButton = new Button(0, topBarHeight + buffer, displayWidth / 20 * scaleFactor, height - topBarHeight-2*buffer);
   bigLeftButton.arrowOn = true;
   bigLeftButton.arrowDir = 0;
   bigLeftButton.primaryColor = color(#FFFFFF, 0);
-  bigLeftButton.borderWeight = 15;
+  bigLeftButton.borderWeight = 15; //HARDCODED
   bigLeftButton.visible = true;
 
   bigRightButton = new Button(width - sideBarWidth - displayWidth / 20 * scaleFactor, topBarHeight + buffer, displayWidth / 20 * scaleFactor, height - topBarHeight-2*buffer);
   bigRightButton.arrowOn = true;
   bigRightButton.arrowDir = 2;
   bigRightButton.primaryColor = color(#FFFFFF, 0);
-  bigRightButton.borderWeight = 15;
+  bigRightButton.borderWeight = 15; //HARDCODED
   bigRightButton.visible = true;
 
-  loadingX = selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer + 1;
+  loadingX = selectFolder.X + selectFolder.folderWidth + 2 * selectFolder.buffer + 1; //+1?
   loadingWidth = int(selectFolder.selectorWidth - (selectFolder.folderWidth + 3*selectFolder.buffer));
-  loadingHeight = int(selectFolder.textSize) + 10;
+  loadingHeight = int(selectFolder.textSize) + 10;  //HARDCODED
   loadingY = selectFolder.Y + selectFolder.folderHeight / 7 + (selectFolder.folderHeight - selectFolder.folderHeight / 7) / 2.5 - loadingHeight / 2;
   loadingProgress = new Progress_Bar(loadingX, loadingY, loadingWidth, loadingHeight,sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   loadingProgress.text = "\\sample_folder";
@@ -77,28 +77,35 @@ void initializeInputs() {
   overlayToggle.textSize = labelSize;
   overlayToggle.visible = false;
 
-  brightnessSlider = new Slider(/*width - sideBarWidth +*/ buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  brightnessSlider = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   brightnessSlider.Y = overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + buffer;
   brightnessSlider.labelBuffer = .7 * buffer;
   brightnessSlider.textSize = labelSize;
   brightnessSlider.floatingVal = false;
   brightnessSlider.visible = false;
 
-  contrastSlider = new Slider(/*width - sideBarWidth +*/ buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  contrastSlider = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
   contrastSlider.labelBuffer = .7 * buffer;
   contrastSlider.textSize = labelSize;
   contrastSlider.floatingVal = false;
   contrastSlider.visible = false;
   
-  saveButton = new Button(5, 5, topBarHeight - 5, topBarHeight - 5);
-  saveButton.primaryColor = color(#FFFFFF, 0);
-  saveButton.hoveredColor = accentBlue;
-  saveButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);
-  saveButton.borderOn = false;
-  saveButton.visible = true;
+  overlayStrength = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  overlayStrength.Y = contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer;
+  overlayStrength.labelBuffer = .7 * buffer;
+  overlayStrength.textSize = labelSize;
+  overlayStrength.floatingVal = false;
+  overlayStrength.visible = false;
   
-  exportButton = new Button(saveButton.X + saveButton.buttonWidth + 5, 5, topBarHeight - 5, topBarHeight - 5);
+  settingsButton = new Button(5, 5, topBarHeight - 5, topBarHeight - 5);
+  settingsButton.primaryColor = color(#FFFFFF, 0);
+  settingsButton.hoveredColor = accentBlue;
+  settingsButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);
+  settingsButton.borderOn = false;
+  settingsButton.visible = true;
+  
+  exportButton = new Button(settingsButton.X + settingsButton.buttonWidth + 5, 5, topBarHeight - 5, topBarHeight - 5);
   exportButton.primaryColor = color(#FFFFFF, 0);
   exportButton.hoveredColor = accentBlue;
   exportButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);
@@ -125,7 +132,16 @@ void setVisibility() {
   }
 
   if (layeringProgress.visible) {
+    layeringProgress.speed=4;
+    //println(counter+"/"+numImages);
     layeringProgress.display(1.0 * counter / numImages);
+    if(counter==numImages){
+      layeringProgress.speed=20;
+    }
+    if(layeringProgress.targetPos/layeringProgress.barWidth >= .995){
+      imagesLayered = true;
+      counter=0;
+    }
   }
 
   if (loadingProgress.visible) {
@@ -143,26 +159,43 @@ void setVisibility() {
   if (brightnessSlider.visible) {
     brightnessSlider.display("Brightness: " + int(brightnessSlider.value));
   }
-
-  if (contrastSlider.visible) {
-    contrastSlider.display("Contrast: " + int(contrastSlider.value));
+  
+  if (overlayStrength.visible) {
+    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer, 12 / fps);
+    overlayStrength.alpha = easeValue(overlayStrength.alpha, 255, 12 / fps);
+    overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
+    overlayStrength.enabled = true;
+  }
+  else{
+    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y, 8 / fps);
+    overlayStrength.alpha = easeValue(overlayStrength.alpha, 0, 8 / fps);
+    overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
+    overlayStrength.enabled = false;
   }
 
-  if (saveButton.visible){
-    saveButton.display();
-    float iconWidth = .5 * saveButton.buttonWidth;
+  if (contrastSlider.visible) {
+    contrastSlider.backgroundOn = true;
+    contrastSlider.backgroundColor = sideBarColor;
+    contrastSlider.display("Contrast: " + int(contrastSlider.value));
+  }
+  
+  
+
+  if (settingsButton.visible){
+    settingsButton.display();
+    float iconWidth = .5 * settingsButton.buttonWidth;
     float iconHeight = 1.2 * iconWidth;
-    float iconBufferX = (saveButton.buttonWidth - iconWidth) / 2;
-    float iconBufferY = (saveButton.buttonHeight - iconHeight) / 2;
-    saveIcon(saveButton.X + iconBufferX, saveButton.Y + iconBufferY, iconWidth, #FFFFFF);
+    float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
+    float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
+    saveIcon(settingsButton.X + iconBufferX, settingsButton.Y + iconBufferY, iconWidth, #FFFFFF);
   }
   
   if (exportButton.visible){
     exportButton.display();
-    float iconWidth = .5 * saveButton.buttonWidth;
+    float iconWidth = .5 * settingsButton.buttonWidth;
     float iconHeight = 1.2 * iconWidth;
-    float iconBufferX = (saveButton.buttonWidth - iconWidth) / 2;
-    float iconBufferY = (saveButton.buttonHeight - iconHeight) / 2;
+    float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
+    float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
     exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
   }
   smallLeftButton.display();

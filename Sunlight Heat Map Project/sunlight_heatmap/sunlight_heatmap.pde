@@ -16,9 +16,9 @@ float brightness = 0;
 color backgroundColor = #292929;
 color topBarColor = #242424;  //for custom title bar mode
 color sideBarColor;
-float sideBarWidth = 450;
-float topBarHeight = 70;
-float buffer = 50;  //something's wrong with the toggle class; it works if this is set to 50 but moves too far if it's set to 40
+float sideBarWidth;
+float topBarHeight;
+float buffer = 25;  //something's wrong with the toggle class; it works if this is set to 50 but moves too far if it's set to 40
 float miniViewWidth = sideBarWidth - 2 * buffer;
 float miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
 boolean layering = false;
@@ -28,7 +28,7 @@ color accentRed = #F00F16;
 int numInvalidImages = 0;
 float loadingX, loadingY;
 int loadingWidth, loadingHeight;
-float labelSize = 20;
+float labelSize = 20; //HARDCODED
 int previewImage = 0;
 PGraphics displayImages;
 int scaleFactor = 1;
@@ -37,7 +37,30 @@ editInt sidebarOffsetX = new editInt(0);
 editInt sidebarOffsetY = new editInt(0);
 int lastHeight=0;
 int lastWidth=0;
+float exportProgress=-1.0;
+boolean stopExport=false;
+String exportPath;
+boolean exportButtonClicked=false;
+long lastDrawMillis=0;
+float fps=0.01;
+boolean settingsPage=false;
+long settingsPageMillis=0;
+color recolor1 = #003393;
+color recolor2 = #14FF00;
+color recolor3 = #FFEA00;
+int recolorThreshold1 = 100;
+int recolorThreshold2 = 200;
+int layerImagesResolution = 500;
 
+import javax.swing.*;
+import javax.swing.JFileChooser.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import processing.awt.PSurfaceAWT.SmoothCanvas;
+import javax.swing.JFrame;
+import java.awt.Dimension;
+
+JFileChooser export;
+FileNameExtensionFilter png, jpg, tif, tga;
 Folder_Selector selectFolder;
 Button processImagesButton;
 Two_Step_Button newAnalysis;
@@ -45,16 +68,42 @@ Toggle colorModeToggle;
 Toggle overlayToggle;
 Slider brightnessSlider;
 Slider contrastSlider;
+Slider overlayStrength;
 Button smallLeftButton;
 Button smallRightButton;
 Button bigLeftButton;
 Button bigRightButton;
 Progress_Bar loadingProgress;
 Progress_Bar layeringProgress;
-Button saveButton;
+Button settingsButton;
 Button exportButton;
 
 void setup() {
+  try {
+    // Set System L&F
+    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+  } 
+  catch (UnsupportedLookAndFeelException e) {
+       // handle exception
+  }
+  catch (ClassNotFoundException e) {
+     // handle exception
+  }
+  catch (InstantiationException e) {
+     // handle exception
+  }
+  catch (IllegalAccessException e) {
+     // handle exception
+  }
+  
+  export = new JFileChooser();
+
+  export.setFileSelectionMode(JFileChooser.FILES_ONLY);
+  png = new FileNameExtensionFilter(".png", ".png");
+  jpg = new FileNameExtensionFilter(".jpg", ".jpg");
+  tif = new FileNameExtensionFilter(".tif", ".tif");
+  tga = new FileNameExtensionFilter(".tga", ".tga");
+  
   frameRate(120);
   colorMode(HSB);
   size(1920, 1080, JAVA2D);
@@ -62,12 +111,17 @@ void setup() {
   surface.setSize(2 * displayWidth / 4, 2 * displayHeight / 4);
   surface.setLocation(displayWidth / 12, displayHeight / 12);
   surface.setResizable(true);
-  sidebarGraphics=createGraphics(int(sideBarWidth), displayHeight);
+  sideBarWidth = 0.21 * displayWidth;
+  buffer = .02 * displayWidth;
+  miniViewWidth = sideBarWidth - 2 * buffer;
+  miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
+  topBarHeight = .075 * displayHeight;
+  sidebarGraphics = createGraphics(int(sideBarWidth), displayHeight);
   sidebarGraphics.smooth(3);
-  //sideBarWidth = 0.16 * displayWidth;
-  //buffer = .02 * displayWidth;
-  //miniViewWidth = sideBarWidth - 2 * buffer;
-  //miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
+  
+  SmoothCanvas sc = (SmoothCanvas) getSurface().getNative();
+  JFrame jf = (JFrame) sc.getFrame();
+  jf.setMinimumSize(new Dimension(2 * displayWidth / 4, 2 * displayHeight / 3));
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   
@@ -83,7 +137,7 @@ void setup() {
 }
 
 void draw() {
-  if(focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)){
+  if ((focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)) && !settingsPage){
     noStroke();
     fill(backgroundColor);
     rect(0, 0, width - sideBarWidth, height);
@@ -95,7 +149,7 @@ void draw() {
     fill(backgroundColor);
     rect(width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
     
-    println(frameRate);
+    //println(frameRate);
     
     setCoords();
   
@@ -122,22 +176,28 @@ void draw() {
         loading = true;
         counter = 0;
         numInvalidImages = 0;
+        thread("loadImages");
       }
     }                                                                       //<<< folder selection
     
     if(loading && !imagesLoaded){                                           //Image loading >>>
-      loadImages();
       if(loadingProgress.text != selectFolder.folderReadout){
         loadingProgress.text = selectFolder.folderReadout;
         loadingProgress.textSize = selectFolder.textSize;
         loadingProgress.begin();
       }
       loadingProgress.visible = true;
-      //selectFolder.useFolderButton.enabled = false;
+      loadingProgress.speed = 1;
+      selectFolder.useFolderButton.text = "Loading";
+      selectFolder.useFolderButton.enabled = false;
     }
     else{
       loading=false;
-      loadingProgress.visible = false;
+      loadingProgress.speed = 10;
+      if(loadingProgress.targetPos / loadingProgress.barWidth == 1){
+        loadingProgress.visible = false;
+      }
+      selectFolder.useFolderButton.text = "Load Files";
       selectFolder.useFolderButton.enabled = true;
     }                                                                       //<<< Image loading
     
@@ -175,11 +235,11 @@ void draw() {
     if (processImagesButton.click && !imagesLayered) {                      //>>> Layering images
       layering = true;
       counter = 0;
+      thread("layerImages");
     }
     
     if(layering && !imagesLayered){
       layeringProgress.visible = true;
-      layerImages(400);
     }
     else{
       layeringProgress.visible = false;
@@ -221,7 +281,7 @@ void draw() {
       //fill(backgroundColor);
       //rect(0, 0, width - sideBarWidth, height);
       if(colorModeToggle.toggled){
-        recolor();
+        recoloredImage=recolor(layeredImage, recolor1, recolor2, recolor3, recolorThreshold1, recolorThreshold2);
         centeredImage(recoloredImage, buffer, topBarHeight + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarHeight);  //showing recolored image in main image viewer
       }
       else{
@@ -230,26 +290,43 @@ void draw() {
       
       
       if(overlayToggle.toggled){
-        tint(255, 160);
+        overlayStrength.visible = true;
+        tint(255, map(overlayStrength.value, 0, 10, 100, 220));
         centeredImage(images.get(previewImage), buffer, topBarHeight + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarHeight);  //showing first image as an overlay
         noTint();
       } 
+      else{
+        overlayStrength.visible = false;
+      }
       
       if(exportButton.click){
-        if(!overlayToggle.toggled){
-          if(colorModeToggle.toggled){
-            recoloredImage.save("test_photo_recolored.png");
-          }
-          else{
-            layeredImage.save("test_photo_grayscale.png");
-          }
+        export.addChoosableFileFilter(png);
+        export.addChoosableFileFilter(jpg);
+        export.addChoosableFileFilter(tif);
+        export.addChoosableFileFilter(tga);
+        export.setAcceptAllFileFilterUsed(false);
+        export.setMultiSelectionEnabled(false);
+        export.setDialogType(JFileChooser.SAVE_DIALOG); //not sure why this is necessary but it is a workaround for a bug in the JFileChooser class that results in export button text not being set properly
+        export.setDialogTitle("Export Image");
+        export.setApproveButtonText("Export");
+        int returnVal = export.showSaveDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+          exportPath = export.getSelectedFile().getAbsolutePath() + export.getFileFilter().getDescription();
+          exportButtonClicked = true;
         }
         else{
-          
+          exportPath = null;
         }
+        //selectOutput("choose where to save", "exportFileSelected", dataFile(folderPath+"/export.png"));
       }
-    }                                                                                    //<<< Displaying images in their proper locations
+    }       //<<< Displaying images in their proper locations
     
+    //println(exportPath);
+    if(exportPath!=null&&exportButtonClicked){
+        thread("exportThread");
+        exportButtonClicked=false;
+    }
+      
     if(newAnalysis.confirmed){                                                           // Reset vvv
       reset();
     }
@@ -258,8 +335,13 @@ void draw() {
 
     image(sidebarGraphics,width-sideBarWidth,0);
   }
+  
+  showSettings();
+  
   lastWidth = width;
   lastHeight = height;
+  fps=1000.0/(millis()-lastDrawMillis);
+  lastDrawMillis=millis();  
 }
 
 class editInt{
@@ -274,4 +356,5 @@ void reset(){
   imagesLayered = false;
   layeredImageCreated = false;
   newAnalysis.confirmButton.click = false;
+  images.clear();
 }

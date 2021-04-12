@@ -29,10 +29,21 @@ class Slider {
   editInt offsetX;
   editInt offsetY;
   boolean useG=false;
+  float alpha = 255;
+  boolean enabled = true;
+  color backgroundColor;
+  boolean backgroundOn = false;
+  boolean sticky = false;
+  boolean tickMarks = false;
+  boolean endpoints = false;
+  int clickDiff = 25;
+  int hoverDiff = 30;
+  
   Slider(float _X, float _Y, float _sliderLength){
     X = _X;
     Y = _Y;
     sliderLength = _sliderLength;
+    value = (max - min) / 2;
     position = map(value, min, max, radius, sliderLength - radius);
     drawTo=g;
     useG=true;
@@ -77,6 +88,10 @@ class Slider {
     
     
     value = map(position, radius, sliderLength - radius, min, max);
+    if(sticky){
+      value = round(value);
+      position = map(value, min, max, radius, sliderLength - radius);
+    }
   }
   
   void showValue(){
@@ -90,30 +105,57 @@ class Slider {
     drawTo.popStyle();
   }
   
+  void drawBackground(){
+    drawTo.pushStyle();
+    drawTo.noStroke();
+    drawTo.fill(backgroundColor);
+    drawTo.rect(X - radius, Y - labelBuffer - textSize, sliderLength + 2 * radius, textSize + labelBuffer + 1.5 * radius);
+    drawTo.popStyle();
+  }
+  
+  void drawTickMarks(){
+    drawTo.pushStyle();
+    drawTo.stroke(secondaryColor, alpha);
+    drawTo.strokeCap(ROUND);
+    drawTo.strokeWeight(weight / 2);
+    for(int i = int(min); i <= max; i++){
+      drawTo.line(X + map(i, min, max, radius, sliderLength - radius), Y - 1.5 * radius, X + map(i, min, max, radius, sliderLength - radius), Y + 1.5 * radius);
+    }
+    drawTo.pushStyle();
+  }
+  
   void display(String label){
-    detectDrag();
+    if(enabled){
+      detectDrag();
+    }
     if(!useG){
       drawTo.beginDraw();
+    }
+    if(backgroundOn){
+      drawBackground();
+    }
+    if(tickMarks){
+      drawTickMarks();
     }
     drawTo.pushStyle();
     drawTo.colorMode(HSB);
     drawTo.strokeCap(ROUND);
-    drawTo.stroke(primaryColor);
+    drawTo.stroke(primaryColor, alpha);
     drawTo.strokeWeight(weight);
     drawTo.line(X, Y, X + position, Y);
-    drawTo.stroke(secondaryColor);
+    drawTo.stroke(secondaryColor, alpha);
     drawTo.line(X + position, Y, X + sliderLength, Y);
     if(pressed){
-      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25);
-      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25); 
+      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - clickDiff, alpha);
+      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - clickDiff, alpha); 
     }
     else if((mouseX-offsetX.val) > X - radius && (mouseX-offsetX.val) < X + sliderLength + radius && (mouseY-offsetY.val) > Y - radius && (mouseY-offsetY.val) < Y + radius){
-      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30);
-      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30);
+      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + hoverDiff, alpha);
+      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + hoverDiff, alpha);
     }
     else{
-      drawTo.fill(primaryColor);
-      drawTo.stroke(primaryColor);
+      drawTo.fill(primaryColor, alpha);
+      drawTo.stroke(primaryColor, alpha);
     }
     if(style == 1){
       drawTo.ellipse(X + position, Y, radius * 2, radius * 2);
@@ -130,7 +172,7 @@ class Slider {
     if(label != null){
       drawTo.pushStyle();
       drawTo.textSize(textSize);
-      drawTo.fill(textColor);
+      drawTo.fill(textColor, alpha);
       drawTo.text(label, X, Y - labelBuffer);
       drawTo.popStyle();
     }
