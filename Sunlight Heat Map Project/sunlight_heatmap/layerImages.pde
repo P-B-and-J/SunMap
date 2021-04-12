@@ -50,7 +50,7 @@ void exportThread() {
     //imageHeight = tempImage.height;
     tImage.loadPixels();
     for (int i = 0; i < EPixVal.length; i++) {
-      EPixVal[i] = EPixVal[i] + 1.0 * bitShiftBrightness(tImage.pixels[i]) / ENumImages;
+      EPixVal[i] = EPixVal[i] + 1.0 * brightness(tImage.pixels[i]) / ENumImages;
     }
     ECounter++;
     exportProgress=.5*ECounter/ENumImages;
