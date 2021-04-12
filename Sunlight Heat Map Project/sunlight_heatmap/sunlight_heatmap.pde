@@ -50,6 +50,7 @@ color recolor2 = #14FF00;
 color recolor3 = #FFEA00;
 int recolorThreshold1 = 100;
 int recolorThreshold2 = 200;
+int layerImagesResolution = 500;
 
 import javax.swing.*;
 import javax.swing.JFileChooser.*;
@@ -59,7 +60,8 @@ import javax.swing.JFrame;
 import java.awt.Dimension;
 
 JFileChooser export;
-FileNameExtensionFilter png, jpg, tif, tga;Folder_Selector selectFolder;
+FileNameExtensionFilter png, jpg, tif, tga;
+Folder_Selector selectFolder;
 Button processImagesButton;
 Two_Step_Button newAnalysis;
 Toggle colorModeToggle;
@@ -135,7 +137,6 @@ void setup() {
 }
 
 void draw() {
-  println(loadingProgress.targetPos / loadingProgress.barWidth);
   if ((focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)) && !settingsPage){
     noStroke();
     fill(backgroundColor);
@@ -238,7 +239,7 @@ void draw() {
     
     if(layering && !imagesLayered){
       layeringProgress.visible = true;
-      layerImages(500);
+      layerImages();
     }
     else{
       layeringProgress.visible = false;

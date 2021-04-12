@@ -66,6 +66,7 @@ void initializeInputs() {
   layeringProgress.primaryColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 20);
   layeringProgress.rectOn = false;
   layeringProgress.begin();
+  layeringProgress.smooth=false;
 
   colorModeToggle = new Toggle(/*width - sideBarWidth +*/ buffer, 0, 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   colorModeToggle.Y = miniViewHeight + colorModeToggle.labelBuffer + 2 * buffer;
@@ -132,7 +133,12 @@ void setVisibility() {
   }
 
   if (layeringProgress.visible) {
-    layeringProgress.display(1.0 * counter / numImages);
+    println(counter+"/"+numImages);
+    if(counter==0){
+      layeringProgress.display(1.0);
+    }else{
+      layeringProgress.display(1.0 * counter / numImages);
+    }
   }
 
   if (loadingProgress.visible) {
