@@ -25,11 +25,14 @@ void createImageFromArray() {
   layeredImageCreated = true;
   counter=0;
 }
-
 void exportThread() {
   float Econtrast=contrast;
   float Ebrightness=brightness;
   exportProgress=0.0;
+  PImage EOverImg=images.get(previewImage);
+  boolean overlayToggletoggled=overlayToggle.toggled;
+  boolean colorModeToggletoggled=colorModeToggle.toggled;
+  float overlayStrengthvalue=overlayStrength.value;
   ArrayList<PImage> EImages=new ArrayList<PImage>(images.size());
   if (!stopExport) {
     for (PImage im : images) {
@@ -61,20 +64,28 @@ void exportThread() {
       ELayeredImage.pixels[i] = bitShiftColor(int((EPixVal[i]-127) * Econtrast + 127 + Ebrightness));
     }
     ELayeredImage.updatePixels();
-    if (!overlayToggle.toggled) {
-      if (colorModeToggle.toggled) {
-        exportProgress=.90;
-        PImage ErecoloredImage=recolor(ELayeredImage, recolor1, recolor2, recolor3, recolorThreshold1, recolorThreshold2);
-        exportProgress=.99;
-        ErecoloredImage.save(exportPath);        
-        launch(exportPath);
-      } else {
-        exportProgress=.99;
-        ELayeredImage.save(exportPath);
-        launch(exportPath);
+    if (!overlayToggletoggled) {
+      exportProgress=.90;
+      if (colorModeToggletoggled) {
+        ELayeredImage=recolor(ELayeredImage, recolor1, recolor2, recolor3, recolorThreshold1, recolorThreshold2);
       }
+      exportProgress=.99;
+      ELayeredImage.save(exportPath);
+      launch(exportPath);
     } else {
-      //TODO: overlay yay
+      if(colorModeToggletoggled){
+         ELayeredImage=recolor(ELayeredImage, recolor1, recolor2, recolor3, recolorThreshold1, recolorThreshold2);
+      }
+      PGraphics exportPG=createGraphics(EImageWidth,EImageHeight);
+      exportPG.beginDraw();
+      exportPG.image(ELayeredImage,0,0);
+      exportPG.tint(255, map(overlayStrengthvalue, 0, 10, 100, 220));
+      exportPG.image(EOverImg,0,0);
+      exportPG.noTint();
+      exportPG.endDraw();
+      exportProgress=.99;
+      exportPG.get().save(exportPath);
+      launch(exportPath);
     }
   }
   exportProgress=-1.0;
