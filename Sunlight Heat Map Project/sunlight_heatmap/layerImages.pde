@@ -13,8 +13,6 @@ void layerImages() {
       pixVal[i] = pixVal[i] + 1.0 * bitShiftBrightness(tempImage.pixels[i]) / numImages;
     }
   }
-  imagesLayered = true;
-  counter=0;
 }
 
 void createImageFromArray() {
