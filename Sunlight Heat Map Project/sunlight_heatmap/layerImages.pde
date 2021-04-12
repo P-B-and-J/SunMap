@@ -1,5 +1,5 @@
 void layerImages() {
-  if (counter<numImages) {
+  while (counter<numImages) {
     PImage tempImage = images.get(counter).get();
     tempImage.resize(layerImagesResolution, 0);
     imageWidth = tempImage.width;
@@ -12,10 +12,9 @@ void layerImages() {
     for (int i = 0; i < pixVal.length; i++) {
       pixVal[i] = pixVal[i] + 1.0 * bitShiftBrightness(tempImage.pixels[i]) / numImages;
     }
-  } else {
-    imagesLayered = true;
-    counter=0;
   }
+  imagesLayered = true;
+  counter=0;
 }
 
 void createImageFromArray() {

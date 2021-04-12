@@ -235,11 +235,11 @@ void draw() {
     if (processImagesButton.click && !imagesLayered) {                      //>>> Layering images
       layering = true;
       counter = 0;
+      thread("layerImages");
     }
     
     if(layering && !imagesLayered){
       layeringProgress.visible = true;
-      layerImages();
     }
     else{
       layeringProgress.visible = false;
