@@ -13,10 +13,15 @@ void initializeInputs() {
   newAnalysis.visible = false;
   newAnalysis.begin();
 
-  selectFolder = new Folder_Selector(/*width - sideBarWidth +*/ buffer, miniViewHeight + 2 * buffer, sideBarWidth - 2 * buffer,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
+  selectFolder = new Folder_Selector(/*width - sideBarWidth +*/ buffer, miniViewHeight + 2 * buffer, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   selectFolder.useFolderButton.primaryColor = accentBlue;
   selectFolder.useFolderButton.visible = false;
   selectFolder.visible = true;
+  
+  float errorBoxY = selectFolder.Y + selectFolder.folderHeight + selectFolder.buffer + selectFolder.buttonHeight + buffer;
+  errorBox = new Label(buffer, errorBoxY, sideBarWidth - 2 * buffer, processImagesButton.Y - buffer - errorBoxY, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  errorBox.textSize = 3 * labelSize;
+  errorBox.textColor = accentRed;
 
   smallLeftButton = new Button(width - sideBarWidth + buffer, buffer, miniViewWidth / 8, miniViewHeight);
   smallLeftButton.arrowOn = true;
@@ -198,6 +203,7 @@ void setVisibility() {
     float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
     exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
   }
+  errorBox.display();
   smallLeftButton.display();
   smallRightButton.display();
   bigLeftButton.display();
@@ -235,4 +241,6 @@ void setCoords() {
   bigLeftButton.buttonHeight = height - topBarHeight-2*buffer;
   bigRightButton.buttonWidth = displayWidth / 20 * scaleFactor;
   bigRightButton.buttonHeight = height - topBarHeight-2*buffer;
+  
+  errorBox.labelHeight = processImagesButton.Y - buffer - errorBox.y;
 }

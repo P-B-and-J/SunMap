@@ -10,7 +10,8 @@ void folderSelected(File selection) {
       String[] savePath = {folderPath};
       saveStrings("path.txt", savePath);
     }else{
-      println("error, bad path");
+      //println("error, bad path");
+      errorBox.labelText = "The selected folder does not exist";
     }
   }
 }

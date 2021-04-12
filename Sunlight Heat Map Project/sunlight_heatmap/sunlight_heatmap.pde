@@ -77,6 +77,7 @@ Progress_Bar loadingProgress;
 Progress_Bar layeringProgress;
 Button settingsButton;
 Button exportButton;
+Label errorBox;
 
 void setup() {
   try {
