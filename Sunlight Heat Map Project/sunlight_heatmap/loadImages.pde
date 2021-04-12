@@ -4,9 +4,14 @@ void folderSelected(File selection) {
   } 
   else {
     //println("User selected " + selection.getAbsolutePath());
-    folderPath = selection.getAbsolutePath();
-    String[] savePath = {folderPath};
-    saveStrings("path.txt", savePath);
+    File file = new File(selection.getAbsolutePath());
+    if (file.isDirectory()) {
+      folderPath = selection.getAbsolutePath();
+      String[] savePath = {folderPath};
+      saveStrings("path.txt", savePath);
+    }else{
+      println("error, bad path");
+    }
   }
 }
 
