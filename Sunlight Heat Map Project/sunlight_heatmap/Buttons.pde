@@ -19,6 +19,7 @@ class Button {
   boolean visible;
   boolean arrowOn = false;
   int arrowDir = 0;
+  boolean menu = false;
   boolean borderOn = true;
   color pressedColor = 256;
   color hoveredColor = 256;
@@ -26,6 +27,20 @@ class Button {
   editInt offsetX;
   editInt offsetY;
   boolean useG=false;
+  boolean toggle = false;
+  
+  //vars for menu icon. For now, works best if the button is a square
+  float topX1 = 100;
+  float topX2 = 150;
+  float topY1 = 100;
+  float topY2 = 100;
+  float bottomX1 = 100;
+  float bottomX2 = 150;
+  float bottomY1 = 150;
+  float bottomY2 = 150;
+  float middleY;
+  float alpha = 255;
+  int speed = 10;
   
   Button(float _X, float _Y, float _buttonWidth, float _buttonHeight){
     X = _X;
@@ -37,6 +52,15 @@ class Button {
     useG=true;
     offsetX=new editInt(0);
     offsetY=new editInt(0);
+    topX1 = X + buttonHeight / 6;
+    topX2 = X + 5 * buttonHeight / 6;
+    topY1 = Y + buttonHeight / 6;
+    topY2 = Y + buttonHeight / 6;
+    bottomX1 = X + buttonHeight / 6;
+    bottomX2 = X + 5 * buttonHeight / 6;
+    bottomY1 = Y + 5 * buttonHeight / 6;
+    bottomY2 = Y + 5 * buttonHeight / 6;
+    middleY = (bottomY1 + topY1) / 2;
   }
   Button(float _X, float _Y, float _buttonWidth, float _buttonHeight, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
     this(_X,_Y,_buttonWidth,_buttonHeight);
@@ -105,6 +129,48 @@ class Button {
     drawTo.popStyle();
   }
   
+  void drawMenuIcon(){
+    float x1 = X + buttonHeight / 6;
+    float x2 = X + 5 * buttonHeight / 6;
+    float y1 = Y + buttonHeight / 6;
+    float y2 = Y + 5 * buttonHeight / 6;
+    if(toggle){
+      topY2 = easeValue(topY2, y2, speed / frameRate);
+      bottomY2 = easeValue(bottomY2, y1, speed / frameRate);
+      
+      topX1 = easeValue(topX1, x2, speed / frameRate);
+      topX2 = easeValue(topX2, x1, speed / frameRate);
+      bottomX1 = easeValue(bottomX1, x2, speed / frameRate);
+      bottomX2 = easeValue(bottomX2, x1, speed / frameRate);
+      
+      alpha = easeValue(alpha, 0, 2 * speed / frameRate);
+    }
+    else{
+      topY2 = easeValue(topY2, y1, speed / frameRate);
+      bottomY2 = easeValue(bottomY2, y2, speed / frameRate);
+      
+      topX1 = easeValue(topX1, x1, speed / frameRate);
+      topX2 = easeValue(topX2, x2, speed / frameRate);
+      bottomX1 = easeValue(bottomX1, x1, speed / frameRate);
+      bottomX2 = easeValue(bottomX2, x2, speed / frameRate);
+      
+      alpha = easeValue(alpha, 255, 2 * speed / frameRate);
+    }
+    
+    drawTo.pushStyle();
+    drawTo.stroke(255);
+    drawTo.strokeWeight(5);
+    drawTo.line(topX1, topY1, topX2, topY2);
+    drawTo.line(bottomX1, bottomY1, bottomX2, bottomY2);
+    drawTo.popStyle();
+    
+    drawTo.pushStyle();
+    drawTo.stroke(255, alpha);
+    drawTo.strokeWeight(5);
+    drawTo.line(x1, middleY, topX2, middleY);
+    drawTo.popStyle();
+  }
+  
   void display(){
     if(enabled){
       detectClick();
@@ -112,6 +178,11 @@ class Button {
     else{
       click = false;
     }
+    
+    if(click){
+      toggle = !toggle;
+    }
+    
     if(!useG){
       drawTo.beginDraw();
     }
@@ -154,6 +225,9 @@ class Button {
     drawText();
     drawTo.popStyle();
     drawTo.popStyle();
+    if(menu){
+      drawMenuIcon();
+    }
     if(!useG){
       drawTo.endDraw();
     }

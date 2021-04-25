@@ -1,4 +1,17 @@
+editInt settingsOffsetX, settingsOffsetY;
+
 void initializeInputs() {
+  settingsOffsetX = new editInt(0);
+  settingsOffsetY = new editInt(0);
+  
+  settingsButton = new Button(width - topBarHeight / 2 - buffer, buffer / 2, topBarHeight / 2, topBarHeight / 2, settings, settingsOffsetX, settingsOffsetY);
+  settingsButton.primaryColor = color(#FFFFFF, 0);
+  settingsButton.hoveredColor = settingsButton.primaryColor;
+  settingsButton.pressedColor = settingsButton.primaryColor;/*color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);*/
+  settingsButton.borderOn = false;
+  settingsButton.visible = true;
+  settingsButton.menu = true;
+  
   processImagesButton = new Button(/*width - sideBarWidth +*/ buffer, /*topBarHeight + buffer*/ height - buffer - 75, sideBarWidth - 2 * buffer, 80,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
   processImagesButton.textSize = 25; //HARDCODED
   processImagesButton.borderOn = false;
@@ -13,7 +26,9 @@ void initializeInputs() {
   newAnalysis.visible = false;
   newAnalysis.begin();
 
-  selectFolder = new Folder_Selector(/*width - sideBarWidth +*/ buffer, miniViewHeight + 2 * buffer, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  miniViewY = settingsButton.Y + settingsButton.buttonHeight + buffer / 2;
+  
+  selectFolder = new Folder_Selector(/*width - sideBarWidth +*/ buffer, miniViewY + miniViewHeight + buffer, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   selectFolder.useFolderButton.primaryColor = accentBlue;
   selectFolder.useFolderButton.visible = false;
   selectFolder.visible = true;
@@ -23,14 +38,14 @@ void initializeInputs() {
   errorBox.setFont("SansSerif.italic", int(.9 * labelSize));
   errorBox.textColor = accentRed;
 
-  smallLeftButton = new Button(width - sideBarWidth + buffer, buffer, miniViewWidth / 8, miniViewHeight);
+  smallLeftButton = new Button(width - sideBarWidth + buffer, miniViewY, miniViewWidth / 8, miniViewHeight);
   smallLeftButton.arrowOn = true;
   smallLeftButton.arrowDir = 0;
   smallLeftButton.primaryColor = color(#FFFFFF, 0);
   smallLeftButton.borderWeight = 15; //HARDCODED
   smallLeftButton.visible = true;
 
-  smallRightButton = new Button(width - buffer - miniViewWidth / 8, buffer, miniViewWidth / 8, miniViewHeight);
+  smallRightButton = new Button(width - buffer - miniViewWidth / 8, miniViewY, miniViewWidth / 8, miniViewHeight);
   smallRightButton.arrowOn = true;
   smallRightButton.arrowDir = 2;
   smallRightButton.primaryColor = color(#FFFFFF, 0);
@@ -73,7 +88,7 @@ void initializeInputs() {
   layeringProgress.begin();
 
   colorModeToggle = new Toggle(/*width - sideBarWidth +*/ buffer, 0, 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
-  colorModeToggle.Y = miniViewHeight + colorModeToggle.labelBuffer + 2 * buffer;
+  colorModeToggle.Y = miniViewY + miniViewHeight + colorModeToggle.labelBuffer + buffer;
   colorModeToggle.textSize = labelSize;
   colorModeToggle.visible = false;
 
@@ -102,13 +117,6 @@ void initializeInputs() {
   overlayStrength.textSize = labelSize;
   overlayStrength.floatingVal = false;
   overlayStrength.visible = false;
-  
-  settingsButton = new Button(5, 5, topBarHeight - 5, topBarHeight - 5);
-  settingsButton.primaryColor = color(#FFFFFF, 0);
-  settingsButton.hoveredColor = accentBlue;
-  settingsButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);
-  settingsButton.borderOn = false;
-  settingsButton.visible = true;
   
   exportButton = new Button(settingsButton.X + settingsButton.buttonWidth + 5, 5, topBarHeight - 5, topBarHeight - 5);
   exportButton.primaryColor = color(#FFFFFF, 0);
@@ -192,21 +200,16 @@ void setVisibility() {
 
   if (settingsButton.visible){
     settingsButton.display();
-    float iconWidth = .5 * settingsButton.buttonWidth;
-    float iconHeight = 1.2 * iconWidth;
-    float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
-    float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
-    saveIcon(settingsButton.X + iconBufferX, settingsButton.Y + iconBufferY, iconWidth, #FFFFFF);
   }
   
-  if (exportButton.visible){
-    exportButton.display();
-    float iconWidth = .5 * settingsButton.buttonWidth;
-    float iconHeight = 1.2 * iconWidth;
-    float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
-    float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
-    exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
-  }
+  //if (exportButton.visible){
+    //exportButton.display();
+    //float iconWidth = .5 * settingsButton.buttonWidth;
+    //float iconHeight = 1.2 * iconWidth;
+    //float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
+    //float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
+    //exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
+  //}
   smallLeftButton.display();
   smallRightButton.display();
   bigLeftButton.display();
@@ -246,4 +249,6 @@ void setCoords() {
   bigRightButton.buttonHeight = height - topBarHeight-2*buffer;
   
   errorBox.labelHeight = processImagesButton.Y - buffer - errorBox.y;
+  
+  settingsButton.X = width - settingsButton.buttonWidth - buffer;
 }

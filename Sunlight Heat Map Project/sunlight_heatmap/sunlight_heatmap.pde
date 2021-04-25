@@ -45,12 +45,15 @@ long lastDrawMillis=0;
 float fps=0.01;
 boolean settingsPage=false;
 long settingsPageMillis=0;
+PGraphics settings;
 color recolor1 = #003393;
 color recolor2 = #14FF00;
 color recolor3 = #FFEA00;
 int recolorThreshold1 = 100;
 int recolorThreshold2 = 200;
 int layerImagesResolution = 500;
+float miniViewX, miniViewY;
+
 
 import javax.swing.*;
 import javax.swing.JFileChooser.*;
@@ -113,12 +116,14 @@ void setup() {
   surface.setLocation(displayWidth / 12, displayHeight / 12);
   surface.setResizable(true);
   sideBarWidth = 0.21 * displayWidth;
-  buffer = .02 * displayWidth;
+  buffer = .015 * displayWidth;
   miniViewWidth = sideBarWidth - 2 * buffer;
   miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
   topBarHeight = .075 * displayHeight;
   sidebarGraphics = createGraphics(int(sideBarWidth), displayHeight);
   sidebarGraphics.smooth(3);
+  settings = createGraphics(displayWidth, displayHeight);
+  settings.smooth(3);
   
   SmoothCanvas sc = (SmoothCanvas) getSurface().getNative();
   JFrame jf = (JFrame) sc.getFrame();
@@ -138,7 +143,7 @@ void setup() {
 }
 
 void draw() {
-  if ((focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)) && !settingsPage){
+  if ((focused||frameCount<5||loading||layering||(lastWidth!=width||lastHeight!=height)) && !settingsPage && !settingsButton.click){
     noStroke();
     fill(backgroundColor);
     rect(0, 0, width - sideBarWidth, height);
@@ -148,7 +153,13 @@ void draw() {
     sidebarGraphics.background(color(255, 255, 255, 0));
     sidebarGraphics.endDraw();
     fill(backgroundColor);
-    rect(width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
+    miniViewX = width - sideBarWidth + buffer;
+    miniViewY = settingsButton.Y + settingsButton.buttonHeight + buffer / 2;
+    rect(miniViewX, miniViewY, miniViewWidth, miniViewHeight);
+    
+    settings.beginDraw();
+    settings.background(color(255, 255, 255, 0));
+    settings.endDraw();
     
     //println(frameRate);
     
@@ -209,7 +220,7 @@ void draw() {
       if(!layeredImageCreated){
         centeredImage(images.get(previewImage), buffer, topBarHeight + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarHeight);
       }
-      centeredImage(images.get(previewImage), width - sideBarWidth + buffer, buffer, miniViewWidth, miniViewHeight);
+      centeredImage(images.get(previewImage), width - sideBarWidth + buffer, miniViewY, miniViewWidth, miniViewHeight);
       
       
       if(smallRightButton.click || bigRightButton.click){  //Image cycling still isn't working

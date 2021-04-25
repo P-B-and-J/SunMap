@@ -7,10 +7,11 @@ void showSettings(){
     settingsPageMillis=millis();
   }
   
+  settings.beginDraw();
   if(settingsPage){
     
-    fill(backgroundColor,constrain(map(millis()-settingsPageMillis, 0, fadeSpeed, 0, opacity), 0, opacity));
-    rect(0,0,width,height);
+    settings.fill(backgroundColor,constrain(map(millis()-settingsPageMillis, 0, fadeSpeed, 0, opacity), 0, opacity));
+    settings.rect(0,0,width,height);
     
     
     //if(millis()-settingsPageMillis<animationTime){
@@ -21,16 +22,19 @@ void showSettings(){
     //}
   }
   else{
-    fill(backgroundColor,constrain(map(millis()-settingsPageMillis, fadeSpeed, 0, 0, opacity), 0, opacity));
-    rect(0,0,width,height);
+    settings.fill(backgroundColor,constrain(map(millis()-settingsPageMillis, fadeSpeed, 0, 0, opacity), 0, opacity));
+    settings.rect(0,0,width,height);
   }
   
-  if (settingsButton.visible){
+  //if (settingsButton.visible){
     settingsButton.display();
-    float iconWidth = .5 * settingsButton.buttonWidth;
-    float iconHeight = 1.2 * iconWidth;
-    float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
-    float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
-    saveIcon(settingsButton.X + iconBufferX, settingsButton.Y + iconBufferY, iconWidth, #FFFFFF);
-  }
+    //float iconWidth = .5 * settingsButton.buttonWidth;
+    //float iconHeight = 1.2 * iconWidth;
+    //float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
+    //float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
+    //saveIcon(settingsButton.X + iconBufferX, settingsButton.Y + iconBufferY, iconWidth, #FFFFFF);
+  //}
+  
+  image(settings, 0, 0);
+  settings.endDraw();
 }
