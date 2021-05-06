@@ -46,13 +46,13 @@ float fps=0.01;
 boolean settingsPage=false;
 long settingsPageMillis=0;
 PGraphics settings;
-color recolor1 = #003393;
-color recolor2 = #14FF00;
-color recolor3 = #FFEA00;
+color[][] colorPalette = {{#003393, #14FF00, #FFEA00}, {#FF0000, #FFFF00, #00FF00}};
+int recolorID = 0;
 int recolorThreshold1 = 100;
 int recolorThreshold2 = 200;
 int layerImagesResolution = 500;
 float miniViewX, miniViewY;
+color settingsTextColor = 255;
 
 
 import javax.swing.*;
@@ -128,12 +128,14 @@ void setup() {
   SmoothCanvas sc = (SmoothCanvas) getSurface().getNative();
   JFrame jf = (JFrame) sc.getFrame();
   jf.setMinimumSize(new Dimension(2 * displayWidth / 4, 2 * displayHeight / 3));
+  ((java.awt.Canvas) surface.getNative()).requestFocus();
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
   
   background(backgroundColor);
   
   initializeInputs();
+  BGYSel.toggle = true;
   
   String[] loadPath = loadStrings("path.txt");
   
@@ -154,7 +156,7 @@ void draw() {
     sidebarGraphics.endDraw();
     fill(backgroundColor);
     miniViewX = width - sideBarWidth + buffer;
-    miniViewY = settingsButton.Y + settingsButton.buttonHeight + buffer / 2;
+    miniViewY = /*settingsButton.Y + settingsButton.buttonHeight + */buffer /*/ 2*/;
     rect(miniViewX, miniViewY, miniViewWidth, miniViewHeight);
     
     settings.beginDraw();
@@ -293,7 +295,7 @@ void draw() {
       //fill(backgroundColor);
       //rect(0, 0, width - sideBarWidth, height);
       if(colorModeToggle.toggled){
-        recoloredImage=recolor(layeredImage, recolor1, recolor2, recolor3, recolorThreshold1, recolorThreshold2);
+        recoloredImage=recolor(layeredImage, colorPalette[recolorID][0], colorPalette[recolorID][1], colorPalette[recolorID][2], recolorThreshold1, recolorThreshold2);
         centeredImage(recoloredImage, buffer, topBarHeight + buffer, width - 2 * buffer - sideBarWidth, height - 2 * buffer - topBarHeight);  //showing recolored image in main image viewer
       }
       else{

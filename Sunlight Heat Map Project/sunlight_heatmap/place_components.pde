@@ -1,16 +1,34 @@
 editInt settingsOffsetX, settingsOffsetY;
 
+Button BGYSel, RYGSel, customRecolor;
+
 void initializeInputs() {
   settingsOffsetX = new editInt(0);
   settingsOffsetY = new editInt(0);
   
-  settingsButton = new Button(width - topBarHeight / 2 - buffer, buffer / 2, topBarHeight / 2, topBarHeight / 2, settings, settingsOffsetX, settingsOffsetY);
+  settingsButton = new Button(/*width - topBarHeight / 2 - */buffer / 2, buffer / 2, topBarHeight / 2, topBarHeight / 2, settings, settingsOffsetX, settingsOffsetY);
   settingsButton.primaryColor = color(#FFFFFF, 0);
   settingsButton.hoveredColor = settingsButton.primaryColor;
   settingsButton.pressedColor = settingsButton.primaryColor;/*color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);*/
   settingsButton.borderOn = false;
   settingsButton.visible = true;
   settingsButton.menu = true;
+  //settingsButton.select = true;
+  
+  BGYSel = new Button(3 * buffer, topBarHeight + 2.5 * buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  BGYSel.text = "BGY";
+  BGYSel.borderOn = false;
+  BGYSel.select = true;
+  
+  RYGSel = new Button(3 * buffer, BGYSel.Y + BGYSel.buttonHeight + buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  RYGSel.text = "RYG";
+  RYGSel.borderOn = false;
+  RYGSel.select = true;
+  
+  customRecolor = new Button(3 * buffer, RYGSel.Y + RYGSel.buttonHeight + buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  customRecolor.text = "Custom";
+  customRecolor.borderOn = false;
+  customRecolor.select = true;
   
   processImagesButton = new Button(/*width - sideBarWidth +*/ buffer, /*topBarHeight + buffer*/ height - buffer - 75, sideBarWidth - 2 * buffer, 80,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
   processImagesButton.textSize = 25; //HARDCODED
@@ -132,6 +150,10 @@ void setVisibility() {
   //  testProgressBar.display(1.0 * counter / numImages);
   //}
 
+  //if(BGYSel.visible){
+  //  BGYSel.display();
+  //}
+  
   if (selectFolder.visible) {
     selectFolder.display();
     errorBox.display();
@@ -250,5 +272,5 @@ void setCoords() {
   
   errorBox.labelHeight = processImagesButton.Y - buffer - errorBox.y;
   
-  settingsButton.X = width - settingsButton.buttonWidth - buffer;
+  settingsButton.X = /*width - settingsButton.buttonWidth - */buffer / 2;
 }

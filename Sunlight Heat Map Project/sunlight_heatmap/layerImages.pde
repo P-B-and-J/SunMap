@@ -67,14 +67,14 @@ void exportThread() {
     if (!overlayToggletoggled) {
       exportProgress=.90;
       if (colorModeToggletoggled) {
-        ELayeredImage=recolor(ELayeredImage, recolor1, recolor2, recolor3, recolorThreshold1, recolorThreshold2);
+        ELayeredImage=recolor(ELayeredImage, colorPalette[recolorID][0], colorPalette[recolorID][1], colorPalette[recolorID][2], recolorThreshold1, recolorThreshold2);
       }
       exportProgress=.99;
       ELayeredImage.save(exportPath);
       launch(exportPath);
     } else {
       if(colorModeToggletoggled){
-         ELayeredImage=recolor(ELayeredImage, recolor1, recolor2, recolor3, recolorThreshold1, recolorThreshold2);
+         ELayeredImage=recolor(ELayeredImage, colorPalette[recolorID][0], colorPalette[recolorID][1], colorPalette[recolorID][2], recolorThreshold1, recolorThreshold2);
       }
       PGraphics exportPG=createGraphics(EImageWidth,EImageHeight);
       exportPG.beginDraw();

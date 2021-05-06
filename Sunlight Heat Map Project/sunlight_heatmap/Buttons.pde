@@ -28,6 +28,7 @@ class Button {
   editInt offsetY;
   boolean useG=false;
   boolean toggle = false;
+  boolean select = false;
   
   //vars for menu icon. For now, works best if the button is a square
   float topX1 = 100;
@@ -100,11 +101,17 @@ class Button {
   
   void drawText(){
     drawTo.pushStyle();
-    drawTo.textAlign(CENTER, CENTER);
     drawTo.textFont(font);
     drawTo.textSize(textSize);
     drawTo.fill(textColor);
-    drawTo.text(text, X + buttonWidth / 2, Y + buttonHeight / 2);
+    if(select){
+      drawTo.textAlign(LEFT, CENTER);
+      drawTo.text(text, X + buttonWidth + .75 * buffer, Y + buttonHeight / 2 - textSize / 9.75);
+    }
+    else{
+      drawTo.textAlign(CENTER, CENTER);
+      drawTo.text(text, X + buttonWidth / 2, Y + buttonHeight / 2);
+    }
   }
   
   void drawArrow(){
@@ -135,8 +142,8 @@ class Button {
     float y1 = Y + buttonHeight / 6;
     float y2 = Y + 5 * buttonHeight / 6;
     if(toggle){
-      topY2 = easeValue(topY2, y2, speed / frameRate);
-      bottomY2 = easeValue(bottomY2, y1, speed / frameRate);
+      topY1 = easeValue(topY1, y2, speed / frameRate);
+      bottomY1 = easeValue(bottomY1, y1, speed / frameRate);
       
       topX1 = easeValue(topX1, x2, speed / frameRate);
       topX2 = easeValue(topX2, x1, speed / frameRate);
@@ -146,8 +153,8 @@ class Button {
       alpha = easeValue(alpha, 0, 2 * speed / frameRate);
     }
     else{
-      topY2 = easeValue(topY2, y1, speed / frameRate);
-      bottomY2 = easeValue(bottomY2, y2, speed / frameRate);
+      topY1 = easeValue(topY1, y1, speed / frameRate);
+      bottomY1 = easeValue(bottomY1, y2, speed / frameRate);
       
       topX1 = easeValue(topX1, x1, speed / frameRate);
       topX2 = easeValue(topX2, x2, speed / frameRate);
@@ -159,15 +166,31 @@ class Button {
     
     drawTo.pushStyle();
     drawTo.stroke(255);
-    drawTo.strokeWeight(5);
+    drawTo.strokeWeight(buttonHeight / 8);
     drawTo.line(topX1, topY1, topX2, topY2);
     drawTo.line(bottomX1, bottomY1, bottomX2, bottomY2);
     drawTo.popStyle();
     
     drawTo.pushStyle();
     drawTo.stroke(255, alpha);
-    drawTo.strokeWeight(5);
-    drawTo.line(x1, middleY, topX2, middleY);
+    drawTo.strokeWeight(buttonHeight / 8);
+    drawTo.line(x2, middleY, topX1, middleY);
+    drawTo.popStyle();
+  }
+  
+  void drawSelectCircle(){
+    primaryColor = color(255, 0);
+    hoveredColor = color(255, 0);
+    pressedColor = color(255, 0);
+    drawTo.pushStyle();
+    drawTo.stroke(textColor);
+    drawTo.noFill();
+    drawTo.strokeWeight(buttonHeight / 8);
+    drawTo.ellipse(X + buttonWidth / 2, Y + buttonHeight / 2, buttonWidth, buttonHeight);
+    if(toggle){
+      drawTo.fill(textColor);
+      drawTo.ellipse(X + buttonWidth / 2, Y + buttonHeight / 2, buttonWidth / 3, buttonHeight / 3);
+    }
     drawTo.popStyle();
   }
   
@@ -179,7 +202,7 @@ class Button {
       click = false;
     }
     
-    if(click){
+    if(click && !select){
       toggle = !toggle;
     }
     
@@ -227,6 +250,9 @@ class Button {
     drawTo.popStyle();
     if(menu){
       drawMenuIcon();
+    }
+    if(select){
+      drawSelectCircle();
     }
     if(!useG){
       drawTo.endDraw();
