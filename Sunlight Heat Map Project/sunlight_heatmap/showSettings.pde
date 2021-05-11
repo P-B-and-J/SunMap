@@ -19,9 +19,14 @@ void showSettings(){
     settings.fill(settingsTextColor);
     settings.textSize(.015 * displayWidth * scaleFactor);
     settings.text("Recolor Style:", 2 * buffer, topBarHeight + buffer);
+    settings.pushStyle();
+    settings.textAlign(CENTER, CENTER);
+    settings.text("More settings coming soon", width / 2, height / 2);
+    settings.popStyle();
     BGYSel.display();
     RYGSel.display();
-    customRecolor.display();
+    //customRecolor.display();
+    
     
     if(BGYSel.click){
       BGYSel.toggle = true;

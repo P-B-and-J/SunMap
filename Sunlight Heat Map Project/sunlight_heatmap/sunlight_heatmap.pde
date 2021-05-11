@@ -111,13 +111,13 @@ void setup() {
   
   frameRate(120);
   colorMode(HSB);
-  size(1920, 1080, JAVA2D);
+  size(500, 500, JAVA2D);
   noSmooth();
   surface.setSize(2 * displayWidth / 4, 2 * displayHeight / 4);
   surface.setLocation(displayWidth / 12, displayHeight / 12);
   surface.setResizable(true);
   sideBarWidth = 0.21 * displayWidth;
-  buffer = .015 * displayWidth;
+  buffer = .017 * displayWidth;
   miniViewWidth = sideBarWidth - 2 * buffer;
   miniViewHeight = 9 * (sideBarWidth - 2 * buffer) / 16;
   topBarHeight = .075 * displayHeight;
@@ -131,7 +131,7 @@ void setup() {
   
   SmoothCanvas sc = (SmoothCanvas) getSurface().getNative();
   JFrame jf = (JFrame) sc.getFrame();
-  jf.setMinimumSize(new Dimension(2 * displayWidth / 4, 2 * displayHeight / 3));
+  jf.setMinimumSize(new Dimension(2 * displayWidth / 3, 5 * displayHeight / 6));
   ((java.awt.Canvas) surface.getNative()).requestFocus();
 
   sideBarColor = color(hue(backgroundColor), saturation(backgroundColor), brightness(backgroundColor) + 10);
@@ -274,6 +274,7 @@ void draw() {
       colorModeToggle.visible = true;
       brightnessSlider.visible = true;
       contrastSlider.visible = true;
+      exportButton.visible = true;
       selectFolder.visible = false;
     }
     else{
@@ -281,7 +282,7 @@ void draw() {
       colorModeToggle.visible = false;
       brightnessSlider.visible = false;
       contrastSlider.visible = false;
-      //contrastSlider.visible = true; 
+      exportButton.visible = false;
       selectFolder.visible = true;
     }
     
@@ -377,4 +378,7 @@ void reset(){
   newAnalysis.confirmButton.click = false;
   images.clear();
   errorBox.labelText = "";
+  colorModeToggle.toggled = false;
+  overlayToggle.toggled = false;
+  overlayStrength.visible = false;
 }

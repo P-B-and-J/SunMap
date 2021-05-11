@@ -105,43 +105,46 @@ void initializeInputs() {
   layeringProgress.rectOn = false;
   layeringProgress.begin();
 
-  colorModeToggle = new Toggle(/*width - sideBarWidth +*/ buffer, 0, 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
-  colorModeToggle.Y = miniViewY + miniViewHeight + colorModeToggle.labelBuffer + buffer;
+  colorModeToggle = new Toggle(/*width - sideBarWidth +*/ buffer, 0, .038 * displayWidth, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  colorModeToggle.labelBuffer = .7 * buffer;
+  colorModeToggle.Y = miniViewY + miniViewHeight + colorModeToggle.labelBuffer + 1.15 * buffer;
   colorModeToggle.textSize = labelSize;
   colorModeToggle.visible = false;
 
-  overlayToggle = new Toggle(/*width - sideBarWidth +*/ buffer, 0, 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
-  overlayToggle.Y = colorModeToggle.Y + colorModeToggle.slotRadius + overlayToggle.labelBuffer + buffer;
+  overlayToggle = new Toggle(/*width - sideBarWidth +*/ buffer, 0, .038 * displayWidth, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  overlayToggle.labelBuffer = .7 * buffer;
+  overlayToggle.Y = colorModeToggle.Y + colorModeToggle.slotRadius + overlayToggle.labelBuffer + 1.15 * buffer;
   overlayToggle.textSize = labelSize;
   overlayToggle.visible = false;
 
   brightnessSlider = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
-  brightnessSlider.Y = overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + buffer;
   brightnessSlider.labelBuffer = .7 * buffer;
+  brightnessSlider.Y = overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + 1.15 * buffer;
   brightnessSlider.textSize = labelSize;
   brightnessSlider.floatingVal = false;
   brightnessSlider.visible = false;
 
   contrastSlider = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
-  contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
   contrastSlider.labelBuffer = .7 * buffer;
+  contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + 1.15 * buffer;
   contrastSlider.textSize = labelSize;
   contrastSlider.floatingVal = false;
   contrastSlider.visible = false;
   
   overlayStrength = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
-  overlayStrength.Y = contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer;
   overlayStrength.labelBuffer = .7 * buffer;
+  overlayStrength.Y = contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + 1.15 * buffer;
   overlayStrength.textSize = labelSize;
   overlayStrength.floatingVal = false;
   overlayStrength.visible = false;
   
-  exportButton = new Button(settingsButton.X + settingsButton.buttonWidth + 5, 5, topBarHeight - 5, topBarHeight - 5);
-  exportButton.primaryColor = color(#FFFFFF, 0);
-  exportButton.hoveredColor = accentBlue;
-  exportButton.pressedColor = color(hue(accentBlue), saturation(accentBlue), brightness(accentBlue) + 30);
+  exportButton = new Button(buffer, 0, sideBarWidth / 3, sideBarWidth / 8, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  exportButton.primaryColor = accentBlue;
+  exportButton.textColor = 255;
+  exportButton.textSize = labelSize;
+  exportButton.text = "Export...";
   exportButton.borderOn = false;
-  exportButton.visible = true;
+  exportButton.visible = false;
 }
 
 
@@ -200,7 +203,8 @@ void setVisibility() {
   }
   
   if (overlayStrength.visible) {
-    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + buffer, 12 / fps);
+    //brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
+    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + 1.15 * buffer, 12 / fps);
     overlayStrength.alpha = easeValue(overlayStrength.alpha, 255, 12 / fps);
     overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
     overlayStrength.enabled = true;
@@ -225,13 +229,19 @@ void setVisibility() {
   }
   
   if (exportButton.visible){
+    exportButton.Y = overlayStrength.Y + overlayStrength.radius + 1.15 * buffer;
     exportButton.display();
-    float iconWidth = .5 * settingsButton.buttonWidth;
-    float iconHeight = 1.2 * iconWidth;
-    float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
-    float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
-    exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
   }
+  
+  
+  //float iconWidth = .5 * settingsButton.buttonWidth;
+    //float iconHeight = 1.2 * iconWidth;
+    //float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
+    //float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
+    //exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
+    
+    
+    
   smallLeftButton.display();
   smallRightButton.display();
   bigLeftButton.display();
