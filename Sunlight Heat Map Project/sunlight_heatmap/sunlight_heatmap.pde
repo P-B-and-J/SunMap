@@ -160,7 +160,7 @@ void draw() {
     sidebarGraphics.endDraw();
     fill(backgroundColor);
     miniViewX = width - sideBarWidth + buffer;
-    miniViewY = /*settingsButton.Y + settingsButton.buttonHeight + */buffer /*/ 2*/;
+    miniViewY = buffer;
     rect(miniViewX, miniViewY, miniViewWidth, miniViewHeight);
     
     settings.beginDraw();

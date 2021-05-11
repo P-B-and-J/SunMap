@@ -44,7 +44,7 @@ void initializeInputs() {
   newAnalysis.visible = false;
   newAnalysis.begin();
 
-  miniViewY = settingsButton.Y + settingsButton.buttonHeight + buffer / 2;
+  miniViewY = buffer;
   
   selectFolder = new Folder_Selector(/*width - sideBarWidth +*/ buffer, miniViewY + miniViewHeight + buffer, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   selectFolder.useFolderButton.primaryColor = accentBlue;
@@ -224,14 +224,14 @@ void setVisibility() {
     settingsButton.display();
   }
   
-  //if (exportButton.visible){
-    //exportButton.display();
-    //float iconWidth = .5 * settingsButton.buttonWidth;
-    //float iconHeight = 1.2 * iconWidth;
-    //float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
-    //float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
-    //exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
-  //}
+  if (exportButton.visible){
+    exportButton.display();
+    float iconWidth = .5 * settingsButton.buttonWidth;
+    float iconHeight = 1.2 * iconWidth;
+    float iconBufferX = (settingsButton.buttonWidth - iconWidth) / 2;
+    float iconBufferY = (settingsButton.buttonHeight - iconHeight) / 2;
+    exportIcon(exportButton.X + iconBufferX, exportButton.Y + iconBufferY, iconWidth, #FFFFFF);
+  }
   smallLeftButton.display();
   smallRightButton.display();
   bigLeftButton.display();

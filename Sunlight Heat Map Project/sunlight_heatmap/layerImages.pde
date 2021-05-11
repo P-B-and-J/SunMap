@@ -1,7 +1,7 @@
 void layerImages() {
   while (counter<numImages) {
     PImage tempImage = images.get(counter).get();
-    tempImage.resize(layerImagesResolution, 0);
+    //tempImage.resize(layerImagesResolution, 0);
     imageWidth = tempImage.width;
     imageHeight = tempImage.height;
     if (counter == 0) {

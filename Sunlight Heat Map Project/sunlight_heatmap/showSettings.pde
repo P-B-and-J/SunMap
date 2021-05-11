@@ -18,7 +18,7 @@ void showSettings(){
 
     settings.fill(settingsTextColor);
     settings.textSize(.015 * displayWidth * scaleFactor);
-    settings.text("Recolor Mode:", 2 * buffer, topBarHeight + buffer);
+    settings.text("Recolor Style:", 2 * buffer, topBarHeight + buffer);
     BGYSel.display();
     RYGSel.display();
     customRecolor.display();

@@ -25,15 +25,16 @@ String[] listFileNames(String dir) {
   return null;
 }
 
-
+String[] filenames;
 void loadImages() {
-  String[] filenames = listFileNames(folderPath);
-  if (filenames!=null) {
-    numImages=filenames.length;
-    while(counter<numImages){
-      String fileName=filenames[counter];
+  filenames = listFileNames(folderPath);
+  if (filenames != null) {
+    numImages = filenames.length;
+    while(counter < numImages){
+      String fileName = filenames[counter];
       PImage tempImage = loadImage(folderPath + "/" + fileName);
-      if (tempImage!=null) {
+      if (tempImage != null) {
+        tempImage.resize(layerImagesResolution, 0);
         images.add(tempImage);
         if (firstImage == null) {
           firstImage = tempImage;
