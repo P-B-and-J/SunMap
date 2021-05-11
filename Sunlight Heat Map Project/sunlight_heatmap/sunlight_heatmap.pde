@@ -61,6 +61,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import processing.awt.PSurfaceAWT.SmoothCanvas;
 import javax.swing.JFrame;
 import java.awt.Dimension;
+import java.awt.*;
 
 JFileChooser export;
 FileNameExtensionFilter png, jpg, tif, tga;
@@ -125,6 +126,9 @@ void setup() {
   settings = createGraphics(displayWidth, displayHeight);
   settings.smooth(3);
   
+  PImage sunMap = loadImage("icon.png");
+  surface.setIcon(sunMap);
+  
   SmoothCanvas sc = (SmoothCanvas) getSurface().getNative();
   JFrame jf = (JFrame) sc.getFrame();
   jf.setMinimumSize(new Dimension(2 * displayWidth / 4, 2 * displayHeight / 3));
@@ -184,7 +188,7 @@ void draw() {
       selectFolder.useFolderButton.visible = true;
     }
     
-    if(selectFolder.useFolderButton.click){
+    if(selectFolder.useFolderButton.click && !layering){
       reset();
       if(!imagesLoaded){
         loading = true;
@@ -241,6 +245,7 @@ void draw() {
       //println(previewImage);
     }
     else{
+      
       processImagesButton.enabled = false;
       processImagesButton.primaryColor = #5D5D5D;
       processImagesButton.textColor = color(#FFFFFF, 150);
