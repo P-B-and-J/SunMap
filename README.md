@@ -12,3 +12,6 @@ For best results, we recommend:
   2. Using a tripod. The program does not automatically align images so this is very important for good results.
   3. Taking photos at regular intervals over a large part of the day (the whole day if possible).
   4. Using a camera with a time lapse function if available. Not necessary, but it will avoid the need to keep going back to the camera to take pictures.
+
+
+Note: SunMap.exe may be flagged by certain systems as a potential threat due to the fact that it is unsigned. We regret this issue but we are a small team of developers and cannot currently afford to purchase a code signing signature. SunMap does not "phone home" or connect to the internet in any way, or modify system memory in any way (with the exception of saving exported photos and settings), however we encourage you to download and examine the source code if you have any concerns. Thank you for choosing SunMap!
