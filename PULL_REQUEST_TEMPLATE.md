@@ -1,6 +1,6 @@
-#### Issue number:
+#### Issue number: 
 
 #### Changes made:
 - 
 
-- [ ] Issue resolved?
+- [x] Issue resolved?
