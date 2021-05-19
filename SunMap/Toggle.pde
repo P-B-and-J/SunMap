@@ -32,9 +32,7 @@ class Toggle{
   boolean useG=false;
 
   
-  Toggle(float _X, float _Y, float _slotLength){
-    X = _X;
-    Y = _Y;
+  Toggle(float _slotLength){
     slotLength = _slotLength;
     slotWidth = slotLength / 2.5;
     slotRadius = slotWidth / 2;
@@ -43,8 +41,7 @@ class Toggle{
     offsetX=new editInt(0);
     offsetY=new editInt(0);
   }
-  Toggle(float _X, float _Y, float _slotLength, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
-    this(_X,_Y,_slotLength);
+void drawTo(PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
     drawTo=_drawTo;
     offsetX=_offsetX;
     offsetY=_offsetY;
@@ -100,7 +97,9 @@ class Toggle{
  // void drawSlot(){
     
   
-  void display(String label, String on, String off){
+  void display(float _X,float _Y,String label, String on, String off){
+    X=_X;
+    Y=_Y;
     if(!useG){
       drawTo.beginDraw();
     }

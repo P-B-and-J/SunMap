@@ -46,7 +46,7 @@ float fps=0.01;
 boolean settingsPage=false;
 long settingsPageMillis=0;
 PGraphics settings;
-color[][] colorPalette = {{#003393, #14FF00, #FFEA00}, {#FF0000, #FFFF00, #00FF00}};
+color[][] colorPalette = {{#003393, #14FF00, #FFEA00}, {#FF0000, #FFFF00, #00FF00}, {#DDDDDD, #999999, #444444}};
 int recolorID = 0;
 int recolorThreshold1 = 100;
 int recolorThreshold2 = 200;

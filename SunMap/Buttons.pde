@@ -21,6 +21,7 @@ class Button {
   int arrowDir = 0;
   boolean menu = false;
   boolean borderOn = true;
+  color borderColor = 255;
   color pressedColor = 256;
   color hoveredColor = 256;
   PGraphics drawTo;
@@ -63,7 +64,7 @@ class Button {
     bottomY2 = Y + 5 * buttonHeight / 6;
     middleY = (bottomY1 + topY1) / 2;
   }
-  Button(float _X, float _Y, float _buttonWidth, float _buttonHeight, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
+  Button(float _X, float _Y, float _buttonWidth, float _buttonHeight, PGraphics _drawTo, editInt _offsetX, editInt _offsetY){
     this(_X,_Y,_buttonWidth,_buttonHeight);
     drawTo=_drawTo;
     offsetX=_offsetX;
@@ -237,7 +238,7 @@ class Button {
     }
     else{
       drawTo.fill(primaryColor);
-      drawTo.stroke(primaryColor);
+      drawTo.stroke(borderColor);
     }
     drawTo.strokeCap(SQUARE);
     drawTo.strokeWeight(borderWeight);

@@ -1,5 +1,3 @@
-
-
 void showSettings(){
   final int fadeSpeed = 100;
   final int opacity = 255;
@@ -25,7 +23,7 @@ void showSettings(){
     settings.popStyle();
     BGYSel.display();
     RYGSel.display();
-    //customRecolor.display();
+    customRecolor.display();
     
     
     if(BGYSel.click){
@@ -44,8 +42,54 @@ void showSettings(){
       customRecolor.toggle = true;
       BGYSel.toggle = false;
       RYGSel.toggle = false;
-      //recolorID = 2;
+      recolorID = 2;
     }
+    
+    if(recolorID == 2){
+      color1.display();
+      color2.display();
+      color3.display();
+      //recolorCP.display(int(3 * buffer), int(customRecolor.Y + 2 * buffer));
+    }
+    recolorCP.y=int(color1.Y+2*buffer);
+    
+    if(color1.click){
+      color2.toggle = false;
+      color3.toggle = false;
+    }
+    if(color1.toggle){  
+      color1.borderOn = true;
+      recolorCP.display(int(3 * buffer), recolorCP.y);
+    }
+    else{
+      color1.borderOn = false;
+    }
+    
+    if(color2.click){
+      color1.toggle = false;
+      color3.toggle = false;
+    }
+    if(color2.toggle){
+      color2.borderOn = true;
+      recolorCP.display(int(3 * buffer), recolorCP.y);
+    }
+    else{
+      color2.borderOn = false;
+    }
+    
+    if(color3.click){
+      color1.toggle = false;
+      color2.toggle = false;
+    }
+    if(color3.toggle){
+      color3.borderOn = true;
+      recolorCP.display(int(3 * buffer), recolorCP.y);
+    }
+    else{
+      color3.borderOn = false;
+    }
+          
+    
     //if(millis()-settingsPageMillis<animationTime){
     //  fill(map(1.0*(millis()-settingsPageMillis)/animationTime,0.0,1.0,brightness(backgroundColor)+30,brightness(backgroundColor)));
     //  circle(settingsButton.X+settingsButton.buttonWidth/2,settingsButton.Y+settingsButton.buttonHeight/2,2*dist(0,0,width,height)*(millis()-settingsPageMillis)/animationTime);
@@ -56,8 +100,6 @@ void showSettings(){
   else{
     settings.fill(backgroundColor,constrain(map(millis()-settingsPageMillis, fadeSpeed, 0, 0, opacity), 0, opacity));
     settings.rect(0,0,width,height);
-    
-    BGYSel.visible = false;
   }
   
   //if (settingsButton.visible){
@@ -74,6 +116,8 @@ void showSettings(){
 }
 
 
+Button color1, color2, color3;
+
 void placeSettings(){
   BGYSel = new Button(3 * buffer, topBarHeight + 2.5 * buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
   BGYSel.text = "BGY";
@@ -89,4 +133,29 @@ void placeSettings(){
   customRecolor.text = "Custom";
   customRecolor.borderOn = false;
   customRecolor.select = true;
+  
+  color1 = new Button(4 * buffer, customRecolor.Y + 2 * buffer, .015 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  color1.borderOn = false;
+  color1.borderColor = accentBlue;
+  color1.primaryColor = colorPalette[2][0];
+  color1.hoveredColor = color1.primaryColor;
+  color1.pressedColor = color1.primaryColor;
+  
+  color2 = new Button(color1.X + color1.buttonWidth + buffer, customRecolor.Y + 2 * buffer, .015 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  color2.borderOn = false;
+  color2.borderColor = accentBlue;
+  color2.primaryColor = colorPalette[2][1];
+  color2.hoveredColor = color2.primaryColor;
+  color2.pressedColor = color2.primaryColor;
+  
+  color3 = new Button(color2.X + color2.buttonWidth + buffer, customRecolor.Y + 2 * buffer, .015 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  color3.borderOn = false;
+  color3.borderColor = accentBlue;
+  color3.primaryColor = colorPalette[2][2];
+  color3.hoveredColor = color3.primaryColor;
+  color3.pressedColor = color3.primaryColor;
+  
+  
+  recolorCP=new Color_Picker(1,#FFFFFF,displayWidth/10);
+  recolorCP.drawTo(settings, settingsOffsetX, settingsOffsetY);
 }
