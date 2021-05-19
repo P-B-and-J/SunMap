@@ -1,3 +1,9 @@
+class editInt {
+  int val;
+  editInt(int v) {
+    val=v;
+  }
+}
 class Color_Picker {
   private PImage picker;
   private int type;
@@ -8,17 +14,25 @@ class Color_Picker {
   private boolean clickedInsideAxis;
   private boolean lastPressed;
   private color pickedColor;
-  int x=100;
-  int y=50;
+  private color lastColor;
+  int x=0;
+  int y=0;
   private int size;
   private PGraphics graphics;
+  private editInt offsetX;
+  private editInt offsetY;
+  private boolean useG;
 
   Color_Picker(int _type, color defaultColor, int _size) {
     graphics=g;
+    offsetX=new editInt(0);
+    offsetY=new editInt(0);
+    useG=true;
     size=_size;
-    deconstructColor(defaultColor);
-    pickedColor = defaultColor;
     type=_type;
+    lastColor=defaultColor;
+    setPickedColor(defaultColor);
+    pickedColor = defaultColor;
     picker = createImage(size, size, RGB);
     clickedInside = false;
     clickedInsideAxis = false;
@@ -40,19 +54,34 @@ class Color_Picker {
     deconstructColor(c);
   }
 
+  boolean colorChanged() {
+    boolean ret = (pickedColor != lastColor);
+    lastColor = pickedColor;
+    return ret;
+  }
+
   void display(int _x, int _y) {
     x=_x;
     y=_y;
+    if (!useG) {
+      graphics.beginDraw();
+    }
+    graphics.pushStyle();
+    graphics.colorMode(HSB);
     displayAxisXY();
     displayAxisZ();
     handleInteraction();
+    graphics.popStyle();
+    if (!useG) {
+      graphics.endDraw();
+    }
   }
 
   private void handleInteraction() {
-    if (mousePressed &&!lastPressed&& hovered(x, y, size, size)) {
+    if (mousePressed &&!lastPressed && hovered(x, y, size, size)) {
       clickedInside=true;
     }
-    if (mousePressed &&!lastPressed&& hovered(size*1.1+x, y, size*.1, y+size)) {
+    if (mousePressed &&!lastPressed && hovered(size*1.1+x, y, size*.1, y+size)) {
       clickedInsideAxis=true;
     }
     if (!mousePressed) {
@@ -62,36 +91,45 @@ class Color_Picker {
     }
     if (clickedInside) {
       //noCursor();
-      axisx = constrain(mouseX, x, x+size)-x;
-      axisy = constrain(mouseY, y, y+size)-y;
+      axisx = constrain(mouseX-offsetX.val, x, x+size)-x;
+      axisy = constrain(mouseY-offsetY.val, y, y+size)-y;
     }
     if (clickedInsideAxis) {
-      axisz=constrain(mouseY, y, y+size)-y;
+      axisz=constrain(mouseY-offsetX.val, y, y+size)-y;
+    }
+    if (clickedInside||clickedInsideAxis) {
+      if (type == 1) {
+        pickedColor= color(map(axisz, 0, size, 0, 255), map(axisx, 0, size, 0, 255), map(axisy, 0, size, 255, 0));
+      } else if (type == 2) {
+        pickedColor= color(map(axisx, 0, size, 0, 255), map(axisy, 0, size, 0, 255), map(axisz, 0, size, 255, 0));
+      } else if (type == 3) {
+        pickedColor=color(map(axisx, 0, size, 0, 255), map(axisz, 0, size, 255, 0), map(axisy, size, 0, 0, 255));
+      }
     }
     lastPressed=mousePressed;
-    pushStyle();
-    fill(pickedColor);
-    stroke(255);
-    strokeWeight(2);
-    circle(axisx+x, axisy+y, size/16);
-    popStyle();
+    graphics.pushStyle();
+    graphics.fill(pickedColor);
+    graphics.stroke(255);
+    graphics.strokeWeight(2);
+    graphics.circle(axisx+x, axisy+y, size/16);
+    graphics.popStyle();
 
-    strokeWeight(size/80);
-    stroke(255);
-    line(x+size*1.1, axisz+y, x+size*1.2, axisz+y);
+    graphics.strokeWeight(size/80);
+    graphics.stroke(255);
+    graphics.line(x+size*1.1, axisz+y, x+size*1.2, axisz+y);
   }
 
   private void displayAxisZ() {
     for (int i=0; i<size; i++) {
-      strokeWeight(1);
+      graphics.strokeWeight(1);
       if (type == 1) {
-        stroke(color(map(i, 0, size, 0, 255), 255, 255));
+        graphics.stroke(color(map(i, 0, size, 0, 255), 255, 255));
       } else if (type == 2) {
-        stroke(color(map(axisx, 0, size, 0, 255), map(axisy, 0, size, 0, 255), map(i, 0, size, 255, 0)));
+        graphics.stroke(color(map(axisx, 0, size, 0, 255), map(axisy, 0, size, 0, 255), map(i, 0, size, 255, 0)));
       } else if (type == 3) {
-        stroke(color(map(axisx, 0, size, 0, 255), map(i, 0, size, 255, 0), map(axisy, size, 0, 0, 255)));
+        graphics.stroke(color(map(axisx, 0, size, 0, 255), map(i, 0, size, 255, 0), map(axisy, size, 0, 0, 255)));
       }
-      line(x+size*1.1, i+y, x+size*1.2, i+y);
+      graphics.line(x+size*1.1, i+y, x+size*1.2, i+y);
     }
   }
 
@@ -109,14 +147,7 @@ class Color_Picker {
       }
     }
     picker.updatePixels();
-    if (type == 1) {
-      pickedColor= color(map(axisz, 0, size, 0, 255), map(axisx, 0, size, 0, 255), map(axisy, 0, size, 255, 0));
-    } else if (type == 2) {
-      pickedColor= color(map(axisx, 0, size, 0, 255), map(axisy, 0, size, 0, 255), map(axisz, 0, size, 255, 0));
-    } else if (type == 3) {
-      pickedColor=color(map(axisx, 0, size, 0, 255), map(axisz, 0, size, 255, 0), map(axisy, size, 0, 0, 255));
-    }
-    image(picker, x, y);
+    graphics.image(picker, x, y);
   }
 
   private void deconstructColor(color c) {
@@ -136,7 +167,7 @@ class Color_Picker {
   }
 
   private boolean hovered(float x, float y, float w, float h) {
-    if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
+    if (mouseX-offsetX.val > x && mouseX-offsetX.val < x + w && mouseY-offsetY.val > y && mouseY-offsetY.val < y + h) {
       return true;
     } else {
       return false;
@@ -144,20 +175,17 @@ class Color_Picker {
   }
 };
 
+Color_Picker myCP;
+
 void setup() {
   size(600, 600);
-  colorMode(HSB);
+  myCP=new Color_Picker(1, #AA11FF, 300);
 }
 
 void draw() {
   background(15);
-
-
-
-
-  //for debugging
-  noStroke();
-  fill(pickedColor);
-  rect(50, 525, 400, 50);
-  ///////////////////////
+  myCP.display(200, 200);
+  if (myCP.colorChanged()) {
+    println(hex(myCP.getPickedColor()));
+  }
 }
