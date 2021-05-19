@@ -1,6 +1,6 @@
 int axisz = 150;
 PImage picker;
-int type = 2;
+int type = 1;
 int axisx=100;
 int axisy=100;
 boolean clickedInside=false;
@@ -16,7 +16,7 @@ void setup() {
   size(600, 600);
   colorMode(HSB);
   picker = createImage(size,size, RGB);
-  deconstructColor(#FF00AA);
+  deconstructColor(#05FF13);
 }
 
 void draw() {
@@ -69,10 +69,12 @@ void draw() {
     clickedInsideAxis=true;
   }
   if (!mousePressed) {
+    //cursor();
     clickedInside=false;
     clickedInsideAxis=false;
   }
   if (clickedInside) {
+    //noCursor();
     axisx = constrain(mouseX, x, x+size)-x;
     axisy = constrain(mouseY, y, y+size)-y;
   }
@@ -80,7 +82,13 @@ void draw() {
     axisz=constrain(mouseY, y, y+size)-y;
   }
   lastPressed=mousePressed;
-  crosshair(axisx+x, axisy+y, size/16);
+  pushStyle();
+  fill(pickedColor);
+  stroke(255);
+  strokeWeight(2);
+  circle(axisx+x, axisy+y, size/16);
+  popStyle();
+  
   strokeWeight(size/80);
   stroke(255);
   line(x+size*1.1,axisz+y, x+size*1.2,axisz+y);
@@ -96,28 +104,19 @@ void deconstructColor(color c){
   if (type == 1) {
     axisz=int(map(hue(c),0,255,0,size));
     axisx=int(map(saturation(c),0,255,0,size));
-    axisy=int(map(brightness(c),0,255,0,size));
+    axisy=int(map(brightness(c),255,0,0,size));
   }
   else if (type == 2) {
     axisx=int(map(hue(c),0,255,0,size));
-    axisy=int(map(saturation(c),255,0,0,size));
+    axisy=int(map(saturation(c),0,255,0,size));
     axisz=int(map(brightness(c),255,0,0,size));
   }
   else if (type == 3) {
     axisx=int(map(hue(c),0,255,0,size));
     axisz=int(map(saturation(c),255,0,0,size));
     axisy=int(map(brightness(c),255,0,0,size));
-    println(axisx);println(axisy);println(axisz);
+    //println(axisx);println(axisy);println(axisz);
   }
-}
-
-void crosshair(float x, float y, float size) {
-  pushStyle();
-  stroke(255);
-  strokeWeight(5);
-  line(x - size / 2, y, x + size / 2, y);
-  line(x, y - size / 2, x, y + size / 2);
-  popStyle();
 }
 
 boolean hovered(float x, float y, float w, float h) {
