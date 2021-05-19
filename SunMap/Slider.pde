@@ -25,7 +25,7 @@ class Slider {
   float labelBuffer = 2 * radius;
   int style = 1;
   float knobWidth;
-  PGraphics drawTo;
+  PGraphics graphics;
   editInt offsetX;
   editInt offsetY;
   boolean useG=false;
@@ -39,21 +39,18 @@ class Slider {
   int clickDiff = 25;
   int hoverDiff = 30;
   
-  Slider(float _X, float _Y, float _sliderLength){
-    X = _X;
-    Y = _Y;
+  Slider(float _sliderLength){
     sliderLength = _sliderLength;
     value = (max - min) / 2;
     position = map(value, min, max, radius, sliderLength - radius);
-    drawTo=g;
+    graphics=g;
     useG=true;
     offsetX=new editInt(0);
     offsetY=new editInt(0);
   }
-
-  Slider(float _X, float _Y, float _sliderLength, PGraphics _drawTo,editInt _offsetX, editInt _offsetY){
-    this(_X,_Y,_sliderLength);
-    drawTo=_drawTo;
+  
+  void drawTo(PGraphics _graphics, editInt _offsetX, editInt _offsetY){
+    graphics=_graphics;
     offsetX=_offsetX;
     offsetY=_offsetY;   
     useG=false;
@@ -95,41 +92,43 @@ class Slider {
   }
   
   void showValue(){
-    drawTo.pushStyle();
-    drawTo.textAlign(CENTER);
-    drawTo.textSize(textSize);
-    drawTo.fill(textColor);
+    graphics.pushStyle();
+    graphics.textAlign(CENTER);
+    graphics.textSize(textSize);
+    graphics.fill(textColor);
     if (pressed){
-      drawTo.text(int(value), X + position, Y - radius - textHeight);
+      graphics.text(int(value), X + position, Y - radius - textHeight);
     }
-    drawTo.popStyle();
+    graphics.popStyle();
   }
   
   void drawBackground(){
-    drawTo.pushStyle();
-    drawTo.noStroke();
-    drawTo.fill(backgroundColor);
-    drawTo.rect(X - radius, Y - labelBuffer - textSize, sliderLength + 2 * radius, textSize + labelBuffer + 1.5 * radius);
-    drawTo.popStyle();
+    graphics.pushStyle();
+    graphics.noStroke();
+    graphics.fill(backgroundColor);
+    graphics.rect(X - radius, Y - labelBuffer - textSize, sliderLength + 2 * radius, textSize + labelBuffer + 1.5 * radius);
+    graphics.popStyle();
   }
   
   void drawTickMarks(){
-    drawTo.pushStyle();
-    drawTo.stroke(secondaryColor, alpha);
-    drawTo.strokeCap(ROUND);
-    drawTo.strokeWeight(weight / 2);
+    graphics.pushStyle();
+    graphics.stroke(secondaryColor, alpha);
+    graphics.strokeCap(ROUND);
+    graphics.strokeWeight(weight / 2);
     for(int i = int(min); i <= max; i++){
-      drawTo.line(X + map(i, min, max, radius, sliderLength - radius), Y - 1.5 * radius, X + map(i, min, max, radius, sliderLength - radius), Y + 1.5 * radius);
+      graphics.line(X + map(i, min, max, radius, sliderLength - radius), Y - 1.5 * radius, X + map(i, min, max, radius, sliderLength - radius), Y + 1.5 * radius);
     }
-    drawTo.pushStyle();
+    graphics.pushStyle();
   }
   
-  void display(String label){
+  void display(float _X, float _Y, String label){
+    X = _X;
+    Y = _Y;
     if(enabled){
       detectDrag();
     }
     if(!useG){
-      drawTo.beginDraw();
+      graphics.beginDraw();
     }
     if(backgroundOn){
       drawBackground();
@@ -137,47 +136,47 @@ class Slider {
     if(tickMarks){
       drawTickMarks();
     }
-    drawTo.pushStyle();
-    drawTo.colorMode(HSB);
-    drawTo.strokeCap(ROUND);
-    drawTo.stroke(primaryColor, alpha);
-    drawTo.strokeWeight(weight);
-    drawTo.line(X, Y, X + position, Y);
-    drawTo.stroke(secondaryColor, alpha);
-    drawTo.line(X + position, Y, X + sliderLength, Y);
+    graphics.pushStyle();
+    graphics.colorMode(HSB);
+    graphics.strokeCap(ROUND);
+    graphics.stroke(primaryColor, alpha);
+    graphics.strokeWeight(weight);
+    graphics.line(X, Y, X + position, Y);
+    graphics.stroke(secondaryColor, alpha);
+    graphics.line(X + position, Y, X + sliderLength, Y);
     if(pressed){
-      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - clickDiff, alpha);
-      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - clickDiff, alpha); 
+      graphics.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - clickDiff, alpha);
+      graphics.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - clickDiff, alpha); 
     }
     else if((mouseX-offsetX.val) > X - radius && (mouseX-offsetX.val) < X + sliderLength + radius && (mouseY-offsetY.val) > Y - radius && (mouseY-offsetY.val) < Y + radius){
-      drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + hoverDiff, alpha);
-      drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + hoverDiff, alpha);
+      graphics.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + hoverDiff, alpha);
+      graphics.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + hoverDiff, alpha);
     }
     else{
-      drawTo.fill(primaryColor, alpha);
-      drawTo.stroke(primaryColor, alpha);
+      graphics.fill(primaryColor, alpha);
+      graphics.stroke(primaryColor, alpha);
     }
     if(style == 1){
-      drawTo.ellipse(X + position, Y, radius * 2, radius * 2);
+      graphics.ellipse(X + position, Y, radius * 2, radius * 2);
     }
     else if(style == 2){
-      drawTo.strokeWeight(radius / 2);
-      drawTo.strokeCap(ROUND);
-      drawTo.line(X + position, Y - radius, X + position, Y + radius);
+      graphics.strokeWeight(radius / 2);
+      graphics.strokeCap(ROUND);
+      graphics.line(X + position, Y - radius, X + position, Y + radius);
     }
-    drawTo.popStyle();
+    graphics.popStyle();
     if(floatingVal){
       showValue();
     }
     if(label != null){
-      drawTo.pushStyle();
-      drawTo.textSize(textSize);
-      drawTo.fill(textColor, alpha);
-      drawTo.text(label, X, Y - labelBuffer);
-      drawTo.popStyle();
+      graphics.pushStyle();
+      graphics.textSize(textSize);
+      graphics.fill(textColor, alpha);
+      graphics.text(label, X, Y - labelBuffer);
+      graphics.popStyle();
     }
     if(!useG){
-      drawTo.endDraw();
+      graphics.endDraw();
     }
   }
 }

@@ -72,3 +72,21 @@ void showSettings(){
   image(settings, 0, 0);
   settings.endDraw();
 }
+
+
+void placeSettings(){
+  BGYSel = new Button(3 * buffer, topBarHeight + 2.5 * buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  BGYSel.text = "BGY";
+  BGYSel.borderOn = false;
+  BGYSel.select = true;
+  
+  RYGSel = new Button(3 * buffer, BGYSel.Y + BGYSel.buttonHeight + buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  RYGSel.text = "RYG";
+  RYGSel.borderOn = false;
+  RYGSel.select = true;
+  
+  customRecolor = new Button(3 * buffer, RYGSel.Y + RYGSel.buttonHeight + buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  customRecolor.text = "Custom";
+  customRecolor.borderOn = false;
+  customRecolor.select = true;
+}

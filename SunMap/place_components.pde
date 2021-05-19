@@ -15,20 +15,7 @@ void initializeInputs() {
   settingsButton.menu = true;
   //settingsButton.select = true;
   
-  BGYSel = new Button(3 * buffer, topBarHeight + 2.5 * buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
-  BGYSel.text = "BGY";
-  BGYSel.borderOn = false;
-  BGYSel.select = true;
-  
-  RYGSel = new Button(3 * buffer, BGYSel.Y + BGYSel.buttonHeight + buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
-  RYGSel.text = "RYG";
-  RYGSel.borderOn = false;
-  RYGSel.select = true;
-  
-  customRecolor = new Button(3 * buffer, RYGSel.Y + RYGSel.buttonHeight + buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
-  customRecolor.text = "Custom";
-  customRecolor.borderOn = false;
-  customRecolor.select = true;
+  placeSettings();
   
   processImagesButton = new Button(/*width - sideBarWidth +*/ buffer, /*topBarHeight + buffer*/ height - buffer - 75, sideBarWidth - 2 * buffer, 80,sidebarGraphics,sidebarOffsetX,sidebarOffsetY);
   processImagesButton.textSize = 25; //HARDCODED
@@ -117,23 +104,23 @@ void initializeInputs() {
   overlayToggle.textSize = labelSize;
   overlayToggle.visible = false;
 
-  brightnessSlider = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  brightnessSlider = new Slider(sideBarWidth - 2 * buffer);
+  brightnessSlider.drawTo(sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   brightnessSlider.labelBuffer = .7 * buffer;
-  brightnessSlider.Y = overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + 1.15 * buffer;
   brightnessSlider.textSize = labelSize;
   brightnessSlider.floatingVal = false;
   brightnessSlider.visible = false;
 
-  contrastSlider = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  contrastSlider = new Slider(sideBarWidth - 2 * buffer);
+  contrastSlider.drawTo(sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   contrastSlider.labelBuffer = .7 * buffer;
-  contrastSlider.Y = brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + 1.15 * buffer;
   contrastSlider.textSize = labelSize;
   contrastSlider.floatingVal = false;
   contrastSlider.visible = false;
   
-  overlayStrength = new Slider(buffer, 0, sideBarWidth - 2 * buffer, sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
+  overlayStrength = new Slider(sideBarWidth - 2 * buffer);
+  overlayStrength.drawTo(sidebarGraphics, sidebarOffsetX, sidebarOffsetY);
   overlayStrength.labelBuffer = .7 * buffer;
-  overlayStrength.Y = contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + 1.15 * buffer;
   overlayStrength.textSize = labelSize;
   overlayStrength.floatingVal = false;
   overlayStrength.visible = false;
@@ -199,27 +186,24 @@ void setVisibility() {
   }
 
   if (brightnessSlider.visible) {
-    brightnessSlider.display("Brightness: " + int(brightnessSlider.value));
+    brightnessSlider.display(buffer, overlayToggle.Y + overlayToggle.slotRadius + brightnessSlider.labelBuffer + 1.15 * buffer, "Brightness: " + int(brightnessSlider.value));
   }
   
   if (overlayStrength.visible) {
-    //brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + buffer;
-    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + 1.15 * buffer, 12 / fps);
     overlayStrength.alpha = easeValue(overlayStrength.alpha, 255, 12 / fps);
-    overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
+    overlayStrength.display(buffer, easeValue(overlayStrength.Y, contrastSlider.Y + contrastSlider.radius + overlayStrength.labelBuffer + 1.15 * buffer, 12 / fps), "Overlay Strength: " + int(overlayStrength.value));
     overlayStrength.enabled = true;
   }
   else{
-    overlayStrength.Y = easeValue(overlayStrength.Y, contrastSlider.Y, 8 / fps);
     overlayStrength.alpha = easeValue(overlayStrength.alpha, 0, 8 / fps);
-    overlayStrength.display("Overlay Strength: " + int(overlayStrength.value));
+    overlayStrength.display(buffer, easeValue(overlayStrength.Y, contrastSlider.Y, 8 / fps), "Overlay Strength: " + int(overlayStrength.value));
     overlayStrength.enabled = false;
   }
 
   if (contrastSlider.visible) {
     contrastSlider.backgroundOn = true;
     contrastSlider.backgroundColor = sideBarColor;
-    contrastSlider.display("Contrast: " + int(contrastSlider.value));
+    contrastSlider.display(buffer, brightnessSlider.Y + brightnessSlider.radius + contrastSlider.labelBuffer + 1.15 * buffer, "Contrast: " + int(contrastSlider.value));
   }
   
   
