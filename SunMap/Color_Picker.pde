@@ -1,9 +1,3 @@
-class editInt {
-  int val;
-  editInt(int v) {
-    val=v;
-  }
-}
 class Color_Picker {
   private PImage picker;
   private int type;
@@ -174,18 +168,3 @@ class Color_Picker {
     }
   }
 };
-
-Color_Picker myCP;
-
-void setup() {
-  size(600, 600);
-  myCP=new Color_Picker(1, #AA11FF, 300);
-}
-
-void draw() {
-  background(15);
-  myCP.display(200, 200);
-  if (myCP.colorChanged()) {
-    println(hex(myCP.getPickedColor()));
-  }
-}
