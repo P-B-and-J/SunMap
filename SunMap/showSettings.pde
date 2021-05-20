@@ -15,8 +15,11 @@ void showSettings(){
     
 
     settings.fill(settingsTextColor);
+    settings.stroke(settingsTextColor);
+    settings.line(width / 3, 3 * buffer, width / 3, height - 3 * buffer);
+    settings.line(2 * width / 3, 3 * buffer, 2 * width / 3, height - 3 * buffer);
     settings.textSize(.015 * displayWidth * scaleFactor);
-    settings.text("Recolor Style:", 2 * buffer, topBarHeight + buffer);
+    settings.text("Recolor Style:", 3 * buffer, topBarHeight + 1.5 * buffer);
     settings.pushStyle();
     settings.textAlign(CENTER, CENTER);
     settings.text("More settings coming soon", width / 2, height / 2);
@@ -51,15 +54,36 @@ void showSettings(){
       color3.display();
       //recolorCP.display(int(3 * buffer), int(customRecolor.Y + 2 * buffer));
     }
-    recolorCP.y=int(color1.Y+2*buffer);
+    else{
+      color1.toggle = false;
+      color2.toggle = false;
+      color3.toggle = false;
+    }
+    
+    
+    recolorCP.y=int(color1.Y + color1.buttonHeight + buffer);
+    
+    color1.primaryColor = colorPalette[2][0];
+    color1.hoveredColor = color1.primaryColor;
+    color1.pressedColor = color1.primaryColor;
+    
+    color2.primaryColor = colorPalette[2][1];
+    color2.hoveredColor = color2.primaryColor;
+    color2.pressedColor = color2.primaryColor;
+    
+    color3.primaryColor = colorPalette[2][2];
+    color3.hoveredColor = color3.primaryColor;
+    color3.pressedColor = color3.primaryColor;
     
     if(color1.click){
       color2.toggle = false;
       color3.toggle = false;
+      recolorCP.setPickedColor(color1.primaryColor);
     }
-    if(color1.toggle){  
+    if(color1.toggle && recolorID == 2){  
       color1.borderOn = true;
-      recolorCP.display(int(3 * buffer), recolorCP.y);
+      recolorCP.display(int(color1.X), recolorCP.y);
+      colorPalette[2][0] = recolorCP.getPickedColor();
     }
     else{
       color1.borderOn = false;
@@ -68,10 +92,12 @@ void showSettings(){
     if(color2.click){
       color1.toggle = false;
       color3.toggle = false;
+      recolorCP.setPickedColor(color2.primaryColor);
     }
-    if(color2.toggle){
+    if(color2.toggle && recolorID == 2){
       color2.borderOn = true;
-      recolorCP.display(int(3 * buffer), recolorCP.y);
+      recolorCP.display(int(color1.X), recolorCP.y);
+      colorPalette[2][1] = recolorCP.getPickedColor();
     }
     else{
       color2.borderOn = false;
@@ -80,10 +106,12 @@ void showSettings(){
     if(color3.click){
       color1.toggle = false;
       color2.toggle = false;
+      recolorCP.setPickedColor(color3.primaryColor);
     }
-    if(color3.toggle){
+    if(color3.toggle && recolorID == 2){
       color3.borderOn = true;
-      recolorCP.display(int(3 * buffer), recolorCP.y);
+      recolorCP.display(int(color1.X), recolorCP.y);
+      colorPalette[2][2] = recolorCP.getPickedColor();
     }
     else{
       color3.borderOn = false;
@@ -119,41 +147,38 @@ void showSettings(){
 Button color1, color2, color3;
 
 void placeSettings(){
-  BGYSel = new Button(3 * buffer, topBarHeight + 2.5 * buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  BGYSel = new Button(4 * buffer, topBarHeight + 2.5 * buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
   BGYSel.text = "BGY";
   BGYSel.borderOn = false;
   BGYSel.select = true;
   
-  RYGSel = new Button(3 * buffer, BGYSel.Y + BGYSel.buttonHeight + buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  RYGSel = new Button(4 * buffer, BGYSel.Y + BGYSel.buttonHeight + buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
   RYGSel.text = "RYG";
   RYGSel.borderOn = false;
   RYGSel.select = true;
   
-  customRecolor = new Button(3 * buffer, RYGSel.Y + RYGSel.buttonHeight + buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  customRecolor = new Button(4 * buffer, RYGSel.Y + RYGSel.buttonHeight + buffer, .01 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
   customRecolor.text = "Custom";
   customRecolor.borderOn = false;
   customRecolor.select = true;
   
-  color1 = new Button(4 * buffer, customRecolor.Y + 2 * buffer, .015 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  color1 = new Button(customRecolor.X + customRecolor.buttonWidth + .75 * buffer, customRecolor.Y + 1.25 * buffer, .025 * displayWidth, .02 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
   color1.borderOn = false;
+  color1.borderWeight = 3;
   color1.borderColor = accentBlue;
-  color1.primaryColor = colorPalette[2][0];
-  color1.hoveredColor = color1.primaryColor;
-  color1.pressedColor = color1.primaryColor;
+  color1.radius = color1.buttonHeight / 4;
   
-  color2 = new Button(color1.X + color1.buttonWidth + buffer, customRecolor.Y + 2 * buffer, .015 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  color2 = new Button(color1.X + color1.buttonWidth + .5 * buffer, color1.Y, .025 * displayWidth, .02 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
   color2.borderOn = false;
+  color2.borderWeight = 3;
   color2.borderColor = accentBlue;
-  color2.primaryColor = colorPalette[2][1];
-  color2.hoveredColor = color2.primaryColor;
-  color2.pressedColor = color2.primaryColor;
+  color2.radius = color2.buttonHeight / 4;
   
-  color3 = new Button(color2.X + color2.buttonWidth + buffer, customRecolor.Y + 2 * buffer, .015 * displayWidth, .01 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
+  color3 = new Button(color2.X + color2.buttonWidth + .5 * buffer, color1.Y, .025 * displayWidth, .02 * displayWidth, settings, settingsOffsetX, settingsOffsetY);
   color3.borderOn = false;
+  color3.borderWeight = 3;
   color3.borderColor = accentBlue;
-  color3.primaryColor = colorPalette[2][2];
-  color3.hoveredColor = color3.primaryColor;
-  color3.pressedColor = color3.primaryColor;
+  color3.radius = color3.buttonHeight / 4;
   
   
   recolorCP=new Color_Picker(1,#FFFFFF,displayWidth/10);

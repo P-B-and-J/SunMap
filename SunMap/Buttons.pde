@@ -30,6 +30,7 @@ class Button {
   boolean useG=false;
   boolean toggle = false;
   boolean select = false;
+  float radius = 0;
   
   //vars for menu icon. For now, works best if the button is a square
   float topX1 = 100;
@@ -216,21 +217,21 @@ class Button {
     if(pressed){
       if(pressedColor == 256){
         drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
-        drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) + 30, alpha(primaryColor));
+        drawTo.stroke(hue(borderColor), saturation(borderColor), brightness(borderColor) + 30, alpha(borderColor));
       }
       else{
         drawTo.fill(pressedColor);
-        drawTo.stroke(pressedColor);
+        drawTo.stroke(borderColor);
       }
     }
     else if(enabled && (mouseX-offsetX.val) >= X && (mouseX-offsetX.val) <= X + buttonWidth && (mouseY-offsetY.val) >= Y && (mouseY-offsetY.val) <= Y + buttonHeight){
       if(hoveredColor == 256){
         drawTo.fill(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
-        drawTo.stroke(hue(primaryColor), saturation(primaryColor), brightness(primaryColor) - 25, alpha(primaryColor));
+        drawTo.stroke(hue(borderColor), saturation(borderColor), brightness(borderColor) - 25, alpha(borderColor));
       }
       else{
         drawTo.fill(hoveredColor);
-        drawTo.stroke(hoveredColor);
+        drawTo.stroke(borderColor);
       }
       if(arrowOn){
         drawArrow();
@@ -245,7 +246,7 @@ class Button {
     if(!borderOn){
       drawTo.noStroke();
     }
-    drawTo.rect(X, Y, buttonWidth, buttonHeight);
+    drawTo.rect(X, Y, buttonWidth, buttonHeight, radius);
     drawText();
     drawTo.popStyle();
     drawTo.popStyle();

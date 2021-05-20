@@ -46,6 +46,7 @@ class Color_Picker {
 
   void setPickedColor(color c) {
     deconstructColor(c);
+    pickedColor = c;
   }
 
   boolean colorChanged() {
