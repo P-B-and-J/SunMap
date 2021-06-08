@@ -32,16 +32,27 @@ void loadImages() {
     numImages = filenames.length;
     while(counter < numImages){
       String fileName = filenames[counter];
-      PImage tempImage = loadImage(folderPath + "/" + fileName);
-      if (tempImage != null) {
-        tempImage.resize(layerImagesResolution, 0);
-        images.add(tempImage);
-        if (firstImage == null) {
-          firstImage = tempImage;
+      File file = new File(folderPath + "/" + fileName);
+      if(file.isDirectory()){
+        numInvalidImages++;
+        String[] fileNamesTemp = listFileNames(folderPath + "/" + fileName);
+        for(int i = 0; i < fileNamesTemp.length; i++){
+          filenames = append(filenames, fileName + "/" + fileNamesTemp[i]);
         }
+        numImages = filenames.length;
       }
       else{
-        numInvalidImages++;
+        PImage tempImage = loadImage(folderPath + "/" + fileName);
+        if (tempImage != null) {
+          tempImage.resize(layerImagesResolution, 0);
+          images.add(tempImage);
+          if (firstImage == null) {
+            firstImage = tempImage;
+          }
+        }
+        else{
+          numInvalidImages++;
+        }
       }
       counter++;
     }
@@ -51,6 +62,15 @@ void loadImages() {
     //imageWidth = images.get(0).width;
     //imageHeight = images.get(0).height;
     //pixVal = new float[imageWidth * imageHeight];
-    imagesLoaded = true;
-}
+    if(images.size()>0){
+      imagesLoaded = true;
+    }else{
+      loading = false;
+      loadingProgress.targetPos=0;
+      selectFolder.useFolderButton.click = false;
+      errorBox.labelText = "The folder must contain at least one image.";
+      counter=10;
+      numImages=10;
+    }
+  }
 }
